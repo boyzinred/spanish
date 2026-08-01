@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light"><head>
+<script>
+(() => {
+  try {
+    const saved = localStorage.getItem('spanishChapter1Theme');
+    const theme = saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.style.colorScheme = theme;
+  } catch (_) {}
+})();
+</script>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spanish Chapter 1 Vocabulary</title><style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
+:root {
+  color-scheme: light;
+  --light-background: #39479E;
+  --light-foreground: #D17FBB;
+  --light-primary: #408C3D;
+  --light-primary-hover: #5E97F7;
+  --light-secondary: #8FC1E5;
+  --light-secondary-soft: #B5D7FF;
+  --light-accent: #CD8E37;
+  --light-accent-soft: #BBD6FB;
+  --light-muted: #5067A4;
+  --light-muted-strong: #CD8E37;
+  --light-blue-soft: #3A25D3;
+  --light-border: #D88B18;
+  --light-subtle: #408C3D;
+  --background: var(--light-background);
+  --foreground: var(--light-foreground);
+  --primary: var(--light-primary);
+  --primary-hover: var(--light-primary-hover);
+  --secondary: var(--light-secondary);
+  --secondary-soft: var(--light-secondary-soft);
+  --accent: var(--light-accent);
+  --accent-soft: var(--light-accent-soft);
+  --muted: var(--light-muted);
+  --muted-strong: var(--light-muted-strong);
+  --blue-soft: var(--light-blue-soft);
+  --border: var(--light-border);
+  --subtle: var(--light-subtle);
+  --surface: #F8F6FC;
+  --surface-text: #202A61;
+  --surface-muted: #E9EAF7;
+  --inverse: #252F70;
+  --inverse-text: #FFFFFF;
+  --hero-heading: #FFFFFF;
+  --hero-text: #F2F7EF;
+  --correct-text: #102A16;
+  --warning-text: #2C1A04;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --font: 'Outfit', system-ui, sans-serif;
+  --transition: all 200ms ease;
+}
+html[data-theme='dark'] {
+  color-scheme: dark;
+  --light-background: #111827;
+  --light-foreground: #F9FAFB;
+  --light-primary: #95DD92;
+  --light-primary-hover: #4688F6;
+  --light-secondary: #62A8DA;
+  --light-secondary-soft: #0B2442;
+  --light-accent: #E1BC89;
+  --light-accent-soft: #0B2242;
+  --light-muted: #1F2937;
+  --light-muted-strong: #374151;
+  --light-blue-soft: #120B41;
+  --light-border: #374151;
+  --light-subtle: #CBD5E1;
+  --background: var(--light-background);
+  --foreground: var(--light-foreground);
+  --primary: var(--light-primary);
+  --primary-hover: var(--light-primary-hover);
+  --secondary: var(--light-secondary);
+  --secondary-soft: var(--light-secondary-soft);
+  --accent: var(--light-accent);
+  --accent-soft: var(--light-accent-soft);
+  --muted: var(--light-muted);
+  --muted-strong: var(--light-muted-strong);
+  --blue-soft: var(--light-blue-soft);
+  --border: var(--light-border);
+  --subtle: var(--light-subtle);
+  --surface: #1F2937;
+  --surface-text: #F9FAFB;
+  --surface-muted: #111827;
+  --inverse: #0F172A;
+  --inverse-text: #F9FAFB;
+  --correct-text: #E9FFF0;
+  --warning-text: #FFF4E0;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin:0; min-height:100vh; color:var(--foreground); background:var(--background); font-family:var(--font); line-height:1.6; }
+button,input,select,textarea { font:inherit; }
+button { cursor:pointer; }
+a { color:inherit; }
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible { outline:3px solid var(--primary); outline-offset:3px; }
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+.site-header { color:var(--surface-text); background:var(--surface); border-bottom:1px solid var(--border); }
+.header-inner,.page-main { width:min(1120px,calc(100% - 40px)); margin-inline:auto; }
+.header-inner { min-height:64px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+.brand { min-width:0; overflow:hidden; color:var(--surface-text); font-size:1rem; font-weight:800; letter-spacing:-.02em; text-overflow:ellipsis; text-decoration:none; white-space:nowrap; }
+.header-actions { display:flex; align-items:center; gap:8px; }
+.header-link { min-height:40px; display:inline-flex; align-items:center; padding:0 13px; color:var(--surface-text); background:var(--surface-muted); border:1px solid transparent; border-radius:var(--radius-md); font-weight:700; text-decoration:none; }
+.header-link:hover { border-color:var(--primary); background:var(--secondary-soft); color:#16214F; }
+.page-main { margin-top:24px; margin-bottom:72px; overflow:hidden; color:var(--surface-text); background:var(--surface); border-radius:var(--radius-lg); }
+.hero { color:var(--hero-heading); background:var(--primary); }
+.hero-inner { padding:clamp(48px,7vw,82px); }
+.hero-kicker { margin:0 0 18px; color:#FFFFFF; font-size:.76rem; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
+.hero h1 { max-width:15ch; margin:0; font-size:clamp(3rem,7vw,5.7rem); font-weight:800; line-height:.92; letter-spacing:-.02em; }
+.hero p { max-width:62ch; margin:24px 0 0; color:var(--hero-text); font-size:1.05rem; }
+.toc-card { padding:18px 22px; color:var(--surface-text); background:var(--surface); border-bottom:1px solid var(--border); }
+.toc-label { margin:0 0 10px; color:var(--subtle); font-size:.72rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+.toc-list { display:flex; flex-wrap:wrap; gap:8px; }
+.toc-list a { min-height:40px; display:inline-flex; align-items:center; padding:8px 12px; color:var(--surface-text); background:var(--surface-muted); border:1px solid transparent; border-radius:var(--radius-md); font-size:.88rem; font-weight:700; text-decoration:none; white-space:nowrap; }
+.toc-list a:hover { background:var(--secondary-soft); border-color:var(--primary); }
+.section { scroll-margin-top:18px; border-bottom:1px solid var(--border); }
+.section:last-child { border-bottom:0; }
+.section-head { min-height:150px; display:flex; align-items:center; justify-content:space-between; gap:24px; padding:clamp(30px,5vw,64px); background:var(--secondary); color:#17234F; }
+.section:nth-of-type(3n+2) .section-head { background:var(--accent); color:#2C1A04; }
+.section:nth-of-type(3n+3) .section-head { background:var(--primary); color:#FFFFFF; }
+.section-kicker { margin:0 0 10px; font-size:.74rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
+.section-head h2 { margin:0; font-size:clamp(2.2rem,5vw,4.8rem); line-height:1; letter-spacing:-.02em; }
+.section-count { min-height:48px; display:inline-flex; align-items:center; padding:0 14px; background:#FFFFFF; color:#202A61; border:4px solid currentColor; border-radius:var(--radius-md); font-size:.78rem; font-weight:800; white-space:nowrap; }
+.section-body { padding:clamp(26px,5vw,64px); background:var(--surface-muted); }
+.rule-card,.info-card { padding:22px 26px; background:var(--secondary-soft); color:#17234F; border-radius:var(--radius-lg); }
+.rule-card strong { color:#102A16; }
+.info-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin-bottom:28px; }
+.info-card { background:var(--surface); color:var(--surface-text); border:1px solid var(--border); }
+.info-card h3,.rule-card h3 { margin:0 0 10px; font-size:1.12rem; }
+.example-list { display:grid; gap:10px; margin-top:16px; }
+.example-row { padding:14px; background:var(--surface); border-left:6px solid var(--primary); border-radius:var(--radius-md); }
+.example-row b { display:block; }
+.exercise-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:28px; align-items:start; }
+.exercise-card { overflow:hidden; background:var(--surface); border-radius:var(--radius-lg); border:1px solid var(--border); }
+.exercise-head { display:flex; align-items:stretch; justify-content:space-between; gap:0; color:var(--inverse-text); background:var(--inverse); }
+.exercise-head-copy { padding:24px 26px; }
+.exercise-head h3 { margin:0; font-size:clamp(1.45rem,3vw,2.3rem); line-height:1; letter-spacing:-.02em; }
+.exercise-head p { margin:10px 0 0; color:#D5DCF6; font-size:.9rem; }
+.score-box { min-width:158px; display:grid; place-items:center; padding:20px; color:#241704; background:var(--accent); font-size:.86rem; font-weight:800; text-align:center; }
+.exercise-body { padding:clamp(24px,4vw,38px); }
+.status-row { display:flex; justify-content:space-between; gap:12px; margin-bottom:10px; color:var(--subtle); font-size:.82rem; font-weight:800; }
+.progress-track { height:12px; overflow:hidden; margin-bottom:24px; background:var(--muted-strong); }
+.progress-fill { width:0; height:100%; background:var(--secondary); transition:width 200ms ease; }
+.question-meta { margin:0 0 8px; color:var(--primary); font-size:.74rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+.question-text { min-height:3.2em; margin:0 0 22px; color:var(--surface-text); font-size:clamp(1.25rem,2.5vw,2rem); font-weight:700; line-height:1.2; }
+.answer-form { display:grid; grid-template-columns:1fr auto; gap:10px; }
+.answer-input { width:100%; min-height:56px; padding:0 16px; color:var(--surface-text); background:var(--surface-muted); border:2px solid transparent; border-radius:var(--radius-md); }
+.answer-input:focus { background:var(--surface); border-color:var(--primary); }
+.answer-input:disabled { color:var(--surface-text); background:var(--muted-strong); cursor:not-allowed; }
+.option-list { display:grid; gap:10px; }
+.option-btn { min-height:58px; padding:12px 15px; color:var(--surface-text); background:var(--surface-muted); border:2px solid transparent; border-radius:var(--radius-md); font-weight:700; text-align:left; }
+.option-btn:hover:not(:disabled) { color:#FFFFFF; background:var(--primary); }
+.option-btn.correct { color:var(--correct-text); background:var(--primary); border-color:var(--secondary); }
+.option-btn.wrong { color:var(--warning-text); background:var(--accent); border-color:#7A3F00; }
+.btn { min-height:56px; padding:0 18px; border:0; border-radius:var(--radius-md); font-weight:800; transition:var(--transition); }
+.btn:hover:not(:disabled) { transform:scale(1.03); }
+.btn-primary { color:#FFFFFF; background:var(--primary); }
+.btn-next { color:#15213A; background:var(--secondary); }
+.btn-alt { color:#2C1A04; background:var(--accent); }
+.btn-muted { color:var(--surface-text); background:var(--surface-muted); border:1px solid var(--border); }
+.action-row { display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
+.feedback { display:none; margin-top:16px; padding:18px 20px; border-radius:var(--radius-lg); }
+.feedback.good { display:block; color:var(--correct-text); background:var(--secondary-soft); border-left:8px solid var(--secondary); }
+.feedback.bad { display:block; color:var(--surface-text); background:var(--accent-soft); border-left:8px solid var(--accent); }
+.feedback.neutral { display:block; color:var(--surface-text); background:var(--surface-muted); border-left:8px solid var(--primary); }
+.model-answer { display:block; margin-top:6px; font-size:1.05rem; font-weight:800; }
+.finish-panel { display:none; margin-top:18px; padding:22px; background:var(--secondary-soft); color:#17234F; border-radius:var(--radius-lg); }
+.finish-panel h4 { margin:0 0 8px; font-size:1.45rem; }
+.review-list { max-height:360px; overflow:auto; display:grid; gap:8px; margin-top:16px; }
+.review-row { padding:14px; color:var(--surface-text); background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md); }
+.review-row p { margin:4px 0; }
+.source-chip { display:inline-flex; align-items:center; min-height:28px; padding:0 9px; color:#FFFFFF; background:var(--primary); border-radius:999px; font-size:.68rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+.hidden { display:none !important; }
+.utility-controls { position:fixed; right:18px; bottom:18px; z-index:30; display:flex; gap:8px; }
+.utility-btn { width:46px; height:46px; display:grid; place-items:center; padding:0; color:#FFFFFF; background:var(--primary); border:2px solid #FFFFFF; border-radius:50%; font-size:1.15rem; font-weight:800; text-decoration:none; }
+.utility-btn:nth-child(2) { color:#2C1A04; background:var(--accent); }
+.table-wrap { overflow-x:auto; }
+table { width:100%; min-width:620px; border-collapse:collapse; }
+th,td { padding:13px 15px; text-align:left; border-bottom:1px solid var(--border); }
+th { color:#17234F; background:var(--secondary-soft); font-size:.74rem; letter-spacing:.08em; text-transform:uppercase; }
+td { color:var(--surface-text); background:var(--surface); }
+.vocab-tools { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-bottom:16px; padding:16px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); }
+.vocab-tools strong { margin-right:auto; }
+.blur-toggle,.mode-btn { min-height:42px; padding:0 13px; color:var(--surface-text); background:var(--surface-muted); border:1px solid transparent; border-radius:var(--radius-md); font-weight:800; }
+.blur-toggle[aria-pressed='true'],.mode-btn.active { color:#FFFFFF; background:var(--primary); }
+.blur-target { display:inline-block; transition:filter 180ms ease; }
+.ref-section.blur-english [data-field='english'] .blur-target,.ref-section.blur-spanish [data-field='spanish'] .blur-target { filter:blur(6px); user-select:none; }
+.ref-section.blur-english [data-field='english'].peek .blur-target,.ref-section.blur-spanish [data-field='spanish'].peek .blur-target { filter:none; user-select:text; }
+[data-field] { cursor:pointer; }
+.familiarity-stars { display:inline-flex; gap:2px; padding:3px; background:var(--surface-muted); border-radius:var(--radius-md); }
+.star { width:34px; height:34px; padding:0; color:#8B91AA; background:transparent; border:0; font-size:1.2rem; }
+.familiarity-stars[data-level='1'] .star:nth-child(-n+1) { color:#B2462E; }
+.familiarity-stars[data-level='2'] .star:nth-child(-n+2) { color:var(--accent); }
+.familiarity-stars[data-level='3'] .star:nth-child(-n+3) { color:var(--primary); }
+.familiarity-label { display:block; margin-top:4px; color:var(--subtle); font-size:.72rem; font-weight:700; }
+.mode-panel { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin-bottom:20px; }
+.mode-card { padding:18px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); }
+.mode-label { margin-bottom:10px; color:var(--subtle); font-size:.72rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+.segmented { display:flex; flex-wrap:wrap; gap:8px; }
+.comprehensive-card { padding:clamp(26px,5vw,64px); background:var(--surface-muted); }
+.breakdown { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:10px; margin-top:18px; }
+.breakdown div { padding:12px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md); }
+.source-note { padding:22px; color:var(--surface-text); background:var(--surface); border-top:1px solid var(--border); font-size:.86rem; }
+@media (max-width:900px) { .exercise-grid,.info-grid { grid-template-columns:1fr; } }
+@media (max-width:680px) {
+  .header-inner,.page-main { width:100%; }
+  .header-inner { min-height:60px; padding:0 14px; }
+  .header-link .label { display:none; }
+  .page-main { margin:0 0 72px; border-radius:0; }
+  .hero-inner { padding:48px 22px; }
+  .toc-card { overflow-x:auto; padding:18px 22px; }
+  .toc-list { flex-wrap:nowrap; width:max-content; }
+  .section-head { align-items:flex-start; flex-direction:column; min-height:150px; padding:34px 22px; }
+  .section-count { width:100%; justify-content:center; }
+  .section-body,.comprehensive-card { padding:22px; }
+  .exercise-head { flex-direction:column; }
+  .score-box { width:100%; min-height:68px; }
+  .answer-form,.mode-panel { grid-template-columns:1fr; }
+  .btn { width:100%; }
+  .action-row { flex-direction:column; }
+  .utility-controls { right:10px; bottom:10px; }
+}
+@media (prefers-reduced-motion:reduce) { * { scroll-behavior:auto !important; transition:none !important; transform:none !important; } }
+</style></head>
+<body id="top"><header class="site-header"><div class="header-inner"><a class="brand" href="index.html">Spanish Grammar Resources</a><div class="header-actions"><a class="header-link" href="index.html"><span class="label">Home</span>⌂</a></div></div></header>
+<main class="page-main"><section class="hero"><div class="hero-inner"><p class="hero-kicker">Chapter 1 · Vocabulary</p><h1>Present-Tense Word Bank</h1><p>Practice every potentially unfamiliar verb, noun, time expression, grammar term, and fixed expression used across the chapter—not only the printed vocabulary boxes.</p></div></section>
+<nav class="toc-card" id="toc"><p class="toc-label">Jump to a section</p><div class="toc-list" id="tocList"></div></nav>
+<section class="section" id="reference"><div class="section-head"><div><p class="section-kicker">Study bank</p><h2>Reference Tables</h2></div><span class="section-count" id="totalCount"></span></div><div class="section-body"><div class="rule-card"><h3>How to use the bank</h3><p>Blur either language, click a blurred cell to peek, and rate each entry from one to three stars. Ratings and blur settings are saved in this browser.</p></div><div id="referenceTables" style="margin-top:20px"></div></div></section>
+<div id="quizSections"></div><p class="source-note">The word bank was compiled from all 18 pages of the supplied chapter, including explanations, conjugation lists, examples, exercises, and the “La vida diaria” passage. Proper names and basic function words were generally excluded.</p></main>
+<div class="utility-controls" aria-label="Page controls">
+  <button class="utility-btn" id="themeToggle" type="button" aria-label="Switch theme" aria-pressed="false">◐</button>
+  <a class="utility-btn" href="#top" aria-label="Back to top">↑</a>
+</div>
+
+<script>
+const SECTIONS = [{"id": "grammar-concepts", "title": "Grammar and Verb Concepts", "items": [{"spanish": "el presente", "english": "present tense", "spanish_alts": []}, {"spanish": "el verbo", "english": "verb", "spanish_alts": []}, {"spanish": "regular", "english": "regular", "spanish_alts": []}, {"spanish": "irregular", "english": "irregular", "spanish_alts": []}, {"spanish": "el cambio ortográfico", "english": "spelling change", "spanish_alts": []}, {"spanish": "la raíz", "english": "root / stem", "spanish_alts": ["el radical"]}, {"spanish": "el radical", "english": "root / stem", "spanish_alts": ["la raíz"]}, {"spanish": "el infinitivo", "english": "infinitive", "spanish_alts": []}, {"spanish": "la terminación", "english": "ending", "spanish_alts": []}, {"spanish": "la conjugación", "english": "conjugation", "spanish_alts": []}, {"spanish": "conjugar", "english": "to conjugate", "spanish_alts": []}, {"spanish": "el sujeto", "english": "subject", "spanish_alts": []}, {"spanish": "el pronombre", "english": "pronoun", "spanish_alts": []}, {"spanish": "el pronombre de sujeto", "english": "subject pronoun", "spanish_alts": []}, {"spanish": "el tiempo verbal", "english": "verb tense", "spanish_alts": []}, {"spanish": "el pasado", "english": "past", "spanish_alts": []}, {"spanish": "el futuro", "english": "future", "spanish_alts": []}, {"spanish": "el modo", "english": "mood", "spanish_alts": []}, {"spanish": "el modo indicativo", "english": "indicative mood", "spanish_alts": []}, {"spanish": "el subjuntivo", "english": "subjunctive", "spanish_alts": []}, {"spanish": "el condicional", "english": "conditional", "spanish_alts": []}, {"spanish": "el imperativo", "english": "imperative", "spanish_alts": []}, {"spanish": "la acción", "english": "action", "spanish_alts": []}, {"spanish": "el hecho", "english": "fact", "spanish_alts": []}, {"spanish": "la realidad", "english": "reality", "spanish_alts": []}, {"spanish": "la actitud", "english": "attitude", "spanish_alts": []}, {"spanish": "la percepción", "english": "perception", "spanish_alts": []}, {"spanish": "omitir", "english": "to omit", "spanish_alts": []}, {"spanish": "corresponder", "english": "to correspond / agree", "spanish_alts": []}, {"spanish": "expresar", "english": "to express", "spanish_alts": []}, {"spanish": "comunicar", "english": "to communicate", "spanish_alts": []}]}, {"id": "regular-ar-verbs", "title": "Regular -AR Verbs", "items": [{"spanish": "bajar", "english": "to go down / step down", "spanish_alts": []}, {"spanish": "cocinar", "english": "to cook", "spanish_alts": []}, {"spanish": "comprar", "english": "to buy", "spanish_alts": []}, {"spanish": "conversar", "english": "to talk / converse", "spanish_alts": []}, {"spanish": "cooperar", "english": "to cooperate", "spanish_alts": []}, {"spanish": "dibujar", "english": "to draw", "spanish_alts": []}, {"spanish": "escuchar", "english": "to listen", "spanish_alts": []}, {"spanish": "limpiar", "english": "to clean", "spanish_alts": []}, {"spanish": "preparar", "english": "to prepare", "spanish_alts": []}, {"spanish": "sacar", "english": "to take out", "spanish_alts": []}, {"spanish": "sumar", "english": "to add up", "spanish_alts": []}, {"spanish": "trabajar", "english": "to work", "spanish_alts": []}, {"spanish": "hablar", "english": "to speak / talk", "spanish_alts": []}, {"spanish": "estudiar", "english": "to study", "spanish_alts": []}, {"spanish": "planear", "english": "to plan", "spanish_alts": []}, {"spanish": "necesitar", "english": "to need", "spanish_alts": []}, {"spanish": "cuidar", "english": "to take care of", "spanish_alts": []}, {"spanish": "caminar", "english": "to walk", "spanish_alts": []}, {"spanish": "llegar", "english": "to arrive", "spanish_alts": []}, {"spanish": "celebrar", "english": "to celebrate", "spanish_alts": []}, {"spanish": "circular", "english": "to circulate", "spanish_alts": []}, {"spanish": "mirar", "english": "to look at / watch", "spanish_alts": []}, {"spanish": "desayunar", "english": "to eat breakfast", "spanish_alts": []}, {"spanish": "viajar", "english": "to travel", "spanish_alts": []}, {"spanish": "fundar", "english": "to found / establish", "spanish_alts": []}, {"spanish": "colonizar", "english": "to colonize", "spanish_alts": []}, {"spanish": "observar", "english": "to observe / watch", "spanish_alts": []}, {"spanish": "usar", "english": "to use", "spanish_alts": []}, {"spanish": "enviar", "english": "to send", "spanish_alts": []}, {"spanish": "esperar", "english": "to wait / hope", "spanish_alts": []}, {"spanish": "planchar", "english": "to iron", "spanish_alts": []}, {"spanish": "barrer", "english": "to sweep", "spanish_alts": []}, {"spanish": "lavar", "english": "to wash", "spanish_alts": []}, {"spanish": "detestar", "english": "to hate", "spanish_alts": []}, {"spanish": "odiar", "english": "to hate", "spanish_alts": []}, {"spanish": "ayudar", "english": "to help", "spanish_alts": []}, {"spanish": "pasar la aspiradora", "english": "to vacuum", "spanish_alts": []}]}, {"id": "regular-er-ir-verbs", "title": "Regular -ER and -IR Verbs", "items": [{"spanish": "beber", "english": "to drink", "spanish_alts": []}, {"spanish": "comer", "english": "to eat", "spanish_alts": []}, {"spanish": "comprender", "english": "to understand", "spanish_alts": []}, {"spanish": "correr", "english": "to run", "spanish_alts": []}, {"spanish": "creer", "english": "to believe", "spanish_alts": []}, {"spanish": "leer", "english": "to read", "spanish_alts": []}, {"spanish": "responder", "english": "to answer", "spanish_alts": []}, {"spanish": "romper", "english": "to break", "spanish_alts": []}, {"spanish": "temer", "english": "to fear", "spanish_alts": []}, {"spanish": "vender", "english": "to sell", "spanish_alts": []}, {"spanish": "aprender", "english": "to learn", "spanish_alts": []}, {"spanish": "recibir", "english": "to receive", "spanish_alts": []}, {"spanish": "abrir", "english": "to open", "spanish_alts": []}, {"spanish": "compartir", "english": "to share", "spanish_alts": []}, {"spanish": "cubrir", "english": "to cover", "spanish_alts": []}, {"spanish": "decidir", "english": "to decide", "spanish_alts": []}, {"spanish": "discutir", "english": "to discuss", "spanish_alts": []}, {"spanish": "escribir", "english": "to write", "spanish_alts": []}, {"spanish": "repartir", "english": "to distribute", "spanish_alts": []}, {"spanish": "subir", "english": "to climb / go up", "spanish_alts": []}, {"spanish": "sufrir", "english": "to suffer", "spanish_alts": []}, {"spanish": "vivir", "english": "to live", "spanish_alts": []}, {"spanish": "descubrir", "english": "to discover", "spanish_alts": []}, {"spanish": "existir", "english": "to exist", "spanish_alts": []}]}, {"id": "time-frequency", "title": "Time, Frequency, and Present-Time Expressions", "items": [{"spanish": "ahora", "english": "now", "spanish_alts": []}, {"spanish": "temprano", "english": "early", "spanish_alts": []}, {"spanish": "normalmente", "english": "normally / usually", "spanish_alts": []}, {"spanish": "al mediodía", "english": "at noon", "spanish_alts": []}, {"spanish": "de vez en cuando", "english": "from time to time", "spanish_alts": []}, {"spanish": "el lunes", "english": "on Monday", "spanish_alts": []}, {"spanish": "los lunes", "english": "on Mondays", "spanish_alts": []}, {"spanish": "esta semana", "english": "this week", "spanish_alts": []}, {"spanish": "este mes", "english": "this month", "spanish_alts": []}, {"spanish": "hoy", "english": "today", "spanish_alts": []}, {"spanish": "mañana", "english": "tomorrow", "spanish_alts": []}, {"spanish": "este verano", "english": "this summer", "spanish_alts": []}, {"spanish": "nunca", "english": "never", "spanish_alts": []}, {"spanish": "por la mañana", "english": "in the morning", "spanish_alts": []}, {"spanish": "por la tarde", "english": "in the afternoon", "spanish_alts": []}, {"spanish": "por la noche", "english": "in the evening / at night", "spanish_alts": []}, {"spanish": "siempre", "english": "always", "spanish_alts": []}, {"spanish": "todos los días", "english": "every day", "spanish_alts": []}, {"spanish": "de lunes a viernes", "english": "from Monday to Friday", "spanish_alts": []}, {"spanish": "a tiempo", "english": "on time", "spanish_alts": []}, {"spanish": "el fin de semana", "english": "weekend", "spanish_alts": []}, {"spanish": "hace ... que", "english": "for ... / it has been ... since", "spanish_alts": []}, {"spanish": "desde hace", "english": "for / since a duration ago", "spanish_alts": []}, {"spanish": "desde cuándo", "english": "since when", "spanish_alts": []}, {"spanish": "cuánto tiempo", "english": "how long", "spanish_alts": []}, {"spanish": "casi", "english": "almost", "spanish_alts": []}, {"spanish": "por poco", "english": "nearly / almost", "spanish_alts": []}, {"spanish": "antes que", "english": "before", "spanish_alts": []}, {"spanish": "esta mañana", "english": "this morning", "spanish_alts": []}, {"spanish": "esta noche", "english": "tonight", "spanish_alts": []}]}, {"id": "people-school-work", "title": "People, Family, School, and Work", "items": [{"spanish": "la familia", "english": "family", "spanish_alts": []}, {"spanish": "la esposa", "english": "wife", "spanish_alts": []}, {"spanish": "el esposo", "english": "husband", "spanish_alts": []}, {"spanish": "la hija", "english": "daughter", "spanish_alts": []}, {"spanish": "el hijo", "english": "son", "spanish_alts": []}, {"spanish": "la madre", "english": "mother", "spanish_alts": []}, {"spanish": "la suegra", "english": "mother-in-law", "spanish_alts": []}, {"spanish": "los parientes", "english": "relatives", "spanish_alts": []}, {"spanish": "los niños", "english": "children", "spanish_alts": []}, {"spanish": "el cliente", "english": "customer / client", "spanish_alts": []}, {"spanish": "el reportero / la reportera", "english": "reporter", "spanish_alts": []}, {"spanish": "la actriz", "english": "actress", "spanish_alts": []}, {"spanish": "los críticos", "english": "critics", "spanish_alts": []}, {"spanish": "los amigos", "english": "friends", "spanish_alts": []}, {"spanish": "el compañero de trabajo / la compañera de trabajo", "english": "coworker", "spanish_alts": []}, {"spanish": "la persona", "english": "person", "spanish_alts": []}, {"spanish": "el estudiante / la estudiante", "english": "student", "spanish_alts": []}, {"spanish": "la universidad", "english": "university", "spanish_alts": []}, {"spanish": "el maestro / la maestra", "english": "teacher", "spanish_alts": []}, {"spanish": "el director / la directora", "english": "director", "spanish_alts": []}, {"spanish": "el asistente / la asistente", "english": "assistant", "spanish_alts": []}, {"spanish": "el aficionado / la aficionada", "english": "fan / enthusiast", "spanish_alts": []}, {"spanish": "el participante / la participante", "english": "participant", "spanish_alts": []}, {"spanish": "los jueces", "english": "judges", "spanish_alts": []}, {"spanish": "el público", "english": "audience / public", "spanish_alts": []}, {"spanish": "la audiencia", "english": "audience", "spanish_alts": []}, {"spanish": "la multitud", "english": "crowd", "spanish_alts": []}, {"spanish": "el capitán / la capitana", "english": "captain", "spanish_alts": []}, {"spanish": "el portero / la portera", "english": "goalkeeper / doorman", "spanish_alts": []}, {"spanish": "el sospechoso / la sospechosa", "english": "suspect", "spanish_alts": []}, {"spanish": "el vecino / la vecina", "english": "neighbor", "spanish_alts": []}, {"spanish": "el tío", "english": "uncle", "spanish_alts": []}, {"spanish": "el primo / la prima", "english": "cousin", "spanish_alts": []}]}, {"id": "home-daily-life", "title": "Home, Food, and Daily Life", "items": [{"spanish": "el edificio de apartamentos", "english": "apartment building", "spanish_alts": []}, {"spanish": "el apartamento", "english": "apartment", "spanish_alts": []}, {"spanish": "la casa", "english": "house / home", "spanish_alts": []}, {"spanish": "la sala", "english": "living room", "spanish_alts": []}, {"spanish": "la puerta", "english": "door", "spanish_alts": []}, {"spanish": "el patio trasero", "english": "backyard", "spanish_alts": []}, {"spanish": "la terraza", "english": "terrace", "spanish_alts": []}, {"spanish": "las escaleras", "english": "stairs", "spanish_alts": []}, {"spanish": "la cocina", "english": "kitchen", "spanish_alts": []}, {"spanish": "la cena", "english": "dinner", "spanish_alts": []}, {"spanish": "el supermercado", "english": "supermarket", "spanish_alts": []}, {"spanish": "las frutas", "english": "fruit", "spanish_alts": []}, {"spanish": "los vegetales frescos", "english": "fresh vegetables", "spanish_alts": []}, {"spanish": "el café", "english": "coffee", "spanish_alts": []}, {"spanish": "el té", "english": "tea", "spanish_alts": []}, {"spanish": "la leche", "english": "milk", "spanish_alts": []}, {"spanish": "las fajitas", "english": "fajitas", "spanish_alts": []}, {"spanish": "las enchiladas", "english": "enchiladas", "spanish_alts": []}, {"spanish": "la limonada", "english": "lemonade", "spanish_alts": []}, {"spanish": "el olor", "english": "smell", "spanish_alts": []}, {"spanish": "la cuenta", "english": "bill / account", "spanish_alts": []}, {"spanish": "el perro", "english": "dog", "spanish_alts": []}, {"spanish": "el gato", "english": "cat", "spanish_alts": []}, {"spanish": "la rutina", "english": "routine", "spanish_alts": []}, {"spanish": "la costumbre", "english": "custom / habit", "spanish_alts": []}, {"spanish": "el hábito", "english": "habit", "spanish_alts": []}, {"spanish": "la limpieza", "english": "cleaning", "spanish_alts": []}, {"spanish": "los quehaceres de la casa", "english": "household chores", "spanish_alts": ["los quehaceres domésticos"]}, {"spanish": "los aparatos electrodomésticos", "english": "electric appliances", "spanish_alts": []}, {"spanish": "la aspiradora", "english": "vacuum cleaner", "spanish_alts": []}, {"spanish": "la lavadora", "english": "washing machine", "spanish_alts": []}, {"spanish": "la secadora", "english": "dryer", "spanish_alts": []}, {"spanish": "la parrilla", "english": "grill", "spanish_alts": []}, {"spanish": "el regalo", "english": "gift", "spanish_alts": []}, {"spanish": "el cumpleaños", "english": "birthday", "spanish_alts": []}, {"spanish": "la camisa", "english": "shirt", "spanish_alts": []}, {"spanish": "el suelo", "english": "floor", "spanish_alts": []}, {"spanish": "la ropa", "english": "clothes", "spanish_alts": []}, {"spanish": "el vaso", "english": "glass", "spanish_alts": []}, {"spanish": "el agua", "english": "water", "spanish_alts": []}, {"spanish": "la cama", "english": "bed", "spanish_alts": []}, {"spanish": "la serpiente", "english": "snake", "spanish_alts": []}, {"spanish": "el fantasma", "english": "ghost", "spanish_alts": []}]}, {"id": "places-history-tech", "title": "Places, History, Technology, and Events", "items": [{"spanish": "la ciudad", "english": "city", "spanish_alts": []}, {"spanish": "el campo", "english": "countryside / country", "spanish_alts": []}, {"spanish": "la política", "english": "politics", "spanish_alts": []}, {"spanish": "los deportes", "english": "sports", "spanish_alts": []}, {"spanish": "el tiempo libre", "english": "free time", "spanish_alts": []}, {"spanish": "la novela de misterio", "english": "mystery novel", "spanish_alts": []}, {"spanish": "la ciencia ficción", "english": "science fiction", "spanish_alts": []}, {"spanish": "el programa de noticias", "english": "news program", "spanish_alts": []}, {"spanish": "el cable", "english": "cable television", "spanish_alts": []}, {"spanish": "el mensaje electrónico", "english": "email / electronic message", "spanish_alts": []}, {"spanish": "la música latina", "english": "Latin music", "spanish_alts": []}, {"spanish": "el aniversario", "english": "anniversary", "spanish_alts": []}, {"spanish": "la reunión", "english": "meeting", "spanish_alts": []}, {"spanish": "el plan", "english": "plan", "spanish_alts": []}, {"spanish": "la luna", "english": "moon", "spanish_alts": []}, {"spanish": "el tren", "english": "train", "spanish_alts": []}, {"spanish": "la pistola", "english": "gun / pistol", "spanish_alts": []}, {"spanish": "el siglo", "english": "century", "spanish_alts": []}, {"spanish": "la nación", "english": "nation", "spanish_alts": []}, {"spanish": "la computadora", "english": "computer", "spanish_alts": []}, {"spanish": "Internet", "english": "Internet", "spanish_alts": []}, {"spanish": "el mensaje de texto", "english": "text message", "spanish_alts": []}, {"spanish": "la década", "english": "decade", "spanish_alts": []}, {"spanish": "el teléfono", "english": "telephone", "spanish_alts": []}, {"spanish": "el telescopio", "english": "telescope", "spanish_alts": []}, {"spanish": "el avión", "english": "airplane", "spanish_alts": []}, {"spanish": "el continente", "english": "continent", "spanish_alts": []}, {"spanish": "el río", "english": "river", "spanish_alts": []}, {"spanish": "la conferencia", "english": "conference", "spanish_alts": []}, {"spanish": "la canción", "english": "song", "spanish_alts": []}, {"spanish": "el brindis", "english": "toast", "spanish_alts": []}, {"spanish": "la cuenta bancaria", "english": "bank account", "spanish_alts": []}, {"spanish": "el rompecabezas", "english": "puzzle", "spanish_alts": []}, {"spanish": "la trampa", "english": "trap", "spanish_alts": []}, {"spanish": "la solución", "english": "solution", "spanish_alts": []}, {"spanish": "el problema", "english": "problem", "spanish_alts": []}, {"spanish": "el coche", "english": "car", "spanish_alts": []}, {"spanish": "el cuadro", "english": "painting / picture", "spanish_alts": []}, {"spanish": "las órdenes", "english": "orders", "spanish_alts": []}, {"spanish": "el grupo", "english": "group", "spanish_alts": []}, {"spanish": "las instrucciones", "english": "instructions", "spanish_alts": []}, {"spanish": "el programa", "english": "program / show", "spanish_alts": []}, {"spanish": "el estudio", "english": "studio", "spanish_alts": []}, {"spanish": "la competencia de baile", "english": "dance competition", "spanish_alts": []}, {"spanish": "los comentarios", "english": "comments", "spanish_alts": []}, {"spanish": "el obstáculo", "english": "obstacle", "spanish_alts": []}, {"spanish": "los derechos", "english": "rights", "spanish_alts": []}, {"spanish": "el fuego", "english": "fire", "spanish_alts": []}, {"spanish": "el periódico", "english": "newspaper", "spanish_alts": []}, {"spanish": "la explicación", "english": "explanation", "spanish_alts": []}, {"spanish": "el color", "english": "color", "spanish_alts": []}]}, {"id": "irregular-verbs", "title": "Irregular and Spelling-Change Verbs", "items": [{"spanish": "caber", "english": "to fit", "spanish_alts": []}, {"spanish": "caer", "english": "to fall", "spanish_alts": []}, {"spanish": "dar", "english": "to give", "spanish_alts": []}, {"spanish": "estar", "english": "to be", "spanish_alts": []}, {"spanish": "hacer", "english": "to do / make", "spanish_alts": []}, {"spanish": "poner", "english": "to put", "spanish_alts": []}, {"spanish": "saber", "english": "to know", "spanish_alts": []}, {"spanish": "salir", "english": "to leave / go out", "spanish_alts": []}, {"spanish": "traer", "english": "to bring", "spanish_alts": []}, {"spanish": "valer", "english": "to be worth", "spanish_alts": []}, {"spanish": "ver", "english": "to see", "spanish_alts": []}, {"spanish": "componer", "english": "to compose", "spanish_alts": []}, {"spanish": "deshacer", "english": "to undo", "spanish_alts": []}, {"spanish": "disponer", "english": "to arrange / have available", "spanish_alts": []}, {"spanish": "distraer(se)", "english": "to distract / become distracted", "spanish_alts": []}, {"spanish": "proponer", "english": "to propose", "spanish_alts": []}, {"spanish": "rehacer", "english": "to remake", "spanish_alts": []}, {"spanish": "reponer", "english": "to replace", "spanish_alts": []}, {"spanish": "suponer", "english": "to suppose", "spanish_alts": []}, {"spanish": "agradecer", "english": "to thank / be grateful", "spanish_alts": []}, {"spanish": "aparecer", "english": "to appear", "spanish_alts": []}, {"spanish": "complacer", "english": "to please", "spanish_alts": []}, {"spanish": "crecer", "english": "to grow", "spanish_alts": []}, {"spanish": "establecer", "english": "to establish", "spanish_alts": []}, {"spanish": "merecer", "english": "to deserve", "spanish_alts": []}, {"spanish": "ofrecer", "english": "to offer", "spanish_alts": []}, {"spanish": "padecer", "english": "to suffer from", "spanish_alts": []}, {"spanish": "permanecer", "english": "to remain", "spanish_alts": []}, {"spanish": "pertenecer", "english": "to belong", "spanish_alts": []}, {"spanish": "reconocer", "english": "to recognize", "spanish_alts": []}, {"spanish": "traducir", "english": "to translate", "spanish_alts": []}, {"spanish": "conducir", "english": "to drive / lead", "spanish_alts": []}, {"spanish": "producir", "english": "to produce", "spanish_alts": []}, {"spanish": "decir", "english": "to say / tell", "spanish_alts": []}, {"spanish": "ir", "english": "to go", "spanish_alts": []}, {"spanish": "oír", "english": "to hear", "spanish_alts": []}, {"spanish": "ser", "english": "to be", "spanish_alts": []}, {"spanish": "tener", "english": "to have", "spanish_alts": []}, {"spanish": "venir", "english": "to come", "spanish_alts": []}, {"spanish": "haber", "english": "to have / there is, there are", "spanish_alts": []}, {"spanish": "contener", "english": "to contain", "spanish_alts": []}, {"spanish": "detener", "english": "to stop / detain", "spanish_alts": []}, {"spanish": "mantener", "english": "to maintain", "spanish_alts": []}, {"spanish": "obtener", "english": "to obtain", "spanish_alts": []}, {"spanish": "retener", "english": "to retain", "spanish_alts": []}, {"spanish": "sostener", "english": "to sustain / hold", "spanish_alts": []}, {"spanish": "coger", "english": "to catch / grab", "spanish_alts": []}, {"spanish": "exigir", "english": "to demand", "spanish_alts": []}, {"spanish": "encoger", "english": "to shrink", "spanish_alts": []}, {"spanish": "escoger", "english": "to choose", "spanish_alts": []}, {"spanish": "proteger", "english": "to protect", "spanish_alts": []}, {"spanish": "recoger", "english": "to pick up / collect", "spanish_alts": []}, {"spanish": "dirigir", "english": "to direct", "spanish_alts": []}, {"spanish": "fingir", "english": "to pretend", "spanish_alts": []}, {"spanish": "distinguir", "english": "to distinguish", "spanish_alts": []}, {"spanish": "extinguir", "english": "to extinguish", "spanish_alts": []}, {"spanish": "convencer", "english": "to convince", "spanish_alts": []}, {"spanish": "ejercer", "english": "to practice a profession", "spanish_alts": []}, {"spanish": "vencer", "english": "to overcome / defeat", "spanish_alts": []}, {"spanish": "elegir", "english": "to choose", "spanish_alts": []}, {"spanish": "torcer", "english": "to twist", "spanish_alts": []}]}, {"id": "idiomatic-expressions", "title": "Idiomatic Expressions with Dar, Haber, Hacer, and Tener", "items": [{"spanish": "dar un abrazo", "english": "to hug / give a hug", "spanish_alts": []}, {"spanish": "dar gritos", "english": "to shout / scream", "spanish_alts": []}, {"spanish": "dar la hora", "english": "to strike / tell the hour", "spanish_alts": []}, {"spanish": "hay", "english": "there is / there are", "spanish_alts": []}, {"spanish": "hay que + infinitivo", "english": "it is necessary to / one must", "spanish_alts": []}, {"spanish": "haber sol", "english": "to be sunny", "spanish_alts": []}, {"spanish": "haber neblina", "english": "to be foggy", "spanish_alts": []}, {"spanish": "hacer calor", "english": "to be hot", "spanish_alts": []}, {"spanish": "hacer fresco", "english": "to be cool", "spanish_alts": []}, {"spanish": "hacer viento", "english": "to be windy", "spanish_alts": []}, {"spanish": "hacer un viaje", "english": "to take a trip", "spanish_alts": []}, {"spanish": "hacer una visita", "english": "to pay a visit", "spanish_alts": []}, {"spanish": "hacer daño", "english": "to harm / damage", "spanish_alts": []}, {"spanish": "hacer caso a", "english": "to pay attention to", "spanish_alts": []}, {"spanish": "hacer el papel de", "english": "to play the role of", "spanish_alts": []}, {"spanish": "tener que + infinitivo", "english": "to have to / must", "spanish_alts": []}, {"spanish": "tener frío", "english": "to be cold", "spanish_alts": []}, {"spanish": "tener hambre", "english": "to be hungry", "spanish_alts": []}, {"spanish": "tener miedo", "english": "to be afraid", "spanish_alts": []}, {"spanish": "tener razón", "english": "to be right", "spanish_alts": []}, {"spanish": "tener sed", "english": "to be thirsty", "spanish_alts": []}, {"spanish": "tener prisa", "english": "to be in a hurry", "spanish_alts": []}, {"spanish": "tener la culpa de", "english": "to be to blame for", "spanish_alts": []}, {"spanish": "tener lugar", "english": "to take place", "spanish_alts": []}, {"spanish": "tener sueño", "english": "to be sleepy", "spanish_alts": []}, {"spanish": "estar en lo cierto", "english": "to be right", "spanish_alts": []}, {"spanish": "ser inocente", "english": "to be innocent", "spanish_alts": []}, {"spanish": "ir a + infinitivo", "english": "to be going to", "spanish_alts": []}]}];
+const ALL = {id:'all-words',title:'All Chapter Words',items:SECTIONS.flatMap(s=>s.items)};
+const QUIZ_SECTIONS=[...SECTIONS,ALL];
+const states={};
+const MODES=[{key:'english',label:'English'},{key:'spanish',label:'Spanish'}];
+function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function stripAccents(v){return String(v??'').normalize('NFD').replace(/[̀-ͯ]/g,'');}
+function normEnglish(v){return stripAccents(v).toLowerCase().replace(/&/g,'and').replace(/[^a-z0-9]+/g,' ').replace(/\s+/g,' ').trim();}
+function normSpanish(v){return stripAccents(v).toLowerCase().replace(/[¿¡]/g,'').replace(/[^a-z0-9ñü]+/g,' ').replace(/\s+/g,' ').trim();}
+function withoutArticle(v){return String(v).replace(/^(el|la|los|las|un|una|unos|unas)\s+/i,'');}
+function display(item,mode){return item[mode];}
+function splitEnglish(v){return String(v).split('/').flatMap(x=>x.split(';')).map(x=>x.trim()).filter(Boolean);}
+function answers(item,mode){
+ if(mode==='english') return [...new Set([item.english,...splitEnglish(item.english)])];
+ const base=[item.spanish,...(item.spanish_alts||[])];
+ return [...new Set(base.flatMap(x=>[x,withoutArticle(x)]))];
+}
+function norm(v,mode){return mode==='english'?normEnglish(v):normSpanish(v);}
+function accepted(section,item,qm,am){const prompt=norm(display(item,qm),qm);return [...new Set(section.items.filter(x=>norm(display(x,qm),qm)===prompt).flatMap(x=>answers(x,am)))];}
+function correct(section,item,qm,am,user){const u=norm(user,am);return accepted(section,item,qm,am).some(a=>norm(a,am)===u);}
+function shuffle(a){const c=[...a];for(let i=c.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[c[i],c[j]]=[c[j],c[i]];}return c;}
+function buildQuestions(section){const base=section.items.map((x,i)=>({...x,_id:section.id+'-'+i}));const doubled=[...base,...base];for(let n=0;n<300;n++){const c=shuffle(doubled);if(c.every((x,i)=>!i||x._id!==c[i-1]._id))return c;}return doubled;}
+function renderTOC(){document.getElementById('tocList').innerHTML=`<a href="#reference">Reference</a>`+QUIZ_SECTIONS.map(s=>`<a href="#quiz-${s.id}">${esc(s.title)}</a>`).join('');document.getElementById('totalCount').textContent=`${ALL.items.length} entries`;}
+function renderReference(){const root=document.getElementById('referenceTables');root.innerHTML=SECTIONS.map(s=>`<article class="ref-section" data-id="${s.id}" style="margin-top:18px"><div class="vocab-tools"><strong>${esc(s.title)} · ${s.items.length}</strong><button class="blur-toggle" data-field="english" aria-pressed="false">Blur English</button><button class="blur-toggle" data-field="spanish" aria-pressed="false">Blur Spanish</button></div><div class="table-wrap"><table><thead><tr><th>Spanish</th><th>English</th><th>Familiarity</th></tr></thead><tbody>${s.items.map((x,i)=>`<tr><td data-field="spanish" tabindex="0"><span class="blur-target"><b>${esc(x.spanish)}</b>${x.spanish_alts?.length?`<div style="font-size:.76rem">Also: ${esc(x.spanish_alts.join(', '))}</div>`:''}</span></td><td data-field="english" tabindex="0"><span class="blur-target">${esc(x.english)}</span></td><td><div class="familiarity-stars" data-key="${esc(s.id+':'+i+':'+x.spanish)}" data-level="0"><button class="star" data-level="1" aria-label="1 star">★</button><button class="star" data-level="2" aria-label="2 stars">★</button><button class="star" data-level="3" aria-label="3 stars">★</button></div><span class="familiarity-label">Not rated</span></td></tr>`).join('')}</tbody></table></div></article>`).join('');setupStudyTools();}
+function modeButtons(id,type,active){return MODES.map(m=>`<button class="mode-btn ${m.key===active?'active':''}" data-section="${id}" data-type="${type}" data-mode="${m.key}">${m.label}</button>`).join('');}
+function renderQuizSections(){document.getElementById('quizSections').innerHTML=QUIZ_SECTIONS.map((s,idx)=>{states[s.id]={qm:'english',am:'spanish',questions:buildQuestions(s),index:0,score:0,answered:false,results:[]};return `<section class="section" id="quiz-${s.id}"><div class="section-head"><div><p class="section-kicker">Vocabulary quiz</p><h2>${esc(s.title)}</h2></div><span class="section-count">${s.items.length*2} questions</span></div><div class="section-body"><div class="mode-panel"><div class="mode-card"><div class="mode-label">Question shown as</div><div class="segmented">${modeButtons(s.id,'question','english')}</div></div><div class="mode-card"><div class="mode-label">Answer typed as</div><div class="segmented">${modeButtons(s.id,'answer','spanish')}</div></div></div><article class="exercise-card"><div class="exercise-head"><div class="exercise-head-copy"><h3>Translation Quiz</h3><p>Each entry appears twice; identical entries never appear back to back.</p></div><div class="score-box" id="score-${s.id}"></div></div><div class="exercise-body"><div class="status-row"><span id="count-${s.id}"></span><button class="btn btn-muted" style="min-height:40px" data-restart="${s.id}">Restart</button></div><div class="progress-track"><div class="progress-fill" id="progress-${s.id}"></div></div><p class="question-meta" id="meta-${s.id}"></p><p class="question-text" id="prompt-${s.id}"></p><form class="answer-form" data-form="${s.id}"><label class="sr-only" for="input-${s.id}">Type your answer</label><input class="answer-input" id="input-${s.id}" autocomplete="off" spellcheck="false"><button class="btn btn-primary">Check</button></form><div class="feedback" id="feedback-${s.id}" aria-live="polite"></div><div class="action-row"><button class="btn btn-next hidden" id="next-${s.id}" data-next="${s.id}">Next</button></div><div class="finish-panel" id="finish-${s.id}"><h4>Quiz complete</h4><p id="final-${s.id}"></p><div class="review-list" id="review-${s.id}"></div></div></div></article></div></section>`;}).join('');attachQuiz();QUIZ_SECTIONS.forEach(s=>showQuestion(s.id));}
+function sectionById(id){return QUIZ_SECTIONS.find(s=>s.id===id);}
+function refreshModes(id){const st=states[id];document.querySelectorAll(`[data-section="${id}"]`).forEach(b=>b.classList.toggle('active',b.dataset.mode===(b.dataset.type==='question'?st.qm:st.am)));}
+function reset(id){const s=sectionById(id),st=states[id];st.questions=buildQuestions(s);st.index=0;st.score=0;st.answered=false;st.results=[];document.getElementById('finish-'+id).style.display='none';showQuestion(id);}
+function showQuestion(id){const st=states[id],item=st.questions[st.index];st.answered=false;document.getElementById('count-'+id).textContent=`Question ${st.index+1} / ${st.questions.length}`;document.getElementById('score-'+id).textContent=`Score ${st.score} / ${st.index}`;document.getElementById('progress-'+id).style.width=`${st.index/st.questions.length*100}%`;document.getElementById('meta-'+id).textContent=`${st.qm} → ${st.am}`;document.getElementById('prompt-'+id).textContent=display(item,st.qm);const input=document.getElementById('input-'+id);input.value='';input.disabled=false;document.querySelector(`[data-form="${id}"] button`).disabled=false;document.getElementById('feedback-'+id).className='feedback';document.getElementById('next-'+id).classList.add('hidden');}
+function submit(id,user){const st=states[id],s=sectionById(id),item=st.questions[st.index];if(st.answered)return;const ok=correct(s,item,st.qm,st.am,user);st.answered=true;if(ok)st.score++;const expected=answers(item,st.am).join(' / ');st.results.push({prompt:display(item,st.qm),user,expected,ok});const f=document.getElementById('feedback-'+id);f.className='feedback '+(ok?'good':'bad');f.innerHTML=`<b>${ok?'✓ Correct':'✕ Incorrect'}</b><span class="model-answer">${esc(expected)}</span>`;document.getElementById('score-'+id).textContent=`Score ${st.score} / ${st.index+1}`;document.getElementById('input-'+id).disabled=true;document.querySelector(`[data-form="${id}"] button`).disabled=true;const n=document.getElementById('next-'+id);n.textContent=st.index===st.questions.length-1?'Finish':'Next';n.classList.remove('hidden');}
+function finish(id){const st=states[id];document.getElementById('progress-'+id).style.width='100%';const panel=document.getElementById('finish-'+id);panel.style.display='block';document.getElementById('final-'+id).innerHTML=`Final score: <b>${st.score} / ${st.questions.length}</b> (${Math.round(st.score/st.questions.length*100)}%)`;document.getElementById('review-'+id).innerHTML=st.results.map((r,i)=>`<div class="review-row"><p><b>${i+1}. ${esc(r.prompt)}</b> ${r.ok?'✓':'✕'}</p><p>Your answer: ${esc(r.user||'(blank)')}</p><p>Model: <b>${esc(r.expected)}</b></p></div>`).join('');}
+function attachQuiz(){document.querySelectorAll('.mode-btn').forEach(b=>b.onclick=()=>{const st=states[b.dataset.section];if(b.dataset.type==='question'){st.qm=b.dataset.mode;st.am=st.qm==='english'?'spanish':'english';}else{st.am=b.dataset.mode;st.qm=st.am==='english'?'spanish':'english';}refreshModes(b.dataset.section);reset(b.dataset.section);});document.querySelectorAll('[data-form]').forEach(f=>f.onsubmit=e=>{e.preventDefault();const id=f.dataset.form;submit(id,document.getElementById('input-'+id).value);});document.querySelectorAll('[data-next]').forEach(b=>b.onclick=()=>{const st=states[b.dataset.next];if(st.index<st.questions.length-1){st.index++;showQuestion(b.dataset.next);}else{b.classList.add('hidden');finish(b.dataset.next);}});document.querySelectorAll('[data-restart]').forEach(b=>b.onclick=()=>reset(b.dataset.restart));}
+function setupStudyTools(){const fk='spanishCh1Familiarity',bk='spanishCh1Blur';let fam={},blur={};try{fam=JSON.parse(localStorage.getItem(fk)||'{}');blur=JSON.parse(localStorage.getItem(bk)||'{}');}catch(_){}const labels=['Not rated','1 star · Learning','2 stars · Developing','3 stars · Familiar'];document.querySelectorAll('.familiarity-stars').forEach(g=>{const paint=l=>{l=Number(l)||0;g.dataset.level=l;g.querySelectorAll('.star').forEach((b,i)=>b.setAttribute('aria-pressed',String(i<l)));g.parentElement.querySelector('.familiarity-label').textContent=labels[l];};paint(fam[g.dataset.key]||0);g.onclick=e=>{const b=e.target.closest('.star');if(!b)return;const chosen=Number(b.dataset.level),next=Number(g.dataset.level)===chosen?0:chosen;if(next)fam[g.dataset.key]=next;else delete fam[g.dataset.key];try{localStorage.setItem(fk,JSON.stringify(fam));}catch(_){}paint(next);};});document.querySelectorAll('.ref-section').forEach(sec=>{const id=sec.dataset.id;const saved=blur[id]||{};['english','spanish'].forEach(field=>{const apply=on=>{sec.classList.toggle('blur-'+field,on);const b=sec.querySelector(`.blur-toggle[data-field="${field}"]`);b.setAttribute('aria-pressed',String(on));b.textContent=(on?'Show ':'Blur ')+(field==='english'?'English':'Spanish');};apply(Boolean(saved[field]));sec.querySelector(`.blur-toggle[data-field="${field}"]`).onclick=()=>{const on=!sec.classList.contains('blur-'+field);blur[id]=blur[id]||{};blur[id][field]=on;try{localStorage.setItem(bk,JSON.stringify(blur));}catch(_){}apply(on);};});sec.querySelectorAll('[data-field]').forEach(cell=>{cell.onclick=()=>{if(sec.classList.contains('blur-'+cell.dataset.field))cell.classList.toggle('peek');};cell.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();cell.click();}};});});}
+renderTOC();renderReference();renderQuizSections();
+
+(() => {
+  const root = document.documentElement;
+  const btn = document.getElementById('themeToggle');
+  const key = 'spanishChapter1Theme';
+  function apply(theme, save=false) {
+    const next = theme === 'dark' ? 'dark' : 'light';
+    root.dataset.theme = next;
+    root.style.colorScheme = next;
+    if (save) { try { localStorage.setItem(key,next); } catch (_) {} }
+    if (btn) {
+      const dark = next === 'dark';
+      btn.textContent = dark ? '☀' : '◐';
+      btn.setAttribute('aria-pressed', String(dark));
+      btn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+    }
+  }
+  let saved = null;
+  try { saved = localStorage.getItem(key); } catch (_) {}
+  apply(saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+  btn?.addEventListener('click', () => apply(root.dataset.theme === 'dark' ? 'light' : 'dark', true));
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  window.addEventListener('pageshow', () => {
+    if (!location.hash) requestAnimationFrame(() => requestAnimationFrame(() => scrollTo(0,0)));
+  });
+})();
+
+</script></body></html>
