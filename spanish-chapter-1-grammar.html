@@ -1,294 +1,3852 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light"><head>
+<html lang="en" data-theme="light">
+<head>
+
 <script>
-(() => {
-  try {
-    const saved = localStorage.getItem('spanishChapter1Theme');
-    const theme = saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    document.documentElement.dataset.theme = theme;
-    document.documentElement.style.colorScheme = theme;
-  } catch (_) {}
-})();
+  (() => {
+    try {
+      const storageKey = 'spanishGrammarTheme';
+      const savedTheme = localStorage.getItem(storageKey);
+      const systemTheme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      const theme = savedTheme || systemTheme;
+
+      document.documentElement.dataset.theme = theme;
+      document.documentElement.style.colorScheme = theme;
+    } catch (_) {
+      // The page still works if storage is unavailable.
+    }
+  })();
 </script>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Spanish Chapter 1 Grammar Quiz</title><style>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Chapter 1 Spanish present-tense grammar exercises">
+  <title>Spanish Learning - Chapter 1 Grammar</title>
+  <style>
+
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
+
 :root {
   color-scheme: light;
-  --light-background: #39479E;
-  --light-foreground: #D17FBB;
-  --light-primary: #408C3D;
-  --light-primary-hover: #5E97F7;
-  --light-secondary: #8FC1E5;
-  --light-secondary-soft: #B5D7FF;
-  --light-accent: #CD8E37;
-  --light-accent-soft: #BBD6FB;
-  --light-muted: #5067A4;
-  --light-muted-strong: #CD8E37;
-  --light-blue-soft: #3A25D3;
-  --light-border: #D88B18;
-  --light-subtle: #408C3D;
-  --background: var(--light-background);
-  --foreground: var(--light-foreground);
-  --primary: var(--light-primary);
-  --primary-hover: var(--light-primary-hover);
-  --secondary: var(--light-secondary);
-  --secondary-soft: var(--light-secondary-soft);
-  --accent: var(--light-accent);
-  --accent-soft: var(--light-accent-soft);
-  --muted: var(--light-muted);
-  --muted-strong: var(--light-muted-strong);
-  --blue-soft: var(--light-blue-soft);
-  --border: var(--light-border);
-  --subtle: var(--light-subtle);
-  --surface: #F8F6FC;
-  --surface-text: #202A61;
-  --surface-muted: #E9EAF7;
-  --inverse: #252F70;
-  --inverse-text: #FFFFFF;
-  --hero-heading: #FFFFFF;
-  --hero-text: #F2F7EF;
+
+  /* Updated palette supplied by the user. */
+  --canvas: #444BA0;
+  --background: #39479E;
+  --foreground: #D17FBB;
+  --primary: #408C3D;
+  --primary-hover: #5E97F7;
+  --secondary: #8FC1E5;
+  --secondary-soft: #B5D7FF;
+  --accent: #CD8E37;
+  --accent-soft: #BBD6FB;
+  --muted: #5067A4;
+  --muted-strong: #CD8E37;
+  --blue-soft: #3A25D3;
+  --border: #D88B18;
+  --subtle: #95DD92;
+
+  /* Functional surfaces and contrast colors. */
+  --surface: #39479E;
+  --surface-raised: #4555A7;
+  --surface-deep: #2F397E;
+  --surface-soft: #5067A4;
+  --text: #FFFFFF;
+  --text-muted: #EAD9E8;
+  --text-dark: #17214F;
+  --exercise-head: #D17FBB;
+  --exercise-head-text: #2D215A;
+  --toc-item: #BC77B7;
   --correct-text: #102A16;
-  --warning-text: #2C1A04;
+  --warning-text: #3C2507;
+  --hero-text: #DDEADC;
+
   --radius-md: 6px;
   --radius-lg: 8px;
   --font: 'Outfit', system-ui, sans-serif;
   --transition: all 200ms ease;
 }
+
 html[data-theme='dark'] {
   color-scheme: dark;
-  --light-background: #111827;
-  --light-foreground: #F9FAFB;
-  --light-primary: #95DD92;
-  --light-primary-hover: #4688F6;
-  --light-secondary: #62A8DA;
-  --light-secondary-soft: #0B2442;
-  --light-accent: #E1BC89;
-  --light-accent-soft: #0B2242;
-  --light-muted: #1F2937;
-  --light-muted-strong: #374151;
-  --light-blue-soft: #120B41;
-  --light-border: #374151;
-  --light-subtle: #CBD5E1;
-  --background: var(--light-background);
-  --foreground: var(--light-foreground);
-  --primary: var(--light-primary);
-  --primary-hover: var(--light-primary-hover);
-  --secondary: var(--light-secondary);
-  --secondary-soft: var(--light-secondary-soft);
-  --accent: var(--light-accent);
-  --accent-soft: var(--light-accent-soft);
-  --muted: var(--light-muted);
-  --muted-strong: var(--light-muted-strong);
-  --blue-soft: var(--light-blue-soft);
-  --border: var(--light-border);
-  --subtle: var(--light-subtle);
-  --surface: #1F2937;
-  --surface-text: #F9FAFB;
-  --surface-muted: #111827;
-  --inverse: #0F172A;
-  --inverse-text: #F9FAFB;
+  --canvas: #0B1220;
+  --background: #111827;
+  --foreground: #F9FAFB;
+  --primary: #95DD92;
+  --primary-hover: #4688F6;
+  --secondary: #62A8DA;
+  --secondary-soft: #0B2442;
+  --accent: #E1BC89;
+  --accent-soft: #0B2242;
+  --muted: #1F2937;
+  --muted-strong: #374151;
+  --blue-soft: #120B41;
+  --border: #374151;
+  --subtle: #CBD5E1;
+  --surface: #111827;
+  --surface-raised: #1F2937;
+  --surface-deep: #0F172A;
+  --surface-soft: #1F2937;
+  --text: #F9FAFB;
+  --text-muted: #CBD5E1;
+  --text-dark: #111827;
+  --exercise-head: #C279B8;
+  --exercise-head-text: #111827;
+  --toc-item: #6D4770;
   --correct-text: #E9FFF0;
   --warning-text: #FFF4E0;
+  --hero-text: #EFF6FF;
 }
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body { margin:0; min-height:100vh; color:var(--foreground); background:var(--background); font-family:var(--font); line-height:1.6; }
-button,input,select,textarea { font:inherit; }
-button { cursor:pointer; }
-a { color:inherit; }
-button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible { outline:3px solid var(--primary); outline-offset:3px; }
-.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
-.site-header { color:var(--surface-text); background:var(--surface); border-bottom:1px solid var(--border); }
-.header-inner,.page-main { width:min(1120px,calc(100% - 40px)); margin-inline:auto; }
-.header-inner { min-height:64px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
-.brand { min-width:0; overflow:hidden; color:var(--surface-text); font-size:1rem; font-weight:800; letter-spacing:-.02em; text-overflow:ellipsis; text-decoration:none; white-space:nowrap; }
-.header-actions { display:flex; align-items:center; gap:8px; }
-.header-link { min-height:40px; display:inline-flex; align-items:center; padding:0 13px; color:var(--surface-text); background:var(--surface-muted); border:1px solid transparent; border-radius:var(--radius-md); font-weight:700; text-decoration:none; }
-.header-link:hover { border-color:var(--primary); background:var(--secondary-soft); color:#16214F; }
-.page-main { margin-top:24px; margin-bottom:72px; overflow:hidden; color:var(--surface-text); background:var(--surface); border-radius:var(--radius-lg); }
-.hero { color:var(--hero-heading); background:var(--primary); }
-.hero-inner { padding:clamp(48px,7vw,82px); }
-.hero-kicker { margin:0 0 18px; color:#FFFFFF; font-size:.76rem; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
-.hero h1 { max-width:15ch; margin:0; font-size:clamp(3rem,7vw,5.7rem); font-weight:800; line-height:.92; letter-spacing:-.02em; }
-.hero p { max-width:62ch; margin:24px 0 0; color:var(--hero-text); font-size:1.05rem; }
-.toc-card { padding:18px 22px; color:var(--surface-text); background:var(--surface); border-bottom:1px solid var(--border); }
-.toc-label { margin:0 0 10px; color:var(--subtle); font-size:.72rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
-.toc-list { display:flex; flex-wrap:wrap; gap:8px; }
-.toc-list a { min-height:40px; display:inline-flex; align-items:center; padding:8px 12px; color:var(--surface-text); background:var(--surface-muted); border:1px solid transparent; border-radius:var(--radius-md); font-size:.88rem; font-weight:700; text-decoration:none; white-space:nowrap; }
-.toc-list a:hover { background:var(--secondary-soft); border-color:var(--primary); }
-.section { scroll-margin-top:18px; border-bottom:1px solid var(--border); }
-.section:last-child { border-bottom:0; }
-.section-head { min-height:150px; display:flex; align-items:center; justify-content:space-between; gap:24px; padding:clamp(30px,5vw,64px); background:var(--secondary); color:#17234F; }
-.section:nth-of-type(3n+2) .section-head { background:var(--accent); color:#2C1A04; }
-.section:nth-of-type(3n+3) .section-head { background:var(--primary); color:#FFFFFF; }
-.section-kicker { margin:0 0 10px; font-size:.74rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
-.section-head h2 { margin:0; font-size:clamp(2.2rem,5vw,4.8rem); line-height:1; letter-spacing:-.02em; }
-.section-count { min-height:48px; display:inline-flex; align-items:center; padding:0 14px; background:#FFFFFF; color:#202A61; border:4px solid currentColor; border-radius:var(--radius-md); font-size:.78rem; font-weight:800; white-space:nowrap; }
-.section-body { padding:clamp(26px,5vw,64px); background:var(--surface-muted); }
-.rule-card,.info-card { padding:22px 26px; background:var(--secondary-soft); color:#17234F; border-radius:var(--radius-lg); }
-.rule-card strong { color:#102A16; }
-.info-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin-bottom:28px; }
-.info-card { background:var(--surface); color:var(--surface-text); border:1px solid var(--border); }
-.info-card h3,.rule-card h3 { margin:0 0 10px; font-size:1.12rem; }
-.example-list { display:grid; gap:10px; margin-top:16px; }
-.example-row { padding:14px; background:var(--surface); border-left:6px solid var(--primary); border-radius:var(--radius-md); }
-.example-row b { display:block; }
-.exercise-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:28px; align-items:start; }
-.exercise-card { overflow:hidden; background:var(--surface); border-radius:var(--radius-lg); border:1px solid var(--border); }
-.exercise-head { display:flex; align-items:stretch; justify-content:space-between; gap:0; color:var(--inverse-text); background:var(--inverse); }
-.exercise-head-copy { padding:24px 26px; }
-.exercise-head h3 { margin:0; font-size:clamp(1.45rem,3vw,2.3rem); line-height:1; letter-spacing:-.02em; }
-.exercise-head p { margin:10px 0 0; color:#D5DCF6; font-size:.9rem; }
-.score-box { min-width:158px; display:grid; place-items:center; padding:20px; color:#241704; background:var(--accent); font-size:.86rem; font-weight:800; text-align:center; }
-.exercise-body { padding:clamp(24px,4vw,38px); }
-.status-row { display:flex; justify-content:space-between; gap:12px; margin-bottom:10px; color:var(--subtle); font-size:.82rem; font-weight:800; }
-.progress-track { height:12px; overflow:hidden; margin-bottom:24px; background:var(--muted-strong); }
-.progress-fill { width:0; height:100%; background:var(--secondary); transition:width 200ms ease; }
-.question-meta { margin:0 0 8px; color:var(--primary); font-size:.74rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
-.question-text { min-height:3.2em; margin:0 0 22px; color:var(--surface-text); font-size:clamp(1.25rem,2.5vw,2rem); font-weight:700; line-height:1.2; }
-.answer-form { display:grid; grid-template-columns:1fr auto; gap:10px; }
-.answer-input { width:100%; min-height:56px; padding:0 16px; color:var(--surface-text); background:var(--surface-muted); border:2px solid transparent; border-radius:var(--radius-md); }
-.answer-input:focus { background:var(--surface); border-color:var(--primary); }
-.answer-input:disabled { color:var(--surface-text); background:var(--muted-strong); cursor:not-allowed; }
-.option-list { display:grid; gap:10px; }
-.option-btn { min-height:58px; padding:12px 15px; color:var(--surface-text); background:var(--surface-muted); border:2px solid transparent; border-radius:var(--radius-md); font-weight:700; text-align:left; }
-.option-btn:hover:not(:disabled) { color:#FFFFFF; background:var(--primary); }
-.option-btn.correct { color:var(--correct-text); background:var(--primary); border-color:var(--secondary); }
-.option-btn.wrong { color:var(--warning-text); background:var(--accent); border-color:#7A3F00; }
-.btn { min-height:56px; padding:0 18px; border:0; border-radius:var(--radius-md); font-weight:800; transition:var(--transition); }
-.btn:hover:not(:disabled) { transform:scale(1.03); }
-.btn-primary { color:#FFFFFF; background:var(--primary); }
-.btn-next { color:#15213A; background:var(--secondary); }
-.btn-alt { color:#2C1A04; background:var(--accent); }
-.btn-muted { color:var(--surface-text); background:var(--surface-muted); border:1px solid var(--border); }
-.action-row { display:flex; flex-wrap:wrap; gap:10px; margin-top:16px; }
-.feedback { display:none; margin-top:16px; padding:18px 20px; border-radius:var(--radius-lg); }
-.feedback.good { display:block; color:var(--correct-text); background:var(--secondary-soft); border-left:8px solid var(--secondary); }
-.feedback.bad { display:block; color:var(--surface-text); background:var(--accent-soft); border-left:8px solid var(--accent); }
-.feedback.neutral { display:block; color:var(--surface-text); background:var(--surface-muted); border-left:8px solid var(--primary); }
-.model-answer { display:block; margin-top:6px; font-size:1.05rem; font-weight:800; }
-.finish-panel { display:none; margin-top:18px; padding:22px; background:var(--secondary-soft); color:#17234F; border-radius:var(--radius-lg); }
-.finish-panel h4 { margin:0 0 8px; font-size:1.45rem; }
-.review-list { max-height:360px; overflow:auto; display:grid; gap:8px; margin-top:16px; }
-.review-row { padding:14px; color:var(--surface-text); background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md); }
-.review-row p { margin:4px 0; }
-.source-chip { display:inline-flex; align-items:center; min-height:28px; padding:0 9px; color:#FFFFFF; background:var(--primary); border-radius:999px; font-size:.68rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
-.hidden { display:none !important; }
-.utility-controls { position:fixed; right:18px; bottom:18px; z-index:30; display:flex; gap:8px; }
-.utility-btn { width:46px; height:46px; display:grid; place-items:center; padding:0; color:#FFFFFF; background:var(--primary); border:2px solid #FFFFFF; border-radius:50%; font-size:1.15rem; font-weight:800; text-decoration:none; }
-.utility-btn:nth-child(2) { color:#2C1A04; background:var(--accent); }
-.table-wrap { overflow-x:auto; }
-table { width:100%; min-width:620px; border-collapse:collapse; }
-th,td { padding:13px 15px; text-align:left; border-bottom:1px solid var(--border); }
-th { color:#17234F; background:var(--secondary-soft); font-size:.74rem; letter-spacing:.08em; text-transform:uppercase; }
-td { color:var(--surface-text); background:var(--surface); }
-.vocab-tools { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-bottom:16px; padding:16px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); }
-.vocab-tools strong { margin-right:auto; }
-.blur-toggle,.mode-btn { min-height:42px; padding:0 13px; color:var(--surface-text); background:var(--surface-muted); border:1px solid transparent; border-radius:var(--radius-md); font-weight:800; }
-.blur-toggle[aria-pressed='true'],.mode-btn.active { color:#FFFFFF; background:var(--primary); }
-.blur-target { display:inline-block; transition:filter 180ms ease; }
-.ref-section.blur-english [data-field='english'] .blur-target,.ref-section.blur-spanish [data-field='spanish'] .blur-target { filter:blur(6px); user-select:none; }
-.ref-section.blur-english [data-field='english'].peek .blur-target,.ref-section.blur-spanish [data-field='spanish'].peek .blur-target { filter:none; user-select:text; }
-[data-field] { cursor:pointer; }
-.familiarity-stars { display:inline-flex; gap:2px; padding:3px; background:var(--surface-muted); border-radius:var(--radius-md); }
-.star { width:34px; height:34px; padding:0; color:#8B91AA; background:transparent; border:0; font-size:1.2rem; }
-.familiarity-stars[data-level='1'] .star:nth-child(-n+1) { color:#B2462E; }
-.familiarity-stars[data-level='2'] .star:nth-child(-n+2) { color:var(--accent); }
-.familiarity-stars[data-level='3'] .star:nth-child(-n+3) { color:var(--primary); }
-.familiarity-label { display:block; margin-top:4px; color:var(--subtle); font-size:.72rem; font-weight:700; }
-.mode-panel { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin-bottom:20px; }
-.mode-card { padding:18px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); }
-.mode-label { margin-bottom:10px; color:var(--subtle); font-size:.72rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
-.segmented { display:flex; flex-wrap:wrap; gap:8px; }
-.comprehensive-card { padding:clamp(26px,5vw,64px); background:var(--surface-muted); }
-.breakdown { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:10px; margin-top:18px; }
-.breakdown div { padding:12px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-md); }
-.source-note { padding:22px; color:var(--surface-text); background:var(--surface); border-top:1px solid var(--border); font-size:.86rem; }
-@media (max-width:900px) { .exercise-grid,.info-grid { grid-template-columns:1fr; } }
-@media (max-width:680px) {
-  .header-inner,.page-main { width:100%; }
-  .header-inner { min-height:60px; padding:0 14px; }
-  .header-link .label { display:none; }
-  .page-main { margin:0 0 72px; border-radius:0; }
-  .hero-inner { padding:48px 22px; }
-  .toc-card { overflow-x:auto; padding:18px 22px; }
-  .toc-list { flex-wrap:nowrap; width:max-content; }
-  .section-head { align-items:flex-start; flex-direction:column; min-height:150px; padding:34px 22px; }
-  .section-count { width:100%; justify-content:center; }
-  .section-body,.comprehensive-card { padding:22px; }
-  .exercise-head { flex-direction:column; }
-  .score-box { width:100%; min-height:68px; }
-  .answer-form,.mode-panel { grid-template-columns:1fr; }
-  .btn { width:100%; }
-  .action-row { flex-direction:column; }
-  .utility-controls { right:10px; bottom:10px; }
+
+* {
+  box-sizing: border-box;
 }
-@media (prefers-reduced-motion:reduce) { * { scroll-behavior:auto !important; transition:none !important; transform:none !important; } }
-</style></head>
-<body id="top"><header class="site-header"><div class="header-inner"><a class="brand" href="index.html">Spanish Grammar Resources</a><div class="header-actions"><a class="header-link" href="index.html"><span class="label">Home</span>⌂</a></div></div></header>
-<main class="page-main"><section class="hero"><div class="hero-inner"><p class="hero-kicker">Chapter 1 · Grammar</p><h1>Spanish Present Tense</h1><p>Each grammar point includes ten typed translations and ten multiple-choice translations. The final comprehensive test adds ten mixed questions for every point.</p></div></section>
-<nav class="toc-card"><p class="toc-label">Jump to a grammar point</p><div class="toc-list" id="tocList"></div></nav>
-<div id="grammarSections"></div>
-<section class="section" id="comprehensive"><div class="section-head"><div><p class="section-kicker">Final assessment</p><h2>Comprehensive Test</h2></div><span class="section-count">90 questions</span></div><div class="comprehensive-card"><div class="rule-card"><h3>Coverage</h3><p>The test contains exactly ten questions from each of the nine grammar points: five typed translations and five multiple-choice translations. Questions are mixed into one sequence.</p></div><div id="comprehensiveMount" style="margin-top:24px"></div></div></section>
-<p class="source-note">Question banks use sentences from the supplied chapter and additional original examples written within the same grammar scope. Chapter-derived items are labeled in feedback. Typed grading ignores capitalization, punctuation, and accent marks; model answers preserve standard spelling.</p></main>
+
+html {
+  scroll-behavior: smooth;
+}
+
+[hidden],
+.hidden {
+  display: none !important;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  background: var(--canvas);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin-top: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid var(--secondary);
+  outline-offset: 3px;
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Header ------------------------------------------------------------------ */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--background);
+  border-bottom: 1px solid var(--border);
+}
+
+.header-inner {
+  width: min(1280px, calc(100% - 32px));
+  min-height: 76px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 24px;
+}
+
+.brand {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+}
+
+.brand-mark {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  color: #FFFFFF;
+  background: var(--primary);
+  border-radius: var(--radius-lg);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+
+.brand-copy {
+  min-width: 0;
+}
+
+.brand-copy strong {
+  display: block;
+  overflow: hidden;
+  color: var(--foreground);
+  font-size: clamp(0.95rem, 1.8vw, 1.2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.brand-copy span {
+  display: block;
+  color: var(--subtle);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-link {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  color: #FFFFFF;
+  background: var(--primary);
+  border: 0;
+  border-radius: var(--radius-md);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.header-link:hover {
+  background: var(--primary-hover);
+  transform: scale(1.04);
+}
+
+/* Main shell and hero ------------------------------------------------------ */
+.page-main {
+  width: min(1280px, calc(100% - 32px));
+  margin: 0 auto 64px;
+  overflow: hidden;
+  background: var(--background);
+  border-radius: var(--radius-lg);
+}
+
+.hero {
+  position: relative;
+  min-height: 570px;
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  overflow: hidden;
+  background: var(--primary);
+}
+
+.hero::before,
+.hero::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  background: #FFFFFF;
+  opacity: 0.1;
+}
+
+.hero::before {
+  width: 360px;
+  height: 360px;
+  right: 28%;
+  top: -150px;
+  border-radius: 50%;
+}
+
+.hero::after {
+  width: 260px;
+  height: 260px;
+  left: -90px;
+  bottom: -110px;
+  transform: rotate(18deg);
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 1;
+  min-height: 570px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(36px, 6vw, 80px);
+}
+
+.eyebrow,
+.section-kicker {
+  display: block;
+  margin: 0 0 18px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.eyebrow {
+  color: var(--secondary-soft);
+}
+
+.hero h1 {
+  max-width: 11ch;
+  margin: 0 0 1.6rem;
+  color: #FFFFFF;
+  font-size: clamp(3.4rem, 8vw, 7.5rem);
+  font-weight: 800;
+  line-height: 0.86;
+}
+
+.hero-copy > p:not(.eyebrow) {
+  max-width: 58ch;
+  margin-bottom: 0;
+  color: var(--hero-text);
+  font-size: clamp(1rem, 1.5vw, 1.22rem);
+}
+
+.hero-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 30px;
+}
+
+.chip,
+.source-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 7px 11px;
+  color: var(--foreground);
+  background: var(--background);
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.hero-nav {
+  position: relative;
+  z-index: 2;
+  align-self: center;
+  margin: clamp(24px, 5vw, 56px);
+  padding: clamp(26px, 4vw, 42px);
+  color: #FFFFFF;
+  background: var(--exercise-head);
+  border-radius: var(--radius-lg);
+}
+
+.hero-nav h2 {
+  margin: 0 0 24px;
+  color: var(--secondary);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.hero-nav-list {
+  display: grid;
+  gap: 8px;
+}
+
+.hero-nav-list a {
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 14px;
+  color: #FFFFFF;
+  background: var(--toc-item);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.hero-nav-list a:hover {
+  color: var(--text-dark);
+  background: var(--secondary);
+  border-color: var(--border);
+  transform: translateX(5px);
+}
+
+.nav-number {
+  margin-right: 8px;
+  color: var(--accent);
+  font-weight: 800;
+}
+
+/* Sections ---------------------------------------------------------------- */
+.section {
+  scroll-margin-top: 90px;
+  background: var(--background);
+}
+
+.section-header {
+  min-height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  padding: clamp(30px, 5vw, 64px);
+  color: var(--text-dark);
+  background: var(--secondary);
+}
+
+.section:nth-of-type(3n + 2) .section-header {
+  color: #FFFFFF;
+  background: var(--accent);
+}
+
+.section:nth-of-type(3n + 3) .section-header {
+  color: #FFFFFF;
+  background: var(--primary);
+}
+
+.section-kicker {
+  margin-bottom: 12px;
+  color: inherit;
+  opacity: 0.82;
+}
+
+.section-header h2 {
+  max-width: 18ch;
+  margin: 0;
+  font-size: clamp(2.2rem, 5vw, 4.8rem);
+  font-weight: 800;
+}
+
+.section-count {
+  min-height: 56px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  color: var(--foreground);
+  background: var(--background);
+  border: 4px solid currentColor;
+  border-radius: var(--radius-md);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+
+.section-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.collapse-btn,
+.reference-collapse-btn {
+  min-height: 56px;
+  padding: 0 18px;
+  color: var(--foreground);
+  background: var(--background);
+  border: 4px solid currentColor;
+  border-radius: var(--radius-md);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-align: center;
+  text-transform: uppercase;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.reference-collapse-btn {
+  min-height: 42px;
+  padding: 0 13px;
+  border-width: 2px;
+}
+
+.collapse-btn:hover,
+.reference-collapse-btn:hover {
+  color: #FFFFFF;
+  background: var(--surface-deep);
+  transform: scale(1.03);
+}
+
+.collapsible-content[hidden] {
+  display: none !important;
+}
+
+
+/* Grammar bank ------------------------------------------------------------ */
+.grammar-bank-grid {
+  display: grid;
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.grammar-bank-item {
+  overflow: hidden;
+  color: var(--text);
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.grammar-bank-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px 20px;
+  background: var(--surface-deep);
+}
+
+.grammar-bank-title {
+  min-width: 0;
+}
+
+.grammar-bank-title span {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--subtle);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.grammar-bank-title h3 {
+  margin: 0;
+  color: var(--foreground);
+  font-size: clamp(1.25rem, 2.5vw, 1.85rem);
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.grammar-bank-body {
+  padding: 22px;
+}
+
+.grammar-bank-body .info-grid {
+  margin-bottom: 16px;
+}
+
+.grammar-bank-focus {
+  margin: 0 0 16px;
+  padding: 16px;
+  color: var(--text);
+  background: var(--blue-soft);
+  border-left: 6px solid var(--secondary);
+  border-radius: var(--radius-md);
+}
+
+.grammar-bank-body .example-list {
+  margin-top: 0;
+}
+
+.section-body {
+  padding: clamp(26px, 5vw, 64px);
+  background: var(--muted);
+}
+
+.section:nth-of-type(even) .section-body {
+  background: var(--background);
+}
+
+.rule-card,
+.info-card {
+  padding: clamp(22px, 3vw, 32px);
+  color: #FFFFFF;
+  background: var(--blue-soft);
+  border-radius: var(--radius-lg);
+}
+
+.rule-card h3,
+.info-card h3 {
+  margin: 0 0 10px;
+  color: var(--secondary);
+  font-size: 1.2rem;
+}
+
+.rule-card p,
+.info-card p {
+  margin-bottom: 0;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.info-card {
+  color: var(--text);
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+}
+
+.example-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.example-row {
+  padding: 14px;
+  color: var(--text);
+  background: var(--surface-deep);
+  border-left: 6px solid var(--secondary);
+  border-radius: var(--radius-md);
+}
+
+.example-row b {
+  display: block;
+  color: var(--foreground);
+}
+
+/* Cards and quiz controls ------------------------------------------------- */
+.card-grid,
+.exercise-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+  align-items: start;
+}
+
+.study-card,
+.exercise-card {
+  overflow: hidden;
+  color: var(--text);
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.study-card {
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  padding: 28px;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.study-card:hover {
+  transform: scale(1.015);
+  border-color: var(--secondary);
+}
+
+.study-card h3 {
+  margin: 18px 0 12px;
+  color: var(--foreground);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+}
+
+.study-card p {
+  color: var(--text-muted);
+}
+
+.study-card .open-link {
+  margin-top: auto;
+  padding-top: 26px;
+  color: var(--secondary);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.exercise-head {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  color: var(--exercise-head-text);
+  background: var(--exercise-head);
+}
+
+.exercise-head-copy {
+  padding: 26px;
+}
+
+.exercise-head h3 {
+  margin: 0 0 8px;
+  font-size: clamp(1.45rem, 3vw, 2.3rem);
+  font-weight: 800;
+}
+
+.exercise-head p {
+  margin: 0;
+  color: #F8EAF4;
+  font-size: 0.95rem;
+}
+
+.score-box {
+  min-width: 158px;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  color: #FFFFFF;
+  background: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.exercise-body {
+  padding: clamp(24px, 4vw, 38px);
+}
+
+.status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  color: var(--text-muted);
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+.progress-track {
+  height: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  background: var(--surface-deep);
+}
+
+.progress-fill {
+  width: 0;
+  height: 100%;
+  background: var(--secondary);
+  transition: width 200ms ease;
+}
+
+.question-meta {
+  margin: 0 0 10px;
+  color: var(--subtle);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.question-text {
+  min-height: 3.2em;
+  margin: 0 0 24px;
+  color: var(--text);
+  font-size: clamp(1.25rem, 2.5vw, 2rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.answer-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+}
+
+.answer-input,
+.option-btn,
+.mode-btn,
+.blur-toggle {
+  color: var(--text);
+  background: var(--surface-deep);
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+}
+
+.answer-input {
+  width: 100%;
+  min-height: 56px;
+  padding: 0 16px;
+}
+
+.answer-input:focus {
+  background: var(--surface-raised);
+  border-color: var(--secondary);
+}
+
+.answer-input:disabled {
+  cursor: not-allowed;
+  color: var(--text-muted);
+  background: var(--surface-soft);
+}
+
+.option-list {
+  display: grid;
+  gap: 10px;
+}
+
+.option-btn {
+  min-height: 58px;
+  padding: 13px 16px;
+  text-align: left;
+  font-weight: 700;
+  transition: var(--transition);
+}
+
+.option-btn:hover:not(:disabled) {
+  color: #FFFFFF;
+  background: var(--primary);
+  transform: translateX(5px);
+}
+
+.option-btn.correct {
+  color: var(--correct-text);
+  background: var(--secondary);
+  border-color: var(--primary);
+}
+
+.option-btn.wrong {
+  color: var(--warning-text);
+  background: var(--accent);
+  border-color: var(--border);
+}
+
+.btn,
+.mode-btn,
+.blur-toggle {
+  min-height: 56px;
+  padding: 0 18px;
+  font-weight: 800;
+  transition: var(--transition);
+}
+
+.btn {
+  border: 0;
+  border-radius: var(--radius-md);
+}
+
+.btn:hover:not(:disabled),
+.mode-btn:hover,
+.blur-toggle:hover {
+  transform: scale(1.03);
+}
+
+.btn-primary {
+  color: #FFFFFF;
+  background: var(--primary);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--primary-hover);
+}
+
+.btn-next {
+  color: var(--text-dark);
+  background: var(--secondary);
+}
+
+.btn-alt {
+  color: #FFFFFF;
+  background: var(--accent);
+}
+
+.btn-muted {
+  color: var(--text);
+  background: var(--surface-deep);
+  border: 1px solid var(--border);
+}
+
+.btn:disabled,
+.option-btn:disabled {
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.feedback {
+  display: none;
+  margin-top: 18px;
+  padding: 20px;
+  color: var(--text-dark);
+  border-radius: var(--radius-lg);
+  white-space: pre-line;
+}
+
+.feedback.good {
+  display: block;
+  background: var(--secondary-soft);
+  border-left: 8px solid var(--secondary);
+}
+
+.feedback.bad {
+  display: block;
+  background: var(--accent-soft);
+  border-left: 8px solid var(--accent);
+}
+
+.feedback.neutral {
+  display: block;
+  color: var(--text);
+  background: var(--surface-deep);
+  border-left: 8px solid var(--primary);
+}
+
+.model-answer {
+  display: block;
+  margin-top: 7px;
+  font-size: 1.06rem;
+  font-weight: 800;
+}
+
+.finish-panel {
+  display: none;
+  margin-top: 20px;
+  padding: 22px;
+  color: var(--text-dark);
+  background: var(--secondary-soft);
+  border-radius: var(--radius-lg);
+}
+
+.finish-panel h4 {
+  margin: 0 0 8px;
+  font-size: 1.5rem;
+}
+
+.review-list {
+  max-height: 380px;
+  overflow: auto;
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.review-row {
+  padding: 14px;
+  color: var(--text);
+  background: var(--surface-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.review-row p {
+  margin: 4px 0;
+}
+
+/* Vocabulary reference --------------------------------------------------- */
+.reference-section {
+  margin-top: 20px;
+  overflow: hidden;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.vocab-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 16px;
+  color: var(--text);
+  background: var(--surface-deep);
+  border-bottom: 1px solid var(--border);
+}
+
+.vocab-tools strong {
+  margin-right: auto;
+  color: var(--foreground);
+}
+
+.blur-toggle,
+.mode-btn {
+  min-height: 42px;
+  padding: 0 13px;
+  border: 1px solid transparent;
+}
+
+.blur-toggle[aria-pressed='true'],
+.mode-btn.active {
+  color: #FFFFFF;
+  background: var(--primary);
+  border-color: var(--secondary);
+}
+
+.blur-target {
+  display: inline-block;
+  transition: filter 180ms ease, opacity 180ms ease;
+}
+
+.reference-section.blur-english [data-vocab-field='english'] .blur-target,
+.reference-section.blur-spanish [data-vocab-field='spanish'] .blur-target {
+  filter: blur(7px);
+  opacity: 0.68;
+  user-select: none;
+}
+
+.reference-section.blur-english [data-vocab-field='english'].peek .blur-target,
+.reference-section.blur-spanish [data-vocab-field='spanish'].peek .blur-target {
+  filter: none;
+  opacity: 1;
+  user-select: text;
+}
+
+[data-vocab-field] {
+  cursor: pointer;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 13px 15px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  color: var(--text-dark);
+  background: var(--secondary);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+td {
+  color: var(--text);
+  background: var(--surface-raised);
+}
+
+.familiarity-stars {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  background: var(--surface-deep);
+  border-radius: var(--radius-md);
+}
+
+.star {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  color: #8B91AA;
+  background: transparent;
+  border: 0;
+  font-size: 1.2rem;
+}
+
+.familiarity-stars[data-level='1'] .star:nth-child(-n + 1) {
+  color: #F5A38D;
+}
+
+.familiarity-stars[data-level='2'] .star:nth-child(-n + 2) {
+  color: var(--accent);
+}
+
+.familiarity-stars[data-level='3'] .star:nth-child(-n + 3) {
+  color: var(--secondary);
+}
+
+.familiarity-label {
+  display: block;
+  margin-top: 4px;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.mode-panel {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.mode-card {
+  padding: 18px;
+  color: var(--text);
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.mode-label {
+  margin-bottom: 10px;
+  color: var(--subtle);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.segmented {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.comprehensive-card {
+  padding: clamp(26px, 5vw, 64px);
+  background: var(--muted);
+}
+
+.breakdown {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.breakdown div {
+  padding: 12px;
+  color: var(--text);
+  background: var(--surface-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.source-note {
+  margin: 0;
+  padding: 24px clamp(24px, 4vw, 56px);
+  color: var(--text-muted);
+  background: var(--surface-deep);
+  font-size: 0.84rem;
+}
+
+/* Fixed utility controls -------------------------------------------------- */
+.utility-controls {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 30;
+  display: flex;
+  gap: 8px;
+}
+
+.utility-btn {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: #FFFFFF;
+  background: var(--primary);
+  border: 2px solid #FFFFFF;
+  border-radius: 50%;
+  font-size: 1.15rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.utility-btn:last-child {
+  background: var(--accent);
+}
+
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-copy {
+    min-height: 500px;
+  }
+
+  .hero-nav {
+    margin-top: 0;
+  }
+
+  .card-grid,
+  .exercise-grid,
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .header-inner {
+    width: min(100% - 24px, 1280px);
+    min-height: 68px;
+  }
+
+  .brand-copy span,
+  .header-link .label {
+    display: none;
+  }
+
+  .page-main {
+    width: 100%;
+    margin-bottom: 0;
+    border-radius: 0;
+  }
+
+  .hero-copy {
+    min-height: 520px;
+    padding: 48px 22px;
+  }
+
+  .hero-nav {
+    margin: 0 22px 28px;
+  }
+
+  .section-header {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 34px 22px;
+  }
+
+  .section-actions {
+    width: 100%;
+    display: grid;
+  }
+
+  .section-count,
+  .collapse-btn {
+    width: 100%;
+  }
+
+  .grammar-bank-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .reference-collapse-btn {
+    width: 100%;
+  }
+
+  .section-body,
+  .comprehensive-card {
+    padding: 22px;
+  }
+
+  .exercise-head {
+    flex-direction: column;
+  }
+
+  .score-box {
+    width: 100%;
+    min-height: 64px;
+  }
+
+  .answer-form,
+  .mode-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .action-row {
+    flex-direction: column;
+  }
+
+  .utility-controls {
+    right: 10px;
+    bottom: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+  </style>
+</head>
+<body id="top">
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="index.html">
+      <span class="brand-copy">
+        <strong>Spanish Learning</strong>
+        <span>Vocabulary and Grammar</span>
+      </span>
+    </a>
+    <div class="header-actions">
+      <a class="header-link" href="index.html"><span class="label">Home</span></a>
+    </div>
+  </div>
+</header>
+
+
+<main class="page-main">
+  <section class="hero" id="toc">
+    <div class="hero-copy">
+      <p class="eyebrow">Present Tense</p>
+      <h1>Chapter 01 - Grammar</h1>
+      <p>
+      The present tense of
+      regular verbs, irregular
+      verbs, and verbs with
+      spelling changes
+      </p>
+    </div>
+
+    <nav class="hero-nav" aria-labelledby="tocTitle">
+      <h2 id="tocTitle">Table of contents</h2>
+      <div class="hero-nav-list" id="tocList"></div>
+    </nav>
+  </section>
+
+
+  <section class="section" id="grammar-bank">
+    <div class="section-header">
+      <div>
+        <p class="section-kicker">Study bank</p>
+        <h2>Grammar Bank</h2>
+      </div>
+      <div class="section-actions">
+        <span class="section-count">9 points</span>
+        <button
+          class="collapse-btn"
+          type="button"
+          data-collapse="grammarBankBody"
+          aria-expanded="true">Collapse</button>
+      </div>
+    </div>
+
+    <div class="section-body collapsible-content" id="grammarBankBody">
+      <div class="rule-card">
+        <h3>How to use the bank</h3>
+        <p>
+          Review the meaning, form, focus, and model sentences for each grammar
+          point. Each entry can be collapsed independently. This bank does not
+          save blur or familiarity settings.
+        </p>
+      </div>
+      <div class="grammar-bank-grid" id="grammarBank"></div>
+    </div>
+  </section>
+
+  <div id="grammarSections"></div>
+
+  <section class="section" id="comprehensive">
+    <div class="section-header">
+      <div>
+        <p class="section-kicker">Chapter assessment</p>
+        <h2>Comprehensive Test</h2>
+      </div>
+      <div class="section-actions">
+        <span class="section-count">90 questions</span>
+        <button
+          class="collapse-btn"
+          type="button"
+          data-collapse="comprehensiveMount"
+          aria-expanded="true">Collapse</button>
+      </div>
+    </div>
+    <div class="comprehensive-card collapsible-content" id="comprehensiveMount"></div>
+  </section>
+
+  <p class="source-note">
+    Chapter-derived questions are identified in the feedback. Original examples
+    remain within the chapter's grammar and vocabulary scope and complete the
+    requested question counts.
+  </p>
+</main>
+
+
 <div class="utility-controls" aria-label="Page controls">
-  <button class="utility-btn" id="themeToggle" type="button" aria-label="Switch theme" aria-pressed="false">◐</button>
+  <button
+    class="utility-btn"
+    id="themeToggle"
+    type="button"
+    aria-label="Switch theme"
+    aria-pressed="false">◐</button>
   <a class="utility-btn" href="#top" aria-label="Back to top">↑</a>
 </div>
 
-<script>
-const POINTS=[{"id": "regular-present", "title": "Regular Present-Tense Conjugation", "kicker": "Foundations", "summary": "Drop -ar, -er, or -ir and add the ending that agrees with the subject. Spanish normally omits the subject pronoun because the ending identifies the subject.", "rule": "-AR: o, as, a, amos, áis, an · -ER: o, es, e, emos, éis, en · -IR: o, es, e, imos, ís, en", "focus": "Choose the ending from the subject, preserve the verb stem, and remember that English simple present and present progressive often map to the same Spanish present form.", "examples": [["Yo compro.", "I buy / I am buying."], ["Nosotros aprendemos.", "We learn / We are learning."], ["Ellas reciben.", "They receive / They are receiving."]], "questions": [{"en": "I prepare dinner.", "es": "Preparo la cena.", "source": true, "accept_es": [], "accept_en": []}, {"en": "The children climb the stairs.", "es": "Los niños suben las escaleras.", "source": true, "accept_es": [], "accept_en": []}, {"en": "My cats drink milk.", "es": "Mis gatos beben leche.", "source": true, "accept_es": [], "accept_en": []}, {"en": "The customer adds up the bill.", "es": "El cliente suma la cuenta.", "source": true, "accept_es": [], "accept_en": []}, {"en": "Carli's mother talks to the reporter.", "es": "La madre de Carli conversa con el reportero.", "source": true, "accept_es": ["La madre de Carli conversa con la reportera."], "accept_en": []}, {"en": "The actress fears the critics.", "es": "La actriz teme a los críticos.", "source": true, "accept_es": [], "accept_en": []}, {"en": "Your friends eat fajitas.", "es": "Tus amigos comen fajitas.", "source": true, "accept_es": [], "accept_en": []}, {"en": "Pedro Gómez lives with his family in my apartment building.", "es": "Pedro Gómez vive con su familia en mi edificio de apartamentos.", "source": true, "accept_es": [], "accept_en": []}, {"en": "Mercedes studies at the university.", "es": "Mercedes estudia en la universidad.", "source": true, "accept_es": [], "accept_en": []}, {"en": "Pedrito takes his dog for a walk every day.", "es": "Pedrito saca a su perro a caminar todos los días.", "source": true, "accept_es": [], "accept_en": []}, {"en": "We open the windows every morning.", "es": "Abrimos las ventanas todas las mañanas.", "source": false, "accept_es": [], "accept_en": []}, {"en": "You all share the food.", "es": "Ustedes comparten la comida.", "source": false, "accept_es": ["Vosotros compartís la comida.", "Vosotras compartís la comida."], "accept_en": []}, {"en": "I write emails at work.", "es": "Escribo mensajes electrónicos en el trabajo.", "source": false, "accept_es": [], "accept_en": []}, {"en": "She cleans the kitchen.", "es": "Ella limpia la cocina.", "source": false, "accept_es": ["Limpia la cocina."], "accept_en": []}, {"en": "They sell books downtown.", "es": "Venden libros en el centro.", "source": false, "accept_es": [], "accept_en": []}, {"en": "You understand the lesson.", "es": "Comprendes la lección.", "source": false, "accept_es": ["Tú comprendes la lección.", "Usted comprende la lección."], "accept_en": []}, {"en": "We decide together.", "es": "Decidimos juntos.", "source": false, "accept_es": [], "accept_en": []}, {"en": "He runs in the park.", "es": "Él corre en el parque.", "source": false, "accept_es": ["Corre en el parque."], "accept_en": []}, {"en": "I listen to the radio.", "es": "Escucho la radio.", "source": false, "accept_es": [], "accept_en": []}, {"en": "The students answer the questions.", "es": "Los estudiantes responden las preguntas.", "source": false, "accept_es": [], "accept_en": []}]}, {"id": "present-uses", "title": "Main Uses of the Present Tense", "kicker": "Meaning in context", "summary": "Spanish present forms describe actions happening now, habitual actions, scheduled or near-future events, and questions about permission, opinion, or preference.", "rule": "Present form + context word. English “am/is/are + -ing” and “will” may still translate with the simple Spanish present when context makes the time clear.", "focus": "Do not add an equivalent of English auxiliary do in questions. Use inverted question marks and let time expressions establish habitual or future meaning.", "examples": [["Ahora veo a Anna.", "Now I see Anna."], ["Mañana discuto el plan.", "Tomorrow I will discuss the plan."], ["¿Abro la puerta?", "Shall I open the door?"]], "questions": [{"en": "Now I see Anna.", "es": "Ahora veo a Anna.", "source": true, "accept_es": [], "accept_en": []}, {"en": "Louis is arriving at the gate.", "es": "Louis llega a la puerta.", "source": true, "accept_es": [], "accept_en": []}, {"en": "Usually, I buy fruit at the supermarket.", "es": "Normalmente, compro las frutas en el supermercado.", "source": true, "accept_es": [], "accept_en": []}, {"en": "Tomorrow, I discuss the plan with you at the meeting.", "es": "Mañana discuto el plan con ustedes en la reunión.", "source": true, "accept_es": [], "accept_en": []}, {"en": "This summer, I travel to Germany.", "es": "Este verano, viajo a Alemania.", "source": true, "accept_es": [], "accept_en": []}, {"en": "Do you drink coffee or tea?", "es": "¿Bebes café o té?", "source": true, "accept_es": [], "accept_en": []}, {"en": "Shall I open the door?", "es": "¿Abro la puerta?", "source": true, "accept_es": [], "accept_en": []}, {"en": "Do we buy the house?", "es": "¿Compramos la casa?", "source": true, "accept_es": [], "accept_en": []}, {"en": "Today, Martha and Linus are celebrating their anniversary.", "es": "Hoy, Martha y Linus celebran su aniversario.", "source": true, "accept_es": [], "accept_en": []}, {"en": "Some friends are talking in the living room.", "es": "Unos amigos conversan en la sala.", "source": true, "accept_es": [], "accept_en": []}, {"en": "In the backyard, the children are listening to Latin music.", "es": "En el patio trasero, los niños escuchan música latina.", "source": false, "accept_es": [], "accept_en": []}, {"en": "The children drink lemonade.", "es": "Los niños beben limonada.", "source": false, "accept_es": [], "accept_en": []}, {"en": "I work eight hours every day.", "es": "Trabajo ocho horas todos los días.", "source": false, "accept_es": [], "accept_en": []}, {"en": "We leave for Madrid next Friday.", "es": "Salimos para Madrid el próximo viernes.", "source": false, "accept_es": [], "accept_en": []}, {"en": "Do you read mystery novels?", "es": "¿Lees novelas de misterio?", "source": false, "accept_es": [], "accept_en": []}, {"en": "Is Elena preparing dinner now?", "es": "¿Prepara Elena la cena ahora?", "source": false, "accept_es": ["¿Elena prepara la cena ahora?"], "accept_en": []}, {"en": "They always arrive on time.", "es": "Siempre llegan a tiempo.", "source": false, "accept_es": [], "accept_en": []}, {"en": "This month we study irregular verbs.", "es": "Este mes estudiamos los verbos irregulares.", "source": false, "accept_es": [], "accept_en": []}, {"en": "Do you share your free time with your dog?", "es": "¿Compartes tu tiempo libre con tu perro?", "source": false, "accept_es": [], "accept_en": []}, {"en": "Tonight I cook for the family.", "es": "Esta noche cocino para la familia.", "source": false, "accept_es": [], "accept_en": []}]}, {"id": "other-present-uses", "title": "Universal, Historical, Conditional, and Near-Miss Uses", "kicker": "Extended uses", "summary": "The present can state universal truths, narrate past events vividly, express real conditions with si, and describe near consequences after a past event with casi or por poco.", "rule": "Universal fact: present · historical narrative: present · si + present, present · past event + casi/por poco + present", "focus": "Interpret the time from the whole sentence. The historical present describes past history with present forms, while si clauses express a condition and its likely consequence.", "examples": [["Cinco más quince son veinte.", "Five plus fifteen is twenty."], ["Si llega el tren, salimos.", "If the train arrives, we leave."], ["Sacó la pistola y casi me mata.", "He drew the gun and nearly killed me."]], "questions": [{"en": "Five plus fifteen is twenty.", "es": "Cinco más quince son veinte.", "source": true, "accept_es": [], "accept_en": []}, {"en": "In 1969, the first man reaches the moon.", "es": "En 1969, el primer hombre llega a la luna.", "source": true, "accept_es": [], "accept_en": []}, {"en": "If the train arrives, we leave.", "es": "Si llega el tren, salimos.", "source": true, "accept_es": [], "accept_en": []}, {"en": "He drew the gun and almost killed me.", "es": "Sacó la pistola y casi me mata.", "source": true, "accept_es": [], "accept_en": []}, {"en": "The Spanish found the city of San Agustín in Florida.", "es": "Los españoles fundan la ciudad de San Agustín en la Florida.", "source": true, "accept_es": [], "accept_en": []}, {"en": "Francisco Vázquez de Coronado arrives in Texas.", "es": "Francisco Vázquez de Coronado llega a Texas.", "source": true, "accept_es": [], "accept_en": []}, {"en": "Ponce de León discovers the Colorado River.", "es": "Ponce de León descubre el río Colorado.", "source": true, "accept_es": [], "accept_en": []}, {"en": "Christopher Columbus arrives in Mexico in the sixteenth century.", "es": "Cristóbal Colón llega a México en el siglo XVI.", "source": true, "accept_es": [], "accept_en": []}, {"en": "Hispanics colonize part of the United States before the English.", "es": "Los hispanos colonizan parte de los Estados Unidos antes que los ingleses.", "source": true, "accept_es": [], "accept_en": []}, {"en": "Water boils at one hundred degrees.", "es": "El agua hierve a cien grados.", "source": false, "accept_es": [], "accept_en": []}, {"en": "If it rains, we stay home.", "es": "Si llueve, nos quedamos en casa.", "source": false, "accept_es": [], "accept_en": []}, {"en": "If you study, you learn more.", "es": "Si estudias, aprendes más.", "source": false, "accept_es": [], "accept_en": []}, {"en": "She slipped and nearly fell.", "es": "Se resbaló y por poco se cae.", "source": false, "accept_es": [], "accept_en": []}, {"en": "The car braked and almost hit the wall.", "es": "El coche frenó y casi choca contra la pared.", "source": false, "accept_es": [], "accept_en": []}, {"en": "In 1492, Columbus reaches America.", "es": "En 1492, Colón llega a América.", "source": false, "accept_es": [], "accept_en": []}, {"en": "The Earth revolves around the Sun.", "es": "La Tierra gira alrededor del Sol.", "source": false, "accept_es": [], "accept_en": []}, {"en": "Two plus two is four.", "es": "Dos más dos son cuatro.", "source": false, "accept_es": [], "accept_en": []}, {"en": "If the store closes, we return tomorrow.", "es": "Si cierra la tienda, volvemos mañana.", "source": false, "accept_es": [], "accept_en": []}, {"en": "The child ran into the street and nearly got hit.", "es": "El niño corrió a la calle y por poco lo atropellan.", "source": false, "accept_es": [], "accept_en": []}, {"en": "If the teacher explains it, we understand.", "es": "Si el maestro lo explica, comprendemos.", "source": false, "accept_es": [], "accept_en": []}]}, {"id": "duration-present", "title": "Actions Continuing from the Past", "kicker": "Hace and desde hace", "summary": "Use the present tense with hace or desde hace to express an action that began in the past and continues now.", "rule": "Hace + duration + que + present · Present + hace + duration · Present + desde hace + duration", "focus": "English usually uses “have/has been ...ing,” but Spanish keeps the verb in the present. Use desde cuándo or cuánto tiempo hace que to ask when the action began.", "examples": [["Hace tres años que esperamos una respuesta.", "We have been waiting for an answer for three years."], ["Esperamos una respuesta desde hace tres años.", "We have been waiting for an answer for three years."], ["¿Desde cuándo observas las estrellas?", "How long have you been watching the stars?"]], "questions": [{"en": "We have been waiting for an answer for three years.", "es": "Hace tres años que esperamos una respuesta.", "source": true, "accept_es": ["Esperamos una respuesta hace tres años.", "Esperamos una respuesta desde hace tres años."], "accept_en": []}, {"en": "How long have you been watching the stars?", "es": "¿Cuánto tiempo hace que observas las estrellas?", "source": true, "accept_es": ["¿Desde hace cuánto tiempo observas las estrellas?", "¿Desde cuándo observas las estrellas?"], "accept_en": []}, {"en": "How long have you been studying Spanish?", "es": "¿Cuánto tiempo hace que estudias español?", "source": true, "accept_es": ["¿Desde hace cuánto tiempo estudias español?", "¿Desde cuándo estudias español?"], "accept_en": []}, {"en": "How long have you been using the computer?", "es": "¿Desde hace cuánto tiempo usas la computadora?", "source": true, "accept_es": ["¿Cuánto tiempo hace que usas la computadora?", "¿Desde cuándo usas la computadora?"], "accept_en": []}, {"en": "How many years has the United States been an independent nation?", "es": "¿Cuántos años hace que los Estados Unidos son una nación independiente?", "source": true, "accept_es": [], "accept_en": []}, {"en": "How long have we been using the Internet?", "es": "¿Cuánto tiempo hace que usamos Internet?", "source": true, "accept_es": ["¿Desde hace cuánto tiempo usamos Internet?", "¿Desde cuándo usamos Internet?"], "accept_en": []}, {"en": "Since when have you listened to classical music?", "es": "¿Desde cuándo escuchas música clásica?", "source": true, "accept_es": [], "accept_en": []}, {"en": "We have used the Internet since the last century.", "es": "Usamos Internet desde el siglo pasado.", "source": true, "accept_es": [], "accept_en": []}, {"en": "We have traveled by plane to other continents for almost a century.", "es": "Viajamos en avión a otros continentes desde hace casi un siglo.", "source": true, "accept_es": [], "accept_en": []}, {"en": "I have lived here for five years.", "es": "Hace cinco años que vivo aquí.", "source": false, "accept_es": ["Vivo aquí desde hace cinco años."], "accept_en": []}, {"en": "She has worked at the bank for six months.", "es": "Ella trabaja en el banco desde hace seis meses.", "source": false, "accept_es": ["Hace seis meses que ella trabaja en el banco.", "Trabaja en el banco desde hace seis meses."], "accept_en": []}, {"en": "We have known Marta since 2020.", "es": "Conocemos a Marta desde 2020.", "source": false, "accept_es": [], "accept_en": []}, {"en": "How long have they been waiting?", "es": "¿Desde hace cuánto tiempo esperan?", "source": false, "accept_es": ["¿Cuánto tiempo hace que esperan?", "¿Desde cuándo esperan?"], "accept_en": []}, {"en": "He has not eaten meat for two years.", "es": "Hace dos años que no come carne.", "source": false, "accept_es": ["No come carne desde hace dos años."], "accept_en": []}, {"en": "I have studied every night for a month.", "es": "Estudio todas las noches desde hace un mes.", "source": false, "accept_es": ["Hace un mes que estudio todas las noches."], "accept_en": []}, {"en": "The school has existed for fifty years.", "es": "Hace cincuenta años que existe la escuela.", "source": false, "accept_es": ["La escuela existe desde hace cincuenta años."], "accept_en": []}, {"en": "Since when do you work from home?", "es": "¿Desde cuándo trabajas desde casa?", "source": false, "accept_es": [], "accept_en": []}, {"en": "They have lived together for three years.", "es": "Viven juntos desde hace tres años.", "source": false, "accept_es": ["Hace tres años que viven juntos."], "accept_en": []}, {"en": "We have been preparing this trip for weeks.", "es": "Hace semanas que preparamos este viaje.", "source": false, "accept_es": ["Preparamos este viaje desde hace semanas."], "accept_en": []}, {"en": "I have not seen her for a month.", "es": "Hace un mes que no la veo.", "source": false, "accept_es": ["No la veo desde hace un mes."], "accept_en": []}]}, {"id": "irregular-yo", "title": "Irregular Yo Forms and -GO Compounds", "kicker": "First-person patterns", "summary": "Some verbs are irregular only in the first-person singular. Many compounds of hacer, poner, and traer preserve the same irregular yo pattern.", "rule": "quepo, caigo, doy, estoy, hago, pongo, sé, salgo, traigo, valgo, veo · compounds: compongo, deshago, dispongo, distraigo, propongo, rehago, repongo, supongo", "focus": "Do not apply the irregular yo form to every subject. Most of these verbs use regular present endings outside yo.", "examples": [["Yo pongo el agua en un vaso.", "I put the water in a glass."], ["Ellos ponen el dinero en la cuenta.", "They put the money in the account."], ["Compongo música para mis canciones.", "I compose music for my songs."]], "questions": [{"en": "I give.", "es": "Doy.", "source": true, "accept_es": [], "accept_en": []}, {"en": "They put.", "es": "Ponen.", "source": true, "accept_es": [], "accept_en": []}, {"en": "You all see.", "es": "Ustedes ven.", "source": true, "accept_es": ["Vosotros veis.", "Vosotras veis."], "accept_en": []}, {"en": "We fit.", "es": "Cabemos.", "source": true, "accept_es": [], "accept_en": []}, {"en": "I bring.", "es": "Traigo.", "source": true, "accept_es": [], "accept_en": []}, {"en": "I fall.", "es": "Caigo.", "source": true, "accept_es": [], "accept_en": []}, {"en": "You do.", "es": "Tú haces.", "source": true, "accept_es": ["Haces."], "accept_en": []}, {"en": "I go out.", "es": "Salgo.", "source": true, "accept_es": [], "accept_en": []}, {"en": "I compose songs for my friends.", "es": "Compongo canciones para mis amigos.", "source": true, "accept_es": [], "accept_en": []}, {"en": "I propose a toast.", "es": "Propongo un brindis.", "source": true, "accept_es": [], "accept_en": []}, {"en": "They replace the money in my account.", "es": "Reponen el dinero en mi cuenta.", "source": true, "accept_es": [], "accept_en": []}, {"en": "You distract the audience.", "es": "Usted distrae al público.", "source": true, "accept_es": ["Tú distraes al público.", "Distraes al público."], "accept_en": []}, {"en": "The girls undo the puzzle.", "es": "Las chicas deshacen el rompecabezas.", "source": true, "accept_es": [], "accept_en": []}, {"en": "I know that you work a lot.", "es": "Sé que trabajas mucho.", "source": true, "accept_es": [], "accept_en": []}, {"en": "I put the water in a glass.", "es": "Pongo el agua en un vaso.", "source": true, "accept_es": [], "accept_en": []}, {"en": "I leave the conference now.", "es": "Salgo de la conferencia ahora.", "source": true, "accept_es": [], "accept_en": []}, {"en": "I remake the report.", "es": "Rehago el informe.", "source": false, "accept_es": [], "accept_en": []}, {"en": "I arrange the chairs before the meeting.", "es": "Dispongo las sillas antes de la reunión.", "source": false, "accept_es": [], "accept_en": []}, {"en": "I suppose that he is at home.", "es": "Supongo que está en casa.", "source": false, "accept_es": [], "accept_en": []}, {"en": "I bring the documents and put them on the table.", "es": "Traigo los documentos y los pongo sobre la mesa.", "source": false, "accept_es": [], "accept_en": []}]}, {"id": "zco-verbs", "title": "First-Person -ZCO Verbs", "kicker": "Vowel + -cer / -cir", "summary": "Verbs ending in a vowel plus -cer or -cir usually change c to zc in the yo form. The other present forms remain regular.", "rule": "conocer → conozco · agradecer → agradezco · traducir → traduzco · conducir → conduzco · producir → produzco", "focus": "Use -zco only for yo. Forms such as conoce, ofrecen, perteneces, and producen keep c.", "examples": [["Conozco muy bien a Margo.", "I know Margo very well."], ["Yo traduzco las instrucciones.", "I translate the instructions."], ["Marcia conoce a los padres de Luisa.", "Marcia knows Luisa's parents."]], "questions": [{"en": "I drive the car.", "es": "Conduzco el coche.", "source": true, "accept_es": [], "accept_en": []}, {"en": "I do not know that family.", "es": "No conozco a esa familia.", "source": true, "accept_es": [], "accept_en": []}, {"en": "Who offers more for this painting?", "es": "¿Quién ofrece más por este cuadro?", "source": true, "accept_es": [], "accept_en": []}, {"en": "I do not deserve this gift.", "es": "No merezco este regalo.", "source": true, "accept_es": [], "accept_en": []}, {"en": "The director's assistants obey his orders.", "es": "Las asistentes del director obedecen sus órdenes.", "source": true, "accept_es": [], "accept_en": []}, {"en": "You belong to a very famous family.", "es": "Tú perteneces a una familia muy famosa.", "source": true, "accept_es": ["Perteneces a una familia muy famosa."], "accept_en": []}, {"en": "Marcia knows Luisa's parents.", "es": "Marcia conoce a los padres de Luisa.", "source": true, "accept_es": [], "accept_en": []}, {"en": "I deserve a raise.", "es": "Merezco un aumento.", "source": true, "accept_es": [], "accept_en": []}, {"en": "I am grateful for your friendship.", "es": "Agradezco tu amistad.", "source": true, "accept_es": [], "accept_en": []}, {"en": "I do not belong to this group.", "es": "No pertenezco a este grupo.", "source": true, "accept_es": [], "accept_en": []}, {"en": "I translate the instructions.", "es": "Traduzco las instrucciones.", "source": true, "accept_es": [], "accept_en": []}, {"en": "I remain quiet.", "es": "Permanezco callado.", "source": true, "accept_es": ["Permanezco callada."], "accept_en": []}, {"en": "I recognize the actor.", "es": "Reconozco al actor.", "source": false, "accept_es": [], "accept_en": []}, {"en": "I offer help.", "es": "Ofrezco ayuda.", "source": false, "accept_es": [], "accept_en": []}, {"en": "I establish the rules.", "es": "Establezco las reglas.", "source": false, "accept_es": [], "accept_en": []}, {"en": "I produce educational videos.", "es": "Produzco videos educativos.", "source": false, "accept_es": [], "accept_en": []}, {"en": "I suffer from allergies.", "es": "Padezco de alergias.", "source": false, "accept_es": ["Padezco alergias."], "accept_en": []}, {"en": "I please my clients.", "es": "Complazco a mis clientes.", "source": false, "accept_es": [], "accept_en": []}, {"en": "I grow when I face challenges.", "es": "Crezco cuando enfrento desafíos.", "source": false, "accept_es": [], "accept_en": []}, {"en": "I know the city well.", "es": "Conozco bien la ciudad.", "source": false, "accept_es": [], "accept_en": []}]}, {"id": "high-frequency-irregulars", "title": "High-Frequency Irregular Verbs and Hay", "kicker": "Core irregular paradigms", "summary": "Decir, ir, oír, ser, tener, and venir have multiple irregular forms. Haber is commonly used impersonally as hay, meaning there is or there are. Tener compounds follow tener.", "rule": "digo/dices... · voy/vas... · oigo/oyes... · soy/eres... · tengo/tienes... · vengo/vienes... · hay", "focus": "Learn these as complete paradigms. Hay does not change for singular or plural nouns.", "examples": [["Hay tres sillas en la sala.", "There are three chairs in the living room."], ["Yo digo la verdad.", "I tell the truth."], ["Muchas personas vienen.", "Many people come."]], "questions": [{"en": "There is one person.", "es": "Hay una persona.", "source": true, "accept_es": [], "accept_en": []}, {"en": "There are ten programs.", "es": "Hay diez programas.", "source": true, "accept_es": [], "accept_en": []}, {"en": "I am going now.", "es": "Voy ahora.", "source": true, "accept_es": [], "accept_en": []}, {"en": "I do not hear music.", "es": "No oigo música.", "source": true, "accept_es": [], "accept_en": []}, {"en": "Do you see the bus?", "es": "¿Ve usted el autobús?", "source": true, "accept_es": ["¿Ves el autobús?"], "accept_en": []}, {"en": "I tell the truth.", "es": "Digo la verdad.", "source": true, "accept_es": [], "accept_en": []}, {"en": "You all have time.", "es": "Ustedes tienen tiempo.", "source": true, "accept_es": ["Vosotros tenéis tiempo.", "Vosotras tenéis tiempo."], "accept_en": []}, {"en": "They stop the car.", "es": "Detienen el coche.", "source": true, "accept_es": [], "accept_en": []}, {"en": "My friend Alicia is in the studio.", "es": "Mi amiga Alicia está en el estudio.", "source": true, "accept_es": [], "accept_en": []}, {"en": "There are many dance fans here.", "es": "Aquí hay muchos aficionados al baile.", "source": true, "accept_es": [], "accept_en": []}, {"en": "Marcos is one of the participants.", "es": "Marcos es uno de los participantes.", "source": true, "accept_es": [], "accept_en": []}, {"en": "I say that Marcos is going to win today.", "es": "Digo que Marcos va a ganar hoy.", "source": true, "accept_es": [], "accept_en": []}, {"en": "Many people come to listen to the music.", "es": "Muchas personas vienen para escuchar la música.", "source": true, "accept_es": [], "accept_en": []}, {"en": "Marcos has his sister here.", "es": "Marcos tiene a su hermana aquí.", "source": true, "accept_es": [], "accept_en": []}, {"en": "You hear the judges' comments.", "es": "Oyes los comentarios de los jueces.", "source": true, "accept_es": [], "accept_en": []}, {"en": "You all are going to want to dance.", "es": "Ustedes van a querer bailar.", "source": true, "accept_es": ["Vosotros vais a querer bailar.", "Vosotras vais a querer bailar."], "accept_en": []}, {"en": "We are students.", "es": "Somos estudiantes.", "source": false, "accept_es": [], "accept_en": []}, {"en": "I come from Mexico.", "es": "Vengo de México.", "source": false, "accept_es": [], "accept_en": []}, {"en": "She maintains the house.", "es": "Ella mantiene la casa.", "source": false, "accept_es": ["Mantiene la casa."], "accept_en": []}, {"en": "I obtain the information online.", "es": "Obtengo la información en línea.", "source": false, "accept_es": [], "accept_en": []}]}, {"id": "yo-spelling-changes", "title": "Yo Spelling Changes", "kicker": "Preserving pronunciation", "summary": "Certain infinitive endings change spelling before the yo ending -o: -ger/-gir changes g to j, -guir drops u, and some -cer/-cir verbs change c to z.", "rule": "coger → cojo · exigir → exijo · distinguir → distingo · convencer → convenzo · elegir → elijo · torcer → tuerzo", "focus": "The spelling change preserves the infinitive sound. In this chapter, these changes are primarily limited to the yo form.", "examples": [["Yo escojo los colores.", "I choose the colors."], ["Yo extingo el fuego.", "I extinguish the fire."], ["Yo convenzo a mis amigos.", "I convince my friends."]], "questions": [{"en": "I demand an explanation.", "es": "Exijo una explicación.", "source": true, "accept_es": [], "accept_en": []}, {"en": "I choose the colors.", "es": "Escojo los colores.", "source": true, "accept_es": [], "accept_en": []}, {"en": "I extinguish the fire.", "es": "Extingo el fuego.", "source": true, "accept_es": [], "accept_en": []}, {"en": "I pick up the newspapers.", "es": "Recojo los periódicos.", "source": true, "accept_es": [], "accept_en": []}, {"en": "I overcome the obstacles.", "es": "Venzo los obstáculos.", "source": true, "accept_es": [], "accept_en": []}, {"en": "I protect my rights.", "es": "Protejo mis derechos.", "source": true, "accept_es": [], "accept_en": []}, {"en": "I convince my friends.", "es": "Convenzo a mis amigos.", "source": true, "accept_es": [], "accept_en": []}, {"en": "I do not pretend.", "es": "No finjo.", "source": true, "accept_es": [], "accept_en": []}, {"en": "I grab the ball.", "es": "Cojo la pelota.", "source": false, "accept_es": [], "accept_en": []}, {"en": "I direct the program.", "es": "Dirijo el programa.", "source": false, "accept_es": [], "accept_en": []}, {"en": "I distinguish two voices.", "es": "Distingo dos voces.", "source": false, "accept_es": [], "accept_en": []}, {"en": "I practice medicine.", "es": "Ejerzo la medicina.", "source": false, "accept_es": [], "accept_en": []}, {"en": "I twist my ankle.", "es": "Tuerzo el tobillo.", "source": false, "accept_es": [], "accept_en": []}, {"en": "I choose the best option.", "es": "Elijo la mejor opción.", "source": false, "accept_es": [], "accept_en": []}, {"en": "I shrink the sweater.", "es": "Encojo el suéter.", "source": false, "accept_es": [], "accept_en": []}, {"en": "I demand fair treatment.", "es": "Exijo un trato justo.", "source": false, "accept_es": [], "accept_en": []}, {"en": "I protect the environment.", "es": "Protejo el medio ambiente.", "source": false, "accept_es": [], "accept_en": []}, {"en": "I pick up the package at the post office.", "es": "Recojo el paquete en el correo.", "source": false, "accept_es": [], "accept_en": []}, {"en": "I extinguish the candles.", "es": "Extingo las velas.", "source": false, "accept_es": [], "accept_en": []}, {"en": "I convince the client.", "es": "Convenzo al cliente.", "source": false, "accept_es": [], "accept_en": []}]}, {"id": "idiomatic-verbs", "title": "Idioms with Dar, Haber, Hacer, and Tener", "kicker": "Lexical grammar", "summary": "Dar, haber, hacer, and tener appear in fixed expressions whose meanings cannot always be translated word for word.", "rule": "dar un abrazo / dar gritos / dar la hora · hay que / hay sol / hay neblina · hacer calor, viento, un viaje, caso · tener que, frío, hambre, miedo, razón, sed, prisa", "focus": "Treat each expression as a unit. Conjugate the verb for the subject while keeping the rest of the expression stable.", "examples": [["Hay que estudiar para aprender.", "It is necessary to study in order to learn."], ["Hace viento.", "It is windy."], ["Tenemos que salir.", "We must leave."]], "questions": [{"en": "He hugs his friend.", "es": "Le da un abrazo a su amigo.", "source": true, "accept_es": [], "accept_en": []}, {"en": "The crowd screams.", "es": "La multitud da gritos.", "source": true, "accept_es": [], "accept_en": []}, {"en": "The clock strikes one.", "es": "El reloj da la una.", "source": true, "accept_es": [], "accept_en": []}, {"en": "It is necessary to study in order to learn.", "es": "Hay que estudiar para aprender.", "source": true, "accept_es": [], "accept_en": []}, {"en": "It is sunny in the morning.", "es": "Hay sol por la mañana.", "source": true, "accept_es": [], "accept_en": []}, {"en": "It is foggy this morning.", "es": "Hay neblina esta mañana.", "source": true, "accept_es": [], "accept_en": []}, {"en": "It is cool; it is not hot.", "es": "Hace fresco; no hace calor.", "source": true, "accept_es": [], "accept_en": []}, {"en": "It is windy.", "es": "Hace viento.", "source": true, "accept_es": [], "accept_en": []}, {"en": "Lina takes a trip to the Bahamas.", "es": "Lina hace un viaje a las Bahamas.", "source": true, "accept_es": [], "accept_en": []}, {"en": "Marcus pays a visit to his uncle.", "es": "Marcus hace una visita a su tío.", "source": true, "accept_es": [], "accept_en": []}, {"en": "Drinking a lot of water does not harm you.", "es": "Beber mucha agua no te hace daño.", "source": true, "accept_es": [], "accept_en": []}, {"en": "The children do not pay attention to the teacher.", "es": "Los niños no hacen caso al maestro.", "source": true, "accept_es": [], "accept_en": []}, {"en": "The actor plays the role of Hamlet.", "es": "El actor hace el papel de Hamlet.", "source": true, "accept_es": [], "accept_en": []}, {"en": "We must leave.", "es": "Tenemos que salir.", "source": true, "accept_es": [], "accept_en": []}, {"en": "I am cold.", "es": "Tengo frío.", "source": true, "accept_es": [], "accept_en": []}, {"en": "Are you hungry?", "es": "¿Tienes hambre?", "source": true, "accept_es": [], "accept_en": []}, {"en": "They are not afraid of snakes.", "es": "No tienen miedo a las serpientes.", "source": true, "accept_es": [], "accept_en": []}, {"en": "I am right.", "es": "Tengo razón.", "source": true, "accept_es": [], "accept_en": []}, {"en": "Are you thirsty?", "es": "¿Tienes sed?", "source": true, "accept_es": [], "accept_en": []}, {"en": "My husband is in a hurry.", "es": "Mi esposo tiene prisa.", "source": true, "accept_es": [], "accept_en": []}]}];
-const states={};
-function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
-function stripAccents(v){return String(v??'').normalize('NFD').replace(/[̀-ͯ]/g,'');}
-function norm(v,lang){let s=stripAccents(v).toLowerCase().replace(/[¿¡]/g,'').replace(/[^a-z0-9ñü]+/g,' ').replace(/\s+/g,' ').trim();if(lang==='es')s=s.replace(/^(yo|tu|el|ella|usted|nosotros|nosotras|vosotros|vosotras|ellos|ellas|ustedes)\s+/,'');return s;}
-function answers(q,lang){return lang==='es'?[q.es,...(q.accept_es||[])]:[q.en,...(q.accept_en||[])];}
-function isCorrect(q,lang,user){const u=norm(user,lang);return answers(q,lang).some(a=>norm(a,lang)===u);}
-function shuffle(a){const c=[...a];for(let i=c.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[c[i],c[j]]=[c[j],c[i]];}return c;}
-function exerciseTemplate(point,type,title){const id=point.id+'-'+type;return `<article class="exercise-card" id="${id}"><div class="exercise-head"><div class="exercise-head-copy"><h3>${title}</h3><p>${type==='typed'?'Type the full translation.':'Choose the best full-sentence translation.'}</p></div><div class="score-box" id="score-${id}"></div></div><div class="exercise-body"><div class="status-row"><span id="count-${id}"></span><button class="btn btn-muted" style="min-height:40px" data-restart="${id}">Restart</button></div><div class="progress-track"><div class="progress-fill" id="progress-${id}"></div></div><p class="question-meta" id="meta-${id}"></p><p class="question-text" id="prompt-${id}"></p><div id="zone-${id}"></div><div class="feedback" id="feedback-${id}" aria-live="polite"></div><div class="action-row"><button class="btn btn-next hidden" id="next-${id}" data-next="${id}">Next</button></div><div class="finish-panel" id="finish-${id}"><h4>Exercise complete</h4><p id="final-${id}"></p><div class="review-list" id="review-${id}"></div></div></div></article>`;}
-function render(){document.getElementById('tocList').innerHTML=POINTS.map((p,i)=>`<a href="#${p.id}">${i+1}. ${esc(p.title)}</a>`).join('')+`<a href="#comprehensive">Comprehensive test</a>`;document.getElementById('grammarSections').innerHTML=POINTS.map((p,i)=>`<section class="section" id="${p.id}"><div class="section-head"><div><p class="section-kicker">${esc(p.kicker)} · Point ${i+1}</p><h2>${esc(p.title)}</h2></div><span class="section-count">20 questions</span></div><div class="section-body"><div class="info-grid"><div class="rule-card"><h3>Rule</h3><p>${esc(p.summary)}</p><p><strong>${esc(p.rule)}</strong></p></div><div class="info-card"><h3>Focus</h3><p>${esc(p.focus)}</p><div class="example-list">${p.examples.map(x=>`<div class="example-row"><b>${esc(x[0])}</b><span>${esc(x[1])}</span></div>`).join('')}</div></div></div><div class="exercise-grid">${exerciseTemplate(p,'typed','Exercise 1: Typed Translation')}${exerciseTemplate(p,'mc','Exercise 2: Multiple Choice')}</div></div></section>`).join('');POINTS.forEach(p=>{initExercise(p,'typed',p.questions.slice(0,10));initExercise(p,'mc',p.questions.slice(10,20));});renderComprehensive();attachCommon();}
-function initExercise(point,type,pool){const id=point.id+'-'+type;states[id]={id,point,type,pool:shuffle(pool.map((q,i)=>({...q,_idx:i}))),index:0,score:0,answered:false,results:[]};show(id);}
-function directionFor(state){return state.index%2===0?'en-es':'es-en';}
-function show(id){const st=states[id],q=st.pool[st.index],dir=directionFor(st),from=dir==='en-es'?'English':'Spanish',to=dir==='en-es'?'Spanish':'English';st.answered=false;st.dir=dir;document.getElementById('count-'+id).textContent=`Question ${st.index+1} / ${st.pool.length}`;document.getElementById('score-'+id).textContent=`Score ${st.score} / ${st.index}`;document.getElementById('progress-'+id).style.width=`${st.index/st.pool.length*100}%`;document.getElementById('meta-'+id).textContent=`${from} → ${to} · ${st.point.title}`;document.getElementById('prompt-'+id).textContent=dir==='en-es'?q.en:q.es;document.getElementById('feedback-'+id).className='feedback';document.getElementById('next-'+id).classList.add('hidden');document.getElementById('finish-'+id).style.display='none';const z=document.getElementById('zone-'+id);if(st.type==='typed'){z.innerHTML=`<form class="answer-form" data-submit="${id}"><label class="sr-only" for="input-${id}">Type the translation</label><input class="answer-input" id="input-${id}" autocomplete="off" spellcheck="false"><button class="btn btn-primary">Check</button></form>`;z.querySelector('form').onsubmit=e=>{e.preventDefault();complete(id,z.querySelector('input').value);};}else{const lang=dir==='en-es'?'es':'en';let opts=[answers(q,lang)[0]];for(const other of shuffle(st.pool)){const candidate=answers(other,lang)[0];if(norm(candidate,lang)!==norm(opts[0],lang)&&!opts.some(x=>norm(x,lang)===norm(candidate,lang)))opts.push(candidate);if(opts.length===4)break;}opts=shuffle(opts);z.innerHTML=`<div class="option-list">${opts.map(o=>`<button class="option-btn" data-value="${esc(o)}">${esc(o)}</button>`).join('')}</div>`;z.querySelectorAll('.option-btn').forEach(b=>b.onclick=()=>complete(id,b.dataset.value,b));}}
-function complete(id,user,clicked=null){const st=states[id],q=st.pool[st.index],lang=st.dir==='en-es'?'es':'en';if(st.answered)return;st.answered=true;const ok=isCorrect(q,lang,user);if(ok)st.score++;const expected=answers(q,lang)[0];st.results.push({prompt:st.dir==='en-es'?q.en:q.es,user,expected,ok,source:q.source,point:st.point.title});if(st.type==='mc'){document.querySelectorAll(`#zone-${id} .option-btn`).forEach(b=>{b.disabled=true;if(isCorrect(q,lang,b.dataset.value))b.classList.add('correct');});if(!ok&&clicked)clicked.classList.add('wrong');}else{document.getElementById('input-'+id).disabled=true;document.querySelector(`[data-submit="${id}"] button`).disabled=true;}const f=document.getElementById('feedback-'+id);f.className='feedback '+(ok?'good':'bad');f.innerHTML=`<b>${ok?'✓ Correct':'✕ Incorrect'}</b><span class="model-answer">${esc(expected)}</span><p>${esc(st.point.focus)}</p>${q.source?'<span class="source-chip">Chapter sentence</span>':''}`;document.getElementById('score-'+id).textContent=`Score ${st.score} / ${st.index+1}`;const n=document.getElementById('next-'+id);n.textContent=st.index===st.pool.length-1?'Finish':'Next';n.classList.remove('hidden');}
-function next(id){const st=states[id];if(st.index<st.pool.length-1){st.index++;show(id);}else{document.getElementById('next-'+id).classList.add('hidden');finish(id);}}
-function finish(id){const st=states[id];document.getElementById('progress-'+id).style.width='100%';const p=document.getElementById('finish-'+id);p.style.display='block';document.getElementById('final-'+id).innerHTML=`Final score: <b>${st.score} / ${st.pool.length}</b> (${Math.round(st.score/st.pool.length*100)}%)`;document.getElementById('review-'+id).innerHTML=st.results.map((r,i)=>`<div class="review-row"><p><b>${i+1}. ${esc(r.prompt)}</b> ${r.ok?'✓':'✕'}</p><p>Your answer: ${esc(r.user||'(blank)')}</p><p>Model: <b>${esc(r.expected)}</b></p></div>`).join('');}
-function restart(id){const st=states[id];st.pool=shuffle(st.pool);st.index=0;st.score=0;st.answered=false;st.results=[];show(id);}
-function attachCommon(){document.querySelectorAll('[data-next]').forEach(b=>b.onclick=()=>next(b.dataset.next));document.querySelectorAll('[data-restart]').forEach(b=>b.onclick=()=>restart(b.dataset.restart));}
-function buildComprehensive(){let items=[];POINTS.forEach(p=>{const typed=shuffle(p.questions.slice(0,10)).slice(0,5).map(q=>({...q,kind:'typed',point:p}));const mc=shuffle(p.questions.slice(10,20)).slice(0,5).map(q=>({...q,kind:'mc',point:p}));items.push(...typed,...mc);});return shuffle(items);}
-function renderComprehensive(){document.getElementById('comprehensiveMount').innerHTML=`<article class="exercise-card" id="comprehensive-card"><div class="exercise-head"><div class="exercise-head-copy"><h3>Chapter 1 Comprehensive Test</h3><p>Ten questions per grammar point, mixed across the full chapter.</p></div><div class="score-box" id="score-comprehensive">Not started</div></div><div class="exercise-body"><div id="compIntro"><p>This assessment contains 90 questions. Progress and a point-by-point score breakdown appear at the end.</p><button class="btn btn-primary" id="startComp">Start test</button></div><div id="compStage" class="hidden"><div class="status-row"><span id="count-comprehensive"></span><button class="btn btn-muted" style="min-height:40px" id="restartComp">Restart</button></div><div class="progress-track"><div class="progress-fill" id="progress-comprehensive"></div></div><p class="question-meta" id="meta-comprehensive"></p><p class="question-text" id="prompt-comprehensive"></p><div id="zone-comprehensive"></div><div class="feedback" id="feedback-comprehensive"></div><div class="action-row"><button class="btn btn-next hidden" id="next-comprehensive">Next</button></div><div class="finish-panel" id="finish-comprehensive"><h4>Comprehensive test complete</h4><p id="final-comprehensive"></p><div class="breakdown" id="breakdown"></div><div class="review-list" id="review-comprehensive"></div></div></div></div></article>`;document.getElementById('startComp').onclick=startComp;}
-function startComp(){states.comprehensive={id:'comprehensive',pool:buildComprehensive(),index:0,score:0,answered:false,results:[],breakdown:Object.fromEntries(POINTS.map(p=>[p.id,{correct:0,total:0,title:p.title}]))};document.getElementById('compIntro').classList.add('hidden');document.getElementById('compStage').classList.remove('hidden');document.getElementById('restartComp').onclick=startComp;document.getElementById('next-comprehensive').onclick=nextComp;showComp();}
-function showComp(){const st=states.comprehensive,q=st.pool[st.index],dir=st.index%2===0?'en-es':'es-en',lang=dir==='en-es'?'es':'en';st.dir=dir;st.answered=false;document.getElementById('count-comprehensive').textContent=`Question ${st.index+1} / ${st.pool.length}`;document.getElementById('score-comprehensive').textContent=`Score ${st.score} / ${st.index}`;document.getElementById('progress-comprehensive').style.width=`${st.index/st.pool.length*100}%`;document.getElementById('meta-comprehensive').textContent=`${q.point.title} · ${q.kind==='typed'?'Typed':'Multiple choice'} · ${dir==='en-es'?'English → Spanish':'Spanish → English'}`;document.getElementById('prompt-comprehensive').textContent=dir==='en-es'?q.en:q.es;document.getElementById('feedback-comprehensive').className='feedback';document.getElementById('next-comprehensive').classList.add('hidden');document.getElementById('finish-comprehensive').style.display='none';const z=document.getElementById('zone-comprehensive');if(q.kind==='typed'){z.innerHTML=`<form class="answer-form" id="compForm"><label class="sr-only" for="compInput">Type the translation</label><input class="answer-input" id="compInput" autocomplete="off" spellcheck="false"><button class="btn btn-primary">Check</button></form>`;document.getElementById('compForm').onsubmit=e=>{e.preventDefault();completeComp(document.getElementById('compInput').value);};}else{let opts=[answers(q,lang)[0]];for(const other of shuffle(st.pool.filter(x=>x.point.id===q.point.id))){const c=answers(other,lang)[0];if(norm(c,lang)!==norm(opts[0],lang)&&!opts.some(x=>norm(x,lang)===norm(c,lang)))opts.push(c);if(opts.length===4)break;}for(const other of shuffle(st.pool)){if(opts.length===4)break;const c=answers(other,lang)[0];if(!opts.some(x=>norm(x,lang)===norm(c,lang)))opts.push(c);}opts=shuffle(opts);z.innerHTML=`<div class="option-list">${opts.map(o=>`<button class="option-btn" data-value="${esc(o)}">${esc(o)}</button>`).join('')}</div>`;z.querySelectorAll('.option-btn').forEach(b=>b.onclick=()=>completeComp(b.dataset.value,b));}}
-function completeComp(user,clicked=null){const st=states.comprehensive,q=st.pool[st.index],lang=st.dir==='en-es'?'es':'en';if(st.answered)return;st.answered=true;const ok=isCorrect(q,lang,user);if(ok)st.score++;const b=st.breakdown[q.point.id];b.total++;if(ok)b.correct++;const expected=answers(q,lang)[0];st.results.push({prompt:st.dir==='en-es'?q.en:q.es,user,expected,ok,point:q.point.title,source:q.source});if(q.kind==='mc'){document.querySelectorAll('#zone-comprehensive .option-btn').forEach(btn=>{btn.disabled=true;if(isCorrect(q,lang,btn.dataset.value))btn.classList.add('correct');});if(!ok&&clicked)clicked.classList.add('wrong');}else{document.getElementById('compInput').disabled=true;document.querySelector('#compForm button').disabled=true;}const f=document.getElementById('feedback-comprehensive');f.className='feedback '+(ok?'good':'bad');f.innerHTML=`<b>${ok?'✓ Correct':'✕ Incorrect'}</b><span class="model-answer">${esc(expected)}</span><p>${esc(q.point.focus)}</p>${q.source?'<span class="source-chip">Chapter sentence</span>':''}`;document.getElementById('score-comprehensive').textContent=`Score ${st.score} / ${st.index+1}`;const n=document.getElementById('next-comprehensive');n.textContent=st.index===st.pool.length-1?'Finish':'Next';n.classList.remove('hidden');}
-function nextComp(){const st=states.comprehensive;if(st.index<st.pool.length-1){st.index++;showComp();}else{document.getElementById('next-comprehensive').classList.add('hidden');finishComp();}}
-function finishComp(){const st=states.comprehensive;document.getElementById('progress-comprehensive').style.width='100%';const p=document.getElementById('finish-comprehensive');p.style.display='block';document.getElementById('final-comprehensive').innerHTML=`Final score: <b>${st.score} / ${st.pool.length}</b> (${Math.round(st.score/st.pool.length*100)}%)`;document.getElementById('breakdown').innerHTML=Object.values(st.breakdown).map(x=>`<div><b>${esc(x.title)}</b><br>${x.correct} / ${x.total}</div>`).join('');document.getElementById('review-comprehensive').innerHTML=st.results.map((r,i)=>`<div class="review-row"><p><b>${i+1}. ${esc(r.point)}</b> · ${r.ok?'✓':'✕'}</p><p>${esc(r.prompt)}</p><p>Your answer: ${esc(r.user||'(blank)')}</p><p>Model: <b>${esc(r.expected)}</b></p></div>`).join('');}
-render();
 
-(() => {
+<script>
+const POINTS = [
+  {
+    "id": "regular-present",
+    "title": "Regular Present-Tense Conjugation",
+    "kicker": "Foundations",
+    "summary": "Drop -ar, -er, or -ir and add the ending that agrees with the subject. Spanish normally omits the subject pronoun because the ending identifies the subject.",
+    "rule": "-AR: o, as, a, amos, áis, an · -ER: o, es, e, emos, éis, en · -IR: o, es, e, imos, ís, en",
+    "focus": "Choose the ending from the subject, preserve the verb stem, and remember that English simple present and present progressive often map to the same Spanish present form.",
+    "examples": [
+      [
+        "Yo compro.",
+        "I buy / I am buying."
+      ],
+      [
+        "Nosotros aprendemos.",
+        "We learn / We are learning."
+      ],
+      [
+        "Ellas reciben.",
+        "They receive / They are receiving."
+      ]
+    ],
+    "questions": [
+      {
+        "en": "I prepare dinner.",
+        "es": "Preparo la cena.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "The children climb the stairs.",
+        "es": "Los niños suben las escaleras.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "My cats drink milk.",
+        "es": "Mis gatos beben leche.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "The customer adds up the bill.",
+        "es": "El cliente suma la cuenta.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Carli's mother talks to the reporter.",
+        "es": "La madre de Carli conversa con el reportero.",
+        "source": true,
+        "accept_es": [
+          "La madre de Carli conversa con la reportera."
+        ],
+        "accept_en": []
+      },
+      {
+        "en": "The actress fears the critics.",
+        "es": "La actriz teme a los críticos.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Your friends eat fajitas.",
+        "es": "Tus amigos comen fajitas.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Pedro Gómez lives with his family in my apartment building.",
+        "es": "Pedro Gómez vive con su familia en mi edificio de apartamentos.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Mercedes studies at the university.",
+        "es": "Mercedes estudia en la universidad.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Pedrito takes his dog for a walk every day.",
+        "es": "Pedrito saca a su perro a caminar todos los días.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "We open the windows every morning.",
+        "es": "Abrimos las ventanas todas las mañanas.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "You all share the food.",
+        "es": "Ustedes comparten la comida.",
+        "source": false,
+        "accept_es": [
+          "Vosotros compartís la comida.",
+          "Vosotras compartís la comida."
+        ],
+        "accept_en": []
+      },
+      {
+        "en": "I write emails at work.",
+        "es": "Escribo mensajes electrónicos en el trabajo.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "She cleans the kitchen.",
+        "es": "Ella limpia la cocina.",
+        "source": false,
+        "accept_es": [
+          "Limpia la cocina."
+        ],
+        "accept_en": []
+      },
+      {
+        "en": "They sell books downtown.",
+        "es": "Venden libros en el centro.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "You understand the lesson.",
+        "es": "Comprendes la lección.",
+        "source": false,
+        "accept_es": [
+          "Tú comprendes la lección.",
+          "Usted comprende la lección."
+        ],
+        "accept_en": []
+      },
+      {
+        "en": "We decide together.",
+        "es": "Decidimos juntos.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "He runs in the park.",
+        "es": "Él corre en el parque.",
+        "source": false,
+        "accept_es": [
+          "Corre en el parque."
+        ],
+        "accept_en": []
+      },
+      {
+        "en": "I listen to the radio.",
+        "es": "Escucho la radio.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "The students answer the questions.",
+        "es": "Los estudiantes responden las preguntas.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      }
+    ]
+  },
+  {
+    "id": "present-uses",
+    "title": "Main Uses of the Present Tense",
+    "kicker": "Meaning in context",
+    "summary": "Spanish present forms describe actions happening now, habitual actions, scheduled or near-future events, and questions about permission, opinion, or preference.",
+    "rule": "Present form + context word. English “am/is/are + -ing” and “will” may still translate with the simple Spanish present when context makes the time clear.",
+    "focus": "Do not add an equivalent of English auxiliary do in questions. Use inverted question marks and let time expressions establish habitual or future meaning.",
+    "examples": [
+      [
+        "Ahora veo a Anna.",
+        "Now I see Anna."
+      ],
+      [
+        "Mañana discuto el plan.",
+        "Tomorrow I will discuss the plan."
+      ],
+      [
+        "¿Abro la puerta?",
+        "Shall I open the door?"
+      ]
+    ],
+    "questions": [
+      {
+        "en": "Now I see Anna.",
+        "es": "Ahora veo a Anna.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Louis is arriving at the gate.",
+        "es": "Louis llega a la puerta.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Usually, I buy fruit at the supermarket.",
+        "es": "Normalmente, compro las frutas en el supermercado.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Tomorrow, I discuss the plan with you at the meeting.",
+        "es": "Mañana discuto el plan con ustedes en la reunión.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "This summer, I travel to Germany.",
+        "es": "Este verano, viajo a Alemania.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Do you drink coffee or tea?",
+        "es": "¿Bebes café o té?",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Shall I open the door?",
+        "es": "¿Abro la puerta?",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Do we buy the house?",
+        "es": "¿Compramos la casa?",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Today, Martha and Linus are celebrating their anniversary.",
+        "es": "Hoy, Martha y Linus celebran su aniversario.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Some friends are talking in the living room.",
+        "es": "Unos amigos conversan en la sala.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "In the backyard, the children are listening to Latin music.",
+        "es": "En el patio trasero, los niños escuchan música latina.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "The children drink lemonade.",
+        "es": "Los niños beben limonada.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I work eight hours every day.",
+        "es": "Trabajo ocho horas todos los días.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "We leave for Madrid next Friday.",
+        "es": "Salimos para Madrid el próximo viernes.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Do you read mystery novels?",
+        "es": "¿Lees novelas de misterio?",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Is Elena preparing dinner now?",
+        "es": "¿Prepara Elena la cena ahora?",
+        "source": false,
+        "accept_es": [
+          "¿Elena prepara la cena ahora?"
+        ],
+        "accept_en": []
+      },
+      {
+        "en": "They always arrive on time.",
+        "es": "Siempre llegan a tiempo.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "This month we study irregular verbs.",
+        "es": "Este mes estudiamos los verbos irregulares.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Do you share your free time with your dog?",
+        "es": "¿Compartes tu tiempo libre con tu perro?",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Tonight I cook for the family.",
+        "es": "Esta noche cocino para la familia.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      }
+    ]
+  },
+  {
+    "id": "other-present-uses",
+    "title": "Universal, Historical, Conditional, and Near-Miss Uses",
+    "kicker": "Extended uses",
+    "summary": "The present can state universal truths, narrate past events vividly, express real conditions with si, and describe near consequences after a past event with casi or por poco.",
+    "rule": "Universal fact: present · historical narrative: present · si + present, present · past event + casi/por poco + present",
+    "focus": "Interpret the time from the whole sentence. The historical present describes past history with present forms, while si clauses express a condition and its likely consequence.",
+    "examples": [
+      [
+        "Cinco más quince son veinte.",
+        "Five plus fifteen is twenty."
+      ],
+      [
+        "Si llega el tren, salimos.",
+        "If the train arrives, we leave."
+      ],
+      [
+        "Sacó la pistola y casi me mata.",
+        "He drew the gun and nearly killed me."
+      ]
+    ],
+    "questions": [
+      {
+        "en": "Five plus fifteen is twenty.",
+        "es": "Cinco más quince son veinte.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "In 1969, the first man reaches the moon.",
+        "es": "En 1969, el primer hombre llega a la luna.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "If the train arrives, we leave.",
+        "es": "Si llega el tren, salimos.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "He drew the gun and almost killed me.",
+        "es": "Sacó la pistola y casi me mata.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "The Spanish found the city of San Agustín in Florida.",
+        "es": "Los españoles fundan la ciudad de San Agustín en la Florida.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Francisco Vázquez de Coronado arrives in Texas.",
+        "es": "Francisco Vázquez de Coronado llega a Texas.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Ponce de León discovers the Colorado River.",
+        "es": "Ponce de León descubre el río Colorado.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Christopher Columbus arrives in Mexico in the sixteenth century.",
+        "es": "Cristóbal Colón llega a México en el siglo XVI.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Hispanics colonize part of the United States before the English.",
+        "es": "Los hispanos colonizan parte de los Estados Unidos antes que los ingleses.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Water boils at one hundred degrees.",
+        "es": "El agua hierve a cien grados.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "If it rains, we stay home.",
+        "es": "Si llueve, nos quedamos en casa.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "If you study, you learn more.",
+        "es": "Si estudias, aprendes más.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "She slipped and nearly fell.",
+        "es": "Se resbaló y por poco se cae.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "The car braked and almost hit the wall.",
+        "es": "El coche frenó y casi choca contra la pared.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "In 1492, Columbus reaches America.",
+        "es": "En 1492, Colón llega a América.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "The Earth revolves around the Sun.",
+        "es": "La Tierra gira alrededor del Sol.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Two plus two is four.",
+        "es": "Dos más dos son cuatro.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "If the store closes, we return tomorrow.",
+        "es": "Si cierra la tienda, volvemos mañana.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "The child ran into the street and nearly got hit.",
+        "es": "El niño corrió a la calle y por poco lo atropellan.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "If the teacher explains it, we understand.",
+        "es": "Si el maestro lo explica, comprendemos.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      }
+    ]
+  },
+  {
+    "id": "duration-present",
+    "title": "Actions Continuing from the Past",
+    "kicker": "Hace and desde hace",
+    "summary": "Use the present tense with hace or desde hace to express an action that began in the past and continues now.",
+    "rule": "Hace + duration + que + present · Present + hace + duration · Present + desde hace + duration",
+    "focus": "English usually uses “have/has been ...ing,” but Spanish keeps the verb in the present. Use desde cuándo or cuánto tiempo hace que to ask when the action began.",
+    "examples": [
+      [
+        "Hace tres años que esperamos una respuesta.",
+        "We have been waiting for an answer for three years."
+      ],
+      [
+        "Esperamos una respuesta desde hace tres años.",
+        "We have been waiting for an answer for three years."
+      ],
+      [
+        "¿Desde cuándo observas las estrellas?",
+        "How long have you been watching the stars?"
+      ]
+    ],
+    "questions": [
+      {
+        "en": "We have been waiting for an answer for three years.",
+        "es": "Hace tres años que esperamos una respuesta.",
+        "source": true,
+        "accept_es": [
+          "Esperamos una respuesta hace tres años.",
+          "Esperamos una respuesta desde hace tres años."
+        ],
+        "accept_en": []
+      },
+      {
+        "en": "How long have you been watching the stars?",
+        "es": "¿Cuánto tiempo hace que observas las estrellas?",
+        "source": true,
+        "accept_es": [
+          "¿Desde hace cuánto tiempo observas las estrellas?",
+          "¿Desde cuándo observas las estrellas?"
+        ],
+        "accept_en": []
+      },
+      {
+        "en": "How long have you been studying Spanish?",
+        "es": "¿Cuánto tiempo hace que estudias español?",
+        "source": true,
+        "accept_es": [
+          "¿Desde hace cuánto tiempo estudias español?",
+          "¿Desde cuándo estudias español?"
+        ],
+        "accept_en": []
+      },
+      {
+        "en": "How long have you been using the computer?",
+        "es": "¿Desde hace cuánto tiempo usas la computadora?",
+        "source": true,
+        "accept_es": [
+          "¿Cuánto tiempo hace que usas la computadora?",
+          "¿Desde cuándo usas la computadora?"
+        ],
+        "accept_en": []
+      },
+      {
+        "en": "How many years has the United States been an independent nation?",
+        "es": "¿Cuántos años hace que los Estados Unidos son una nación independiente?",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "How long have we been using the Internet?",
+        "es": "¿Cuánto tiempo hace que usamos Internet?",
+        "source": true,
+        "accept_es": [
+          "¿Desde hace cuánto tiempo usamos Internet?",
+          "¿Desde cuándo usamos Internet?"
+        ],
+        "accept_en": []
+      },
+      {
+        "en": "Since when have you listened to classical music?",
+        "es": "¿Desde cuándo escuchas música clásica?",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "We have used the Internet since the last century.",
+        "es": "Usamos Internet desde el siglo pasado.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "We have traveled by plane to other continents for almost a century.",
+        "es": "Viajamos en avión a otros continentes desde hace casi un siglo.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I have lived here for five years.",
+        "es": "Hace cinco años que vivo aquí.",
+        "source": false,
+        "accept_es": [
+          "Vivo aquí desde hace cinco años."
+        ],
+        "accept_en": []
+      },
+      {
+        "en": "She has worked at the bank for six months.",
+        "es": "Ella trabaja en el banco desde hace seis meses.",
+        "source": false,
+        "accept_es": [
+          "Hace seis meses que ella trabaja en el banco.",
+          "Trabaja en el banco desde hace seis meses."
+        ],
+        "accept_en": []
+      },
+      {
+        "en": "We have known Marta since 2020.",
+        "es": "Conocemos a Marta desde 2020.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "How long have they been waiting?",
+        "es": "¿Desde hace cuánto tiempo esperan?",
+        "source": false,
+        "accept_es": [
+          "¿Cuánto tiempo hace que esperan?",
+          "¿Desde cuándo esperan?"
+        ],
+        "accept_en": []
+      },
+      {
+        "en": "He has not eaten meat for two years.",
+        "es": "Hace dos años que no come carne.",
+        "source": false,
+        "accept_es": [
+          "No come carne desde hace dos años."
+        ],
+        "accept_en": []
+      },
+      {
+        "en": "I have studied every night for a month.",
+        "es": "Estudio todas las noches desde hace un mes.",
+        "source": false,
+        "accept_es": [
+          "Hace un mes que estudio todas las noches."
+        ],
+        "accept_en": []
+      },
+      {
+        "en": "The school has existed for fifty years.",
+        "es": "Hace cincuenta años que existe la escuela.",
+        "source": false,
+        "accept_es": [
+          "La escuela existe desde hace cincuenta años."
+        ],
+        "accept_en": []
+      },
+      {
+        "en": "Since when do you work from home?",
+        "es": "¿Desde cuándo trabajas desde casa?",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "They have lived together for three years.",
+        "es": "Viven juntos desde hace tres años.",
+        "source": false,
+        "accept_es": [
+          "Hace tres años que viven juntos."
+        ],
+        "accept_en": []
+      },
+      {
+        "en": "We have been preparing this trip for weeks.",
+        "es": "Hace semanas que preparamos este viaje.",
+        "source": false,
+        "accept_es": [
+          "Preparamos este viaje desde hace semanas."
+        ],
+        "accept_en": []
+      },
+      {
+        "en": "I have not seen her for a month.",
+        "es": "Hace un mes que no la veo.",
+        "source": false,
+        "accept_es": [
+          "No la veo desde hace un mes."
+        ],
+        "accept_en": []
+      }
+    ]
+  },
+  {
+    "id": "irregular-yo",
+    "title": "Irregular Yo Forms and -GO Compounds",
+    "kicker": "First-person patterns",
+    "summary": "Some verbs are irregular only in the first-person singular. Many compounds of hacer, poner, and traer preserve the same irregular yo pattern.",
+    "rule": "quepo, caigo, doy, estoy, hago, pongo, sé, salgo, traigo, valgo, veo · compounds: compongo, deshago, dispongo, distraigo, propongo, rehago, repongo, supongo",
+    "focus": "Do not apply the irregular yo form to every subject. Most of these verbs use regular present endings outside yo.",
+    "examples": [
+      [
+        "Yo pongo el agua en un vaso.",
+        "I put the water in a glass."
+      ],
+      [
+        "Ellos ponen el dinero en la cuenta.",
+        "They put the money in the account."
+      ],
+      [
+        "Compongo música para mis canciones.",
+        "I compose music for my songs."
+      ]
+    ],
+    "questions": [
+      {
+        "en": "I give.",
+        "es": "Doy.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "They put.",
+        "es": "Ponen.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "You all see.",
+        "es": "Ustedes ven.",
+        "source": true,
+        "accept_es": [
+          "Vosotros veis.",
+          "Vosotras veis."
+        ],
+        "accept_en": []
+      },
+      {
+        "en": "We fit.",
+        "es": "Cabemos.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I bring.",
+        "es": "Traigo.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I fall.",
+        "es": "Caigo.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "You do.",
+        "es": "Tú haces.",
+        "source": true,
+        "accept_es": [
+          "Haces."
+        ],
+        "accept_en": []
+      },
+      {
+        "en": "I go out.",
+        "es": "Salgo.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I compose songs for my friends.",
+        "es": "Compongo canciones para mis amigos.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I propose a toast.",
+        "es": "Propongo un brindis.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "They replace the money in my account.",
+        "es": "Reponen el dinero en mi cuenta.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "You distract the audience.",
+        "es": "Usted distrae al público.",
+        "source": true,
+        "accept_es": [
+          "Tú distraes al público.",
+          "Distraes al público."
+        ],
+        "accept_en": []
+      },
+      {
+        "en": "The girls undo the puzzle.",
+        "es": "Las chicas deshacen el rompecabezas.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I know that you work a lot.",
+        "es": "Sé que trabajas mucho.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I put the water in a glass.",
+        "es": "Pongo el agua en un vaso.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I leave the conference now.",
+        "es": "Salgo de la conferencia ahora.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I remake the report.",
+        "es": "Rehago el informe.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I arrange the chairs before the meeting.",
+        "es": "Dispongo las sillas antes de la reunión.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I suppose that he is at home.",
+        "es": "Supongo que está en casa.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I bring the documents and put them on the table.",
+        "es": "Traigo los documentos y los pongo sobre la mesa.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      }
+    ]
+  },
+  {
+    "id": "zco-verbs",
+    "title": "First-Person -ZCO Verbs",
+    "kicker": "Vowel + -cer / -cir",
+    "summary": "Verbs ending in a vowel plus -cer or -cir usually change c to zc in the yo form. The other present forms remain regular.",
+    "rule": "conocer → conozco · agradecer → agradezco · traducir → traduzco · conducir → conduzco · producir → produzco",
+    "focus": "Use -zco only for yo. Forms such as conoce, ofrecen, perteneces, and producen keep c.",
+    "examples": [
+      [
+        "Conozco muy bien a Margo.",
+        "I know Margo very well."
+      ],
+      [
+        "Yo traduzco las instrucciones.",
+        "I translate the instructions."
+      ],
+      [
+        "Marcia conoce a los padres de Luisa.",
+        "Marcia knows Luisa's parents."
+      ]
+    ],
+    "questions": [
+      {
+        "en": "I drive the car.",
+        "es": "Conduzco el coche.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I do not know that family.",
+        "es": "No conozco a esa familia.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Who offers more for this painting?",
+        "es": "¿Quién ofrece más por este cuadro?",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I do not deserve this gift.",
+        "es": "No merezco este regalo.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "The director's assistants obey his orders.",
+        "es": "Las asistentes del director obedecen sus órdenes.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "You belong to a very famous family.",
+        "es": "Tú perteneces a una familia muy famosa.",
+        "source": true,
+        "accept_es": [
+          "Perteneces a una familia muy famosa."
+        ],
+        "accept_en": []
+      },
+      {
+        "en": "Marcia knows Luisa's parents.",
+        "es": "Marcia conoce a los padres de Luisa.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I deserve a raise.",
+        "es": "Merezco un aumento.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I am grateful for your friendship.",
+        "es": "Agradezco tu amistad.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I do not belong to this group.",
+        "es": "No pertenezco a este grupo.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I translate the instructions.",
+        "es": "Traduzco las instrucciones.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I remain quiet.",
+        "es": "Permanezco callado.",
+        "source": true,
+        "accept_es": [
+          "Permanezco callada."
+        ],
+        "accept_en": []
+      },
+      {
+        "en": "I recognize the actor.",
+        "es": "Reconozco al actor.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I offer help.",
+        "es": "Ofrezco ayuda.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I establish the rules.",
+        "es": "Establezco las reglas.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I produce educational videos.",
+        "es": "Produzco videos educativos.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I suffer from allergies.",
+        "es": "Padezco de alergias.",
+        "source": false,
+        "accept_es": [
+          "Padezco alergias."
+        ],
+        "accept_en": []
+      },
+      {
+        "en": "I please my clients.",
+        "es": "Complazco a mis clientes.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I grow when I face challenges.",
+        "es": "Crezco cuando enfrento desafíos.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I know the city well.",
+        "es": "Conozco bien la ciudad.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      }
+    ]
+  },
+  {
+    "id": "high-frequency-irregulars",
+    "title": "High-Frequency Irregular Verbs and Hay",
+    "kicker": "Core irregular paradigms",
+    "summary": "Decir, ir, oír, ser, tener, and venir have multiple irregular forms. Haber is commonly used impersonally as hay, meaning there is or there are. Tener compounds follow tener.",
+    "rule": "digo/dices... · voy/vas... · oigo/oyes... · soy/eres... · tengo/tienes... · vengo/vienes... · hay",
+    "focus": "Learn these as complete paradigms. Hay does not change for singular or plural nouns.",
+    "examples": [
+      [
+        "Hay tres sillas en la sala.",
+        "There are three chairs in the living room."
+      ],
+      [
+        "Yo digo la verdad.",
+        "I tell the truth."
+      ],
+      [
+        "Muchas personas vienen.",
+        "Many people come."
+      ]
+    ],
+    "questions": [
+      {
+        "en": "There is one person.",
+        "es": "Hay una persona.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "There are ten programs.",
+        "es": "Hay diez programas.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I am going now.",
+        "es": "Voy ahora.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I do not hear music.",
+        "es": "No oigo música.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Do you see the bus?",
+        "es": "¿Ve usted el autobús?",
+        "source": true,
+        "accept_es": [
+          "¿Ves el autobús?"
+        ],
+        "accept_en": []
+      },
+      {
+        "en": "I tell the truth.",
+        "es": "Digo la verdad.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "You all have time.",
+        "es": "Ustedes tienen tiempo.",
+        "source": true,
+        "accept_es": [
+          "Vosotros tenéis tiempo.",
+          "Vosotras tenéis tiempo."
+        ],
+        "accept_en": []
+      },
+      {
+        "en": "They stop the car.",
+        "es": "Detienen el coche.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "My friend Alicia is in the studio.",
+        "es": "Mi amiga Alicia está en el estudio.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "There are many dance fans here.",
+        "es": "Aquí hay muchos aficionados al baile.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Marcos is one of the participants.",
+        "es": "Marcos es uno de los participantes.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I say that Marcos is going to win today.",
+        "es": "Digo que Marcos va a ganar hoy.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Many people come to listen to the music.",
+        "es": "Muchas personas vienen para escuchar la música.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Marcos has his sister here.",
+        "es": "Marcos tiene a su hermana aquí.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "You hear the judges' comments.",
+        "es": "Oyes los comentarios de los jueces.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "You all are going to want to dance.",
+        "es": "Ustedes van a querer bailar.",
+        "source": true,
+        "accept_es": [
+          "Vosotros vais a querer bailar.",
+          "Vosotras vais a querer bailar."
+        ],
+        "accept_en": []
+      },
+      {
+        "en": "We are students.",
+        "es": "Somos estudiantes.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I come from Mexico.",
+        "es": "Vengo de México.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "She maintains the house.",
+        "es": "Ella mantiene la casa.",
+        "source": false,
+        "accept_es": [
+          "Mantiene la casa."
+        ],
+        "accept_en": []
+      },
+      {
+        "en": "I obtain the information online.",
+        "es": "Obtengo la información en línea.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      }
+    ]
+  },
+  {
+    "id": "yo-spelling-changes",
+    "title": "Yo Spelling Changes",
+    "kicker": "Preserving pronunciation",
+    "summary": "Certain infinitive endings change spelling before the yo ending -o: -ger/-gir changes g to j, -guir drops u, and some -cer/-cir verbs change c to z.",
+    "rule": "coger → cojo · exigir → exijo · distinguir → distingo · convencer → convenzo · elegir → elijo · torcer → tuerzo",
+    "focus": "The spelling change preserves the infinitive sound. In this chapter, these changes are primarily limited to the yo form.",
+    "examples": [
+      [
+        "Yo escojo los colores.",
+        "I choose the colors."
+      ],
+      [
+        "Yo extingo el fuego.",
+        "I extinguish the fire."
+      ],
+      [
+        "Yo convenzo a mis amigos.",
+        "I convince my friends."
+      ]
+    ],
+    "questions": [
+      {
+        "en": "I demand an explanation.",
+        "es": "Exijo una explicación.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I choose the colors.",
+        "es": "Escojo los colores.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I extinguish the fire.",
+        "es": "Extingo el fuego.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I pick up the newspapers.",
+        "es": "Recojo los periódicos.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I overcome the obstacles.",
+        "es": "Venzo los obstáculos.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I protect my rights.",
+        "es": "Protejo mis derechos.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I convince my friends.",
+        "es": "Convenzo a mis amigos.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I do not pretend.",
+        "es": "No finjo.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I grab the ball.",
+        "es": "Cojo la pelota.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I direct the program.",
+        "es": "Dirijo el programa.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I distinguish two voices.",
+        "es": "Distingo dos voces.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I practice medicine.",
+        "es": "Ejerzo la medicina.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I twist my ankle.",
+        "es": "Tuerzo el tobillo.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I choose the best option.",
+        "es": "Elijo la mejor opción.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I shrink the sweater.",
+        "es": "Encojo el suéter.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I demand fair treatment.",
+        "es": "Exijo un trato justo.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I protect the environment.",
+        "es": "Protejo el medio ambiente.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I pick up the package at the post office.",
+        "es": "Recojo el paquete en el correo.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I extinguish the candles.",
+        "es": "Extingo las velas.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I convince the client.",
+        "es": "Convenzo al cliente.",
+        "source": false,
+        "accept_es": [],
+        "accept_en": []
+      }
+    ]
+  },
+  {
+    "id": "idiomatic-verbs",
+    "title": "Idioms with Dar, Haber, Hacer, and Tener",
+    "kicker": "Lexical grammar",
+    "summary": "Dar, haber, hacer, and tener appear in fixed expressions whose meanings cannot always be translated word for word.",
+    "rule": "dar un abrazo / dar gritos / dar la hora · hay que / hay sol / hay neblina · hacer calor, viento, un viaje, caso · tener que, frío, hambre, miedo, razón, sed, prisa",
+    "focus": "Treat each expression as a unit. Conjugate the verb for the subject while keeping the rest of the expression stable.",
+    "examples": [
+      [
+        "Hay que estudiar para aprender.",
+        "It is necessary to study in order to learn."
+      ],
+      [
+        "Hace viento.",
+        "It is windy."
+      ],
+      [
+        "Tenemos que salir.",
+        "We must leave."
+      ]
+    ],
+    "questions": [
+      {
+        "en": "He hugs his friend.",
+        "es": "Le da un abrazo a su amigo.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "The crowd screams.",
+        "es": "La multitud da gritos.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "The clock strikes one.",
+        "es": "El reloj da la una.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "It is necessary to study in order to learn.",
+        "es": "Hay que estudiar para aprender.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "It is sunny in the morning.",
+        "es": "Hay sol por la mañana.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "It is foggy this morning.",
+        "es": "Hay neblina esta mañana.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "It is cool; it is not hot.",
+        "es": "Hace fresco; no hace calor.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "It is windy.",
+        "es": "Hace viento.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Lina takes a trip to the Bahamas.",
+        "es": "Lina hace un viaje a las Bahamas.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Marcus pays a visit to his uncle.",
+        "es": "Marcus hace una visita a su tío.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Drinking a lot of water does not harm you.",
+        "es": "Beber mucha agua no te hace daño.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "The children do not pay attention to the teacher.",
+        "es": "Los niños no hacen caso al maestro.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "The actor plays the role of Hamlet.",
+        "es": "El actor hace el papel de Hamlet.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "We must leave.",
+        "es": "Tenemos que salir.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I am cold.",
+        "es": "Tengo frío.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Are you hungry?",
+        "es": "¿Tienes hambre?",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "They are not afraid of snakes.",
+        "es": "No tienen miedo a las serpientes.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "I am right.",
+        "es": "Tengo razón.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "Are you thirsty?",
+        "es": "¿Tienes sed?",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      },
+      {
+        "en": "My husband is in a hurry.",
+        "es": "Mi esposo tiene prisa.",
+        "source": true,
+        "accept_es": [],
+        "accept_en": []
+      }
+    ]
+  }
+];
+const exerciseStates = {};
+
+// General utilities ---------------------------------------------------------
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, (character) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[character]);
+}
+
+function stripAccents(value) {
+  return String(value ?? '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+}
+
+function normalizeEnglish(value) {
+  return stripAccents(value)
+    .toLowerCase()
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function normalizeSpanish(value) {
+  return stripAccents(value)
+    .toLowerCase()
+    .replace(/[¿¡]/g, '')
+    .replace(/[^a-z0-9ñü]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/^(yo|tu|el|ella|usted|nosotros|nosotras|vosotros|vosotras|ellos|ellas|ustedes)\s+/, '');
+}
+
+function normalizeByLanguage(value, language) {
+  return language === 'es'
+    ? normalizeSpanish(value)
+    : normalizeEnglish(value);
+}
+
+function answerValues(question, language) {
+  const primary = language === 'es' ? question.es : question.en;
+  const alternates = language === 'es'
+    ? question.accept_es
+    : question.accept_en;
+
+  return [...new Set([primary, ...(alternates || [])])];
+}
+
+function isCorrect(question, language, userAnswer) {
+  const normalizedUserAnswer = normalizeByLanguage(userAnswer, language);
+
+  return answerValues(question, language).some((answer) => (
+    normalizeByLanguage(answer, language) === normalizedUserAnswer
+  ));
+}
+
+function shuffle(array) {
+  const copy = [...array];
+
+  for (let index = copy.length - 1; index > 0; index -= 1) {
+    const randomIndex = Math.floor(Math.random() * (index + 1));
+    [copy[index], copy[randomIndex]] = [copy[randomIndex], copy[index]];
+  }
+
+  return copy;
+}
+
+function pointById(pointId) {
+  return POINTS.find((point) => point.id === pointId);
+}
+
+function promptFor(question, direction) {
+  return direction === 'en-es' ? question.en : question.es;
+}
+
+function answerLanguage(direction) {
+  return direction === 'en-es' ? 'es' : 'en';
+}
+
+function directionLabel(direction) {
+  return direction === 'en-es' ? 'English → Spanish' : 'Spanish → English';
+}
+
+// Page rendering ------------------------------------------------------------
+function renderTableOfContents() {
+  const tocList = document.getElementById('tocList');
+
+  tocList.innerHTML = `
+    <a href="#grammar-bank">
+      <span><span class="nav-number">01</span>Grammar bank</span>
+      <span aria-hidden="true">→</span>
+    </a>
+    ${POINTS.map((point, index) => `
+      <a href="#${escapeHtml(point.id)}">
+        <span><span class="nav-number">${String(index + 2).padStart(2, '0')}</span>${escapeHtml(point.title)}</span>
+        <span aria-hidden="true">→</span>
+      </a>
+    `).join('')}
+    <a href="#comprehensive">
+      <span><span class="nav-number">${String(POINTS.length + 2).padStart(2, '0')}</span>Comprehensive test</span>
+      <span aria-hidden="true">→</span>
+    </a>
+  `;
+}
+
+function exerciseCard(point, type, title, description) {
+  const exerciseId = `${point.id}-${type}`;
+
+  return `
+    <article class="exercise-card" id="${escapeHtml(exerciseId)}">
+      <div class="exercise-head">
+        <div class="exercise-head-copy">
+          <h3>${escapeHtml(title)}</h3>
+          <p>${escapeHtml(description)}</p>
+        </div>
+        <div class="score-box" id="score-${escapeHtml(exerciseId)}"></div>
+      </div>
+
+      <div class="exercise-body">
+        <div class="status-row">
+          <span id="count-${escapeHtml(exerciseId)}"></span>
+          <button
+            class="btn btn-muted"
+            type="button"
+            data-restart="${escapeHtml(exerciseId)}"
+            style="min-height: 40px;">Restart</button>
+        </div>
+
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-${escapeHtml(exerciseId)}"></div>
+        </div>
+
+        <p class="question-meta" id="meta-${escapeHtml(exerciseId)}"></p>
+        <p class="question-text" id="prompt-${escapeHtml(exerciseId)}"></p>
+        <div id="zone-${escapeHtml(exerciseId)}"></div>
+        <div class="feedback" id="feedback-${escapeHtml(exerciseId)}"></div>
+
+        <div class="action-row">
+          <button
+            class="btn btn-next hidden"
+            id="next-${escapeHtml(exerciseId)}"
+            type="button"
+            data-next="${escapeHtml(exerciseId)}">Next</button>
+        </div>
+
+        <div class="finish-panel" id="finish-${escapeHtml(exerciseId)}">
+          <h4>Exercise complete</h4>
+          <p id="final-${escapeHtml(exerciseId)}"></p>
+          <div class="review-list" id="review-${escapeHtml(exerciseId)}"></div>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+
+function renderGrammarBank() {
+  const mount = document.getElementById('grammarBank');
+
+  mount.innerHTML = POINTS.map((point, index) => {
+    const bodyId = `grammar-bank-body-${point.id}`;
+
+    return `
+      <article class="grammar-bank-item">
+        <div class="grammar-bank-header">
+          <div class="grammar-bank-title">
+            <span>Point ${String(index + 1).padStart(2, '0')} · ${escapeHtml(point.kicker)}</span>
+            <h3>${escapeHtml(point.title)}</h3>
+          </div>
+          <button
+            class="reference-collapse-btn"
+            type="button"
+            data-collapse="${escapeHtml(bodyId)}"
+            aria-expanded="true">Collapse</button>
+        </div>
+
+        <div class="grammar-bank-body collapsible-content" id="${escapeHtml(bodyId)}">
+          <div class="info-grid">
+            <div class="info-card">
+              <h3>Meaning and use</h3>
+              <p>${escapeHtml(point.summary)}</p>
+            </div>
+            <div class="info-card">
+              <h3>Form</h3>
+              <p>${escapeHtml(point.rule)}</p>
+            </div>
+          </div>
+
+          <p class="grammar-bank-focus">
+            <b>Focus:</b> ${escapeHtml(point.focus)}
+          </p>
+
+          <div class="example-list">
+            ${point.examples.map(([spanish, english]) => `
+              <div class="example-row">
+                <b>${escapeHtml(spanish)}</b>
+                ${escapeHtml(english)}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
+function renderGrammarSections() {
+  const mount = document.getElementById('grammarSections');
+
+  mount.innerHTML = POINTS.map((point, index) => `
+    <section class="section" id="${escapeHtml(point.id)}">
+      <div class="section-header">
+        <div>
+          <p class="section-kicker">${escapeHtml(point.kicker)}</p>
+          <h2>${escapeHtml(point.title)}</h2>
+        </div>
+        <div class="section-actions">
+          <span class="section-count">20 questions</span>
+          <button
+            class="collapse-btn"
+            type="button"
+            data-collapse="section-body-${escapeHtml(point.id)}"
+            aria-expanded="true">Collapse</button>
+        </div>
+      </div>
+
+      <div
+        class="section-body collapsible-content"
+        id="section-body-${escapeHtml(point.id)}">
+        <div class="info-grid">
+          <div class="info-card">
+            <h3>Meaning and use</h3>
+            <p>${escapeHtml(point.summary)}</p>
+          </div>
+          <div class="info-card">
+            <h3>Form</h3>
+            <p>${escapeHtml(point.rule)}</p>
+          </div>
+        </div>
+
+        <div class="rule-card" style="margin-bottom: 28px;">
+          <h3>Focus</h3>
+          <p>${escapeHtml(point.focus)}</p>
+          <div class="example-list">
+            ${point.examples.map(([spanish, english]) => `
+              <div class="example-row">
+                <b>${escapeHtml(spanish)}</b>
+                ${escapeHtml(english)}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="exercise-grid">
+          ${exerciseCard(
+            point,
+            'typed',
+            'Exercise 1: Typed translation',
+            'Translate ten complete sentences. Direction alternates each question.'
+          )}
+          ${exerciseCard(
+            point,
+            'mc',
+            'Exercise 2: Multiple choice',
+            'Choose the best complete translation for ten sentences.'
+          )}
+        </div>
+      </div>
+    </section>
+  `).join('');
+}
+
+
+function initializeCollapsibles() {
+  document.querySelectorAll('[data-collapse]').forEach((button) => {
+    if (button.dataset.collapseReady === 'true') return;
+
+    const target = document.getElementById(button.dataset.collapse);
+    if (!target) return;
+
+    button.dataset.collapseReady = 'true';
+
+    function setExpanded(expanded) {
+      target.hidden = !expanded;
+      button.setAttribute('aria-expanded', String(expanded));
+      button.textContent = expanded ? 'Collapse' : 'Expand';
+    }
+
+    setExpanded(!target.hidden);
+
+    button.addEventListener('click', () => {
+      setExpanded(target.hidden);
+    });
+  });
+}
+
+// Per-point exercises -------------------------------------------------------
+function initializeExercise(point, type) {
+  const exerciseId = `${point.id}-${type}`;
+  const sourceQuestions = type === 'typed'
+    ? point.questions.slice(0, 10)
+    : point.questions.slice(10, 20);
+
+  exerciseStates[exerciseId] = {
+    id: exerciseId,
+    point,
+    type,
+    pool: shuffle(sourceQuestions),
+    index: 0,
+    score: 0,
+    answered: false,
+    results: [],
+    direction: 'en-es'
+  };
+
+  showExerciseQuestion(exerciseId);
+}
+
+function buildChoiceOptions(state, question, language) {
+  const correctAnswer = answerValues(question, language)[0];
+  const options = [correctAnswer];
+  const candidates = shuffle(state.point.questions);
+
+  for (const candidate of candidates) {
+    const candidateAnswer = answerValues(candidate, language)[0];
+    const alreadyUsed = options.some((option) => (
+      normalizeByLanguage(option, language)
+      === normalizeByLanguage(candidateAnswer, language)
+    ));
+
+    if (!alreadyUsed) {
+      options.push(candidateAnswer);
+    }
+
+    if (options.length === 4) break;
+  }
+
+  return shuffle(options);
+}
+
+function showExerciseQuestion(exerciseId) {
+  const state = exerciseStates[exerciseId];
+  const question = state.pool[state.index];
+  const language = state.index % 2 === 0 ? 'es' : 'en';
+  const direction = language === 'es' ? 'en-es' : 'es-en';
+  const zone = document.getElementById(`zone-${exerciseId}`);
+
+  state.direction = direction;
+  state.answered = false;
+
+  document.getElementById(`count-${exerciseId}`).textContent =
+    `Question ${state.index + 1} / ${state.pool.length}`;
+  document.getElementById(`score-${exerciseId}`).textContent =
+    `Score ${state.score} / ${state.index}`;
+  document.getElementById(`progress-${exerciseId}`).style.width =
+    `${(state.index / state.pool.length) * 100}%`;
+  document.getElementById(`meta-${exerciseId}`).textContent =
+    `${state.type === 'typed' ? 'Typed translation' : 'Multiple choice'} · ${directionLabel(direction)}`;
+  document.getElementById(`prompt-${exerciseId}`).textContent =
+    promptFor(question, direction);
+
+  const feedback = document.getElementById(`feedback-${exerciseId}`);
+  feedback.className = 'feedback';
+  feedback.innerHTML = '';
+
+  document.getElementById(`next-${exerciseId}`).classList.add('hidden');
+  document.getElementById(`finish-${exerciseId}`).style.display = 'none';
+
+  if (state.type === 'typed') {
+    zone.innerHTML = `
+      <form class="answer-form" data-typed-form="${escapeHtml(exerciseId)}">
+        <label class="sr-only" for="input-${escapeHtml(exerciseId)}">Type the translation</label>
+        <input
+          class="answer-input"
+          id="input-${escapeHtml(exerciseId)}"
+          autocomplete="off"
+          spellcheck="false">
+        <button class="btn btn-primary" type="submit">Check</button>
+      </form>
+    `;
+
+    zone.querySelector('form').addEventListener('submit', (event) => {
+      event.preventDefault();
+      submitExerciseAnswer(
+        exerciseId,
+        document.getElementById(`input-${exerciseId}`).value
+      );
+    });
+  } else {
+    const options = buildChoiceOptions(state, question, language);
+
+    zone.innerHTML = `
+      <div class="option-list">
+        ${options.map((option) => `
+          <button
+            class="option-btn"
+            type="button"
+            data-option-value="${escapeHtml(option)}">
+            ${escapeHtml(option)}
+          </button>
+        `).join('')}
+      </div>
+    `;
+
+    zone.querySelectorAll('.option-btn').forEach((button) => {
+      button.addEventListener('click', () => {
+        submitExerciseAnswer(exerciseId, button.dataset.optionValue, button);
+      });
+    });
+  }
+}
+
+function submitExerciseAnswer(exerciseId, userAnswer, clickedButton = null) {
+  const state = exerciseStates[exerciseId];
+  const question = state.pool[state.index];
+  const language = answerLanguage(state.direction);
+
+  if (state.answered) return;
+
+  const correct = isCorrect(question, language, userAnswer);
+  const expected = answerValues(question, language)[0];
+
+  state.answered = true;
+  if (correct) state.score += 1;
+
+  state.results.push({
+    prompt: promptFor(question, state.direction),
+    userAnswer,
+    expected,
+    correct,
+    source: question.source
+  });
+
+  if (state.type === 'mc') {
+    document.querySelectorAll(`#zone-${exerciseId} .option-btn`).forEach((button) => {
+      button.disabled = true;
+      if (isCorrect(question, language, button.dataset.optionValue)) {
+        button.classList.add('correct');
+      }
+    });
+
+    if (!correct && clickedButton) {
+      clickedButton.classList.add('wrong');
+    }
+  } else {
+    document.getElementById(`input-${exerciseId}`).disabled = true;
+    document.querySelector(`[data-typed-form="${exerciseId}"] button`).disabled = true;
+  }
+
+  const feedback = document.getElementById(`feedback-${exerciseId}`);
+  feedback.className = `feedback ${correct ? 'good' : 'bad'}`;
+  feedback.innerHTML = `
+    <b>${correct ? '✓ Correct' : '✕ Incorrect'}</b>
+    <span class="model-answer">${escapeHtml(expected)}</span>
+    <p>${escapeHtml(state.point.focus)}</p>
+    ${question.source ? '<span class="source-chip">Chapter sentence</span>' : ''}
+  `;
+
+  document.getElementById(`score-${exerciseId}`).textContent =
+    `Score ${state.score} / ${state.index + 1}`;
+
+  const nextButton = document.getElementById(`next-${exerciseId}`);
+  nextButton.textContent = state.index === state.pool.length - 1 ? 'Finish' : 'Next';
+  nextButton.classList.remove('hidden');
+}
+
+function nextExerciseQuestion(exerciseId) {
+  const state = exerciseStates[exerciseId];
+
+  if (state.index < state.pool.length - 1) {
+    state.index += 1;
+    showExerciseQuestion(exerciseId);
+  } else {
+    document.getElementById(`next-${exerciseId}`).classList.add('hidden');
+    finishExercise(exerciseId);
+  }
+}
+
+function finishExercise(exerciseId) {
+  const state = exerciseStates[exerciseId];
+  const panel = document.getElementById(`finish-${exerciseId}`);
+
+  document.getElementById(`progress-${exerciseId}`).style.width = '100%';
+  panel.style.display = 'block';
+
+  document.getElementById(`final-${exerciseId}`).innerHTML = `
+    Final score: <b>${state.score} / ${state.pool.length}</b>
+    (${Math.round((state.score / state.pool.length) * 100)}%)
+  `;
+
+  document.getElementById(`review-${exerciseId}`).innerHTML = state.results
+    .map((result, index) => `
+      <div class="review-row">
+        <p><b>${index + 1}. ${escapeHtml(result.prompt)}</b> ${result.correct ? '✓' : '✕'}</p>
+        <p>Your answer: ${escapeHtml(result.userAnswer || '(blank)')}</p>
+        <p>Model: <b>${escapeHtml(result.expected)}</b></p>
+      </div>
+    `).join('');
+}
+
+function restartExercise(exerciseId) {
+  const state = exerciseStates[exerciseId];
+
+  state.pool = shuffle(state.pool);
+  state.index = 0;
+  state.score = 0;
+  state.answered = false;
+  state.results = [];
+
+  showExerciseQuestion(exerciseId);
+}
+
+function initializeExerciseEvents() {
+  document.querySelectorAll('[data-next]').forEach((button) => {
+    button.addEventListener('click', () => nextExerciseQuestion(button.dataset.next));
+  });
+
+  document.querySelectorAll('[data-restart]').forEach((button) => {
+    button.addEventListener('click', () => restartExercise(button.dataset.restart));
+  });
+}
+
+// Comprehensive test -------------------------------------------------------
+function buildComprehensivePool() {
+  const pool = [];
+
+  POINTS.forEach((point) => {
+    const typedQuestions = shuffle(point.questions.slice(0, 10))
+      .slice(0, 5)
+      .map((question) => ({ ...question, kind: 'typed', point }));
+    const multipleChoiceQuestions = shuffle(point.questions.slice(10, 20))
+      .slice(0, 5)
+      .map((question) => ({ ...question, kind: 'mc', point }));
+
+    pool.push(...typedQuestions, ...multipleChoiceQuestions);
+  });
+
+  return shuffle(pool);
+}
+
+function renderComprehensiveTest() {
+  document.getElementById('comprehensiveMount').innerHTML = `
+    <article class="exercise-card" id="comprehensive-card">
+      <div class="exercise-head">
+        <div class="exercise-head-copy">
+          <h3>Chapter 1 Comprehensive Test</h3>
+          <p>Ten questions per grammar point, mixed across the full chapter.</p>
+        </div>
+        <div class="score-box" id="score-comprehensive">Not started</div>
+      </div>
+
+      <div class="exercise-body">
+        <div id="comprehensiveIntro">
+          <p>
+            This assessment contains 90 questions. A point-by-point score
+            breakdown and full answer review appear when you finish.
+          </p>
+          <button class="btn btn-primary" id="startComprehensive" type="button">Start test</button>
+        </div>
+
+        <div class="hidden" id="comprehensiveStage">
+          <div class="status-row">
+            <span id="count-comprehensive"></span>
+            <button class="btn btn-muted" id="restartComprehensive" type="button" style="min-height: 40px;">Restart</button>
+          </div>
+
+          <div class="progress-track">
+            <div class="progress-fill" id="progress-comprehensive"></div>
+          </div>
+
+          <p class="question-meta" id="meta-comprehensive"></p>
+          <p class="question-text" id="prompt-comprehensive"></p>
+          <div id="zone-comprehensive"></div>
+          <div class="feedback" id="feedback-comprehensive"></div>
+
+          <div class="action-row">
+            <button class="btn btn-next hidden" id="next-comprehensive" type="button">Next</button>
+          </div>
+
+          <div class="finish-panel" id="finish-comprehensive">
+            <h4>Comprehensive test complete</h4>
+            <p id="final-comprehensive"></p>
+            <div class="breakdown" id="breakdown"></div>
+            <div class="review-list" id="review-comprehensive"></div>
+          </div>
+        </div>
+      </div>
+    </article>
+  `;
+
+  document.getElementById('startComprehensive')
+    .addEventListener('click', startComprehensiveTest);
+}
+
+function startComprehensiveTest() {
+  exerciseStates.comprehensive = {
+    pool: buildComprehensivePool(),
+    index: 0,
+    score: 0,
+    answered: false,
+    results: [],
+    direction: 'en-es',
+    breakdown: Object.fromEntries(POINTS.map((point) => [
+      point.id,
+      { correct: 0, total: 0, title: point.title }
+    ]))
+  };
+
+  document.getElementById('comprehensiveIntro').classList.add('hidden');
+  document.getElementById('comprehensiveStage').classList.remove('hidden');
+  document.getElementById('restartComprehensive')
+    .addEventListener('click', startComprehensiveTest, { once: true });
+  document.getElementById('next-comprehensive').onclick = nextComprehensiveQuestion;
+
+  showComprehensiveQuestion();
+}
+
+function showComprehensiveQuestion() {
+  const state = exerciseStates.comprehensive;
+  const question = state.pool[state.index];
+  const direction = state.index % 2 === 0 ? 'en-es' : 'es-en';
+  const language = answerLanguage(direction);
+  const zone = document.getElementById('zone-comprehensive');
+
+  state.direction = direction;
+  state.answered = false;
+
+  document.getElementById('count-comprehensive').textContent =
+    `Question ${state.index + 1} / ${state.pool.length}`;
+  document.getElementById('score-comprehensive').textContent =
+    `Score ${state.score} / ${state.index}`;
+  document.getElementById('progress-comprehensive').style.width =
+    `${(state.index / state.pool.length) * 100}%`;
+  document.getElementById('meta-comprehensive').textContent =
+    `${question.point.title} · ${question.kind === 'typed' ? 'Typed' : 'Multiple choice'} · ${directionLabel(direction)}`;
+  document.getElementById('prompt-comprehensive').textContent =
+    promptFor(question, direction);
+
+  const feedback = document.getElementById('feedback-comprehensive');
+  feedback.className = 'feedback';
+  feedback.innerHTML = '';
+
+  document.getElementById('next-comprehensive').classList.add('hidden');
+  document.getElementById('finish-comprehensive').style.display = 'none';
+
+  if (question.kind === 'typed') {
+    zone.innerHTML = `
+      <form class="answer-form" id="comprehensiveForm">
+        <label class="sr-only" for="comprehensiveInput">Type the translation</label>
+        <input
+          class="answer-input"
+          id="comprehensiveInput"
+          autocomplete="off"
+          spellcheck="false">
+        <button class="btn btn-primary" type="submit">Check</button>
+      </form>
+    `;
+
+    document.getElementById('comprehensiveForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+      submitComprehensiveAnswer(document.getElementById('comprehensiveInput').value);
+    });
+  } else {
+    const options = buildChoiceOptions(
+      { point: question.point },
+      question,
+      language
+    );
+
+    zone.innerHTML = `
+      <div class="option-list">
+        ${options.map((option) => `
+          <button
+            class="option-btn"
+            type="button"
+            data-option-value="${escapeHtml(option)}">
+            ${escapeHtml(option)}
+          </button>
+        `).join('')}
+      </div>
+    `;
+
+    zone.querySelectorAll('.option-btn').forEach((button) => {
+      button.addEventListener('click', () => {
+        submitComprehensiveAnswer(button.dataset.optionValue, button);
+      });
+    });
+  }
+}
+
+function submitComprehensiveAnswer(userAnswer, clickedButton = null) {
+  const state = exerciseStates.comprehensive;
+  const question = state.pool[state.index];
+  const language = answerLanguage(state.direction);
+
+  if (state.answered) return;
+
+  const correct = isCorrect(question, language, userAnswer);
+  const expected = answerValues(question, language)[0];
+  const pointBreakdown = state.breakdown[question.point.id];
+
+  state.answered = true;
+  if (correct) state.score += 1;
+
+  pointBreakdown.total += 1;
+  if (correct) pointBreakdown.correct += 1;
+
+  state.results.push({
+    point: question.point.title,
+    prompt: promptFor(question, state.direction),
+    userAnswer,
+    expected,
+    correct,
+    source: question.source
+  });
+
+  if (question.kind === 'mc') {
+    document.querySelectorAll('#zone-comprehensive .option-btn').forEach((button) => {
+      button.disabled = true;
+      if (isCorrect(question, language, button.dataset.optionValue)) {
+        button.classList.add('correct');
+      }
+    });
+
+    if (!correct && clickedButton) {
+      clickedButton.classList.add('wrong');
+    }
+  } else {
+    document.getElementById('comprehensiveInput').disabled = true;
+    document.querySelector('#comprehensiveForm button').disabled = true;
+  }
+
+  const feedback = document.getElementById('feedback-comprehensive');
+  feedback.className = `feedback ${correct ? 'good' : 'bad'}`;
+  feedback.innerHTML = `
+    <b>${correct ? '✓ Correct' : '✕ Incorrect'}</b>
+    <span class="model-answer">${escapeHtml(expected)}</span>
+    <p>${escapeHtml(question.point.focus)}</p>
+    ${question.source ? '<span class="source-chip">Chapter sentence</span>' : ''}
+  `;
+
+  document.getElementById('score-comprehensive').textContent =
+    `Score ${state.score} / ${state.index + 1}`;
+
+  const nextButton = document.getElementById('next-comprehensive');
+  nextButton.textContent = state.index === state.pool.length - 1 ? 'Finish' : 'Next';
+  nextButton.classList.remove('hidden');
+}
+
+function nextComprehensiveQuestion() {
+  const state = exerciseStates.comprehensive;
+
+  if (state.index < state.pool.length - 1) {
+    state.index += 1;
+    showComprehensiveQuestion();
+  } else {
+    document.getElementById('next-comprehensive').classList.add('hidden');
+    finishComprehensiveTest();
+  }
+}
+
+function finishComprehensiveTest() {
+  const state = exerciseStates.comprehensive;
+  const finishPanel = document.getElementById('finish-comprehensive');
+
+  document.getElementById('progress-comprehensive').style.width = '100%';
+  finishPanel.style.display = 'block';
+
+  document.getElementById('final-comprehensive').innerHTML = `
+    Final score: <b>${state.score} / ${state.pool.length}</b>
+    (${Math.round((state.score / state.pool.length) * 100)}%)
+  `;
+
+  document.getElementById('breakdown').innerHTML = Object.values(state.breakdown)
+    .map((item) => `
+      <div>
+        <b>${escapeHtml(item.title)}</b><br>
+        ${item.correct} / ${item.total}
+      </div>
+    `).join('');
+
+  document.getElementById('review-comprehensive').innerHTML = state.results
+    .map((result, index) => `
+      <div class="review-row">
+        <p><b>${index + 1}. ${escapeHtml(result.point)}</b> · ${result.correct ? '✓' : '✕'}</p>
+        <p>${escapeHtml(result.prompt)}</p>
+        <p>Your answer: ${escapeHtml(result.userAnswer || '(blank)')}</p>
+        <p>Model: <b>${escapeHtml(result.expected)}</b></p>
+      </div>
+    `).join('');
+}
+
+renderTableOfContents();
+renderGrammarBank();
+renderGrammarSections();
+renderComprehensiveTest();
+initializeCollapsibles();
+
+POINTS.forEach((point) => {
+  initializeExercise(point, 'typed');
+  initializeExercise(point, 'mc');
+});
+initializeExerciseEvents();
+
+
+function initializeTheme() {
   const root = document.documentElement;
-  const btn = document.getElementById('themeToggle');
-  const key = 'spanishChapter1Theme';
-  function apply(theme, save=false) {
-    const next = theme === 'dark' ? 'dark' : 'light';
-    root.dataset.theme = next;
-    root.style.colorScheme = next;
-    if (save) { try { localStorage.setItem(key,next); } catch (_) {} }
-    if (btn) {
-      const dark = next === 'dark';
-      btn.textContent = dark ? '☀' : '◐';
-      btn.setAttribute('aria-pressed', String(dark));
-      btn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+  const button = document.getElementById('themeToggle');
+  const storageKey = 'spanishGrammarTheme';
+
+  function readSavedTheme() {
+    try {
+      return localStorage.getItem(storageKey);
+    } catch (_) {
+      return null;
     }
   }
-  let saved = null;
-  try { saved = localStorage.getItem(key); } catch (_) {}
-  apply(saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
-  btn?.addEventListener('click', () => apply(root.dataset.theme === 'dark' ? 'light' : 'dark', true));
-  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-  window.addEventListener('pageshow', () => {
-    if (!location.hash) requestAnimationFrame(() => requestAnimationFrame(() => scrollTo(0,0)));
-  });
-})();
 
-</script></body></html>
+  function applyTheme(theme, persist = false) {
+    const nextTheme = theme === 'dark' ? 'dark' : 'light';
+    const darkMode = nextTheme === 'dark';
+
+    root.dataset.theme = nextTheme;
+    root.style.colorScheme = nextTheme;
+
+    if (persist) {
+      try {
+        localStorage.setItem(storageKey, nextTheme);
+      } catch (_) {
+        // Ignore storage errors.
+      }
+    }
+
+    if (button) {
+      button.textContent = darkMode ? '☀' : '◐';
+      button.setAttribute('aria-pressed', String(darkMode));
+      button.setAttribute(
+        'aria-label',
+        darkMode ? 'Switch to light mode' : 'Switch to dark mode'
+      );
+    }
+  }
+
+  const systemTheme = matchMedia('(prefers-color-scheme: dark)').matches
+    ? 'dark'
+    : 'light';
+
+  applyTheme(readSavedTheme() || systemTheme);
+
+  button?.addEventListener('click', () => {
+    const nextTheme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    applyTheme(nextTheme, true);
+  });
+
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+
+  window.addEventListener('pageshow', () => {
+    if (!location.hash) {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => window.scrollTo(0, 0));
+      });
+    }
+  });
+}
+
+initializeTheme();
+</script>
+</body>
+</html>
