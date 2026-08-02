@@ -1090,6 +1090,39 @@ td {
   background: var(--accent);
 }
 
+
+.section-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.collapse-btn {
+  min-height: 56px;
+  padding: 0 18px;
+  color: var(--foreground);
+  background: var(--background);
+  border: 4px solid currentColor;
+  border-radius: var(--radius-md);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: var(--transition);
+}
+
+.collapse-btn:hover {
+  color: #FFFFFF;
+  background: var(--surface-deep);
+  transform: scale(1.03);
+}
+
+.collapsible-content[hidden] {
+  display: none !important;
+}
+
 @media (max-width: 900px) {
   .hero {
     grid-template-columns: 1fr;
@@ -1142,7 +1175,13 @@ td {
     padding: 34px 22px;
   }
 
-  .section-count {
+  .section-actions {
+    width: 100%;
+    display: grid;
+  }
+
+  .section-count,
+  .collapse-btn {
     width: 100%;
   }
 
@@ -1220,11 +1259,6 @@ td {
   </section>
 
   <div id="chapterSections"></div>
-
-  <p class="source-note">
-    Add future chapters to the <strong>CHAPTERS</strong> array near the bottom
-    of this file. Each chapter automatically receives its own homepage section.
-  </p>
 </main>
 
 
@@ -1252,14 +1286,14 @@ const CHAPTERS = [
         type: 'Vocabulary',
         title: 'Chapter 1 Vocabulary',
         description:
-          '338 words and expressions collected from explanations, examples, exercises, verb lists, and the final reading.',
+          '338 words and expressions.',
         href: 'spanish-chapter-1-vocab.html'
       },
       {
         type: 'Grammar',
         title: 'Chapter 1 Grammar',
         description:
-          '9 grammar points, 20 questions per point, and a 90-question comprehensive test.',
+          '9 grammar points.',
         href: 'spanish-chapter-1-grammar.html'
       }
     ]
@@ -1289,38 +1323,66 @@ function renderIndex() {
     </a>
   `).join('');
 
-  chapterSections.innerHTML = CHAPTERS.map((chapter) => `
-    <section class="section" id="${escapeHtml(chapter.id)}">
-      <div class="section-header">
-        <div>
-          <p class="section-kicker">Chapter ${escapeHtml(chapter.number)}</p>
-          <h2>${escapeHtml(chapter.title)}</h2>
-        </div>
-        <span class="section-count">${chapter.pages.length} study pages</span>
-      </div>
-
-      <div class="section-body">
-        <div class="rule-card" style="margin-bottom: 28px;">
-          <h3>Chapter focus</h3>
-          <p>${escapeHtml(chapter.description)}</p>
+  chapterSections.innerHTML = CHAPTERS.map((chapter) => {
+    const bodyId = `chapter-body-${chapter.id}`;
+    return `
+      <section class="section" id="${escapeHtml(chapter.id)}">
+        <div class="section-header">
+          <div>
+            <p class="section-kicker">Chapter ${escapeHtml(chapter.number)}</p>
+            <h2>${escapeHtml(chapter.title)}</h2>
+          </div>
+          <div class="section-actions">
+            <button class="collapse-btn" type="button" data-collapse="${escapeHtml(bodyId)}" aria-expanded="true">Collapse</button>
+          </div>
         </div>
 
-        <div class="card-grid">
-          ${chapter.pages.map((page) => `
-            <a class="study-card" href="${escapeHtml(page.href)}">
-              <span class="source-chip">${escapeHtml(page.type)}</span>
-              <h3>${escapeHtml(page.title)}</h3>
-              <p>${escapeHtml(page.description)}</p>
-              <span class="open-link">Open page →</span>
-            </a>
-          `).join('')}
+        <div class="section-body collapsible-content" id="${escapeHtml(bodyId)}">
+          <div class="rule-card" style="margin-bottom: 28px;">
+            <h3>Chapter focus</h3>
+            <p>${escapeHtml(chapter.description)}</p>
+          </div>
+          <div class="card-grid">
+            ${chapter.pages.map((page) => `
+              <a class="study-card" href="${escapeHtml(page.href)}">
+                <span class="source-chip">${escapeHtml(page.type)}</span>
+                <h3>${escapeHtml(page.title)}</h3>
+                <p>${escapeHtml(page.description)}</p>
+                <span class="open-link">Open page →</span>
+              </a>
+            `).join('')}
+          </div>
         </div>
-      </div>
-    </section>
-  `).join('');
+      </section>
+    `;
+  }).join('');
+}
+
+function initializeCollapsibles() {
+  document.querySelectorAll('[data-collapse]').forEach((button) => {
+    const target = document.getElementById(button.dataset.collapse);
+    if (!target) return;
+    const setExpanded = (expanded) => {
+      target.hidden = !expanded;
+      button.setAttribute('aria-expanded', String(expanded));
+      button.textContent = expanded ? 'Collapse' : 'Expand';
+    };
+    setExpanded(true);
+    button.addEventListener('click', () => setExpanded(target.hidden));
+  });
+
+  document.querySelectorAll('.hero-nav-list a[href^="#"]').forEach((link) => {
+    link.addEventListener('click', () => {
+      const section = document.querySelector(link.getAttribute('href'));
+      const target = section?.querySelector('.collapsible-content');
+      const button = section?.querySelector('[data-collapse]');
+      if (target?.hidden && button) button.click();
+    });
+  });
 }
 
 renderIndex();
+initializeCollapsibles();
 
 function initializeTheme() {
   const root = document.documentElement;
