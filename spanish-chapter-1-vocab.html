@@ -1133,6 +1133,110 @@ td {
   background: var(--accent);
 }
 
+
+/* Exercise setup menus, timers, and in-progress controls ------------------ */
+.exercise-menu {
+  padding: clamp(22px, 4vw, 36px);
+  color: var(--text);
+  background: var(--surface-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.exercise-menu h4 {
+  margin: 0 0 10px;
+  color: var(--foreground);
+  font-size: clamp(1.35rem, 3vw, 2rem);
+}
+
+.exercise-menu > p {
+  margin-bottom: 22px;
+  color: var(--text-muted);
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.menu-field {
+  display: grid;
+  gap: 7px;
+}
+
+.menu-field label {
+  color: var(--subtle);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.menu-control {
+  width: 100%;
+  min-height: 52px;
+  padding: 0 14px;
+  color: var(--text);
+  background: var(--surface-raised);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.menu-control:focus {
+  border-color: var(--secondary);
+}
+
+.menu-help {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
+.menu-error {
+  min-height: 1.4em;
+  margin: 14px 0 0;
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.exercise-stage[hidden],
+.exercise-menu[hidden],
+.question-area[hidden] {
+  display: none !important;
+}
+
+.timer-display {
+  min-width: 92px;
+  color: var(--subtle);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.btn-danger {
+  color: #FFFFFF;
+  background: var(--accent);
+}
+
+.btn-danger:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.finish-reason {
+  margin-bottom: 10px;
+  font-weight: 800;
+}
+
+@media (max-width: 680px) {
+  .menu-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .timer-display {
+    width: 100%;
+    text-align: left;
+  }
+}
+
 @media (max-width: 900px) {
   .hero {
     grid-template-columns: 1fr;
@@ -1265,7 +1369,7 @@ td {
   <section class="hero" id="toc">
     <div class="hero-copy">
       <p class="eyebrow">Present Tense</p>
-      <h1>Chapter 01 - Vocab</h1>
+      <h1>Chapter 1 Vocabulary</h1>
       <p>
       The present tense of
       regular verbs, irregular
@@ -3099,49 +3203,28 @@ const quizStates = {};
 // General utilities ---------------------------------------------------------
 function escapeHtml(value) {
   return String(value ?? '').replace(/[&<>"']/g, (character) => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;'
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
   })[character]);
 }
 
 function stripAccents(value) {
-  return String(value ?? '')
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '');
+  return String(value ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
 function normalizeEnglish(value) {
-  return stripAccents(value)
-    .toLowerCase()
-    .replace(/&/g, 'and')
-    .replace(/[^a-z0-9]+/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
+  return stripAccents(value).toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
 function normalizeSpanish(value) {
-  return stripAccents(value)
-    .toLowerCase()
-    .replace(/[¿¡]/g, '')
-    .replace(/[^a-z0-9ñü]+/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
+  return stripAccents(value).toLowerCase().replace(/[¿¡]/g, '').replace(/[^a-z0-9ñü]+/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
 function removeArticle(value) {
-  return String(value).replace(
-    /^(el|la|los|las|un|una|unos|unas)\s+/i,
-    ''
-  );
+  return String(value).replace(/^(el|la|los|las|un|una|unos|unas)\s+/i, '');
 }
 
 function normalizeByMode(value, mode) {
-  return mode === 'english'
-    ? normalizeEnglish(value)
-    : normalizeSpanish(value);
+  return mode === 'english' ? normalizeEnglish(value) : normalizeSpanish(value);
 }
 
 function displayValue(item, mode) {
@@ -3149,93 +3232,85 @@ function displayValue(item, mode) {
 }
 
 function splitEnglishMeaning(value) {
-  return String(value)
-    .split('/')
-    .flatMap((part) => part.split(';'))
-    .map((part) => part.trim())
-    .filter(Boolean);
+  return String(value).split('/').flatMap((part) => part.split(';')).map((part) => part.trim()).filter(Boolean);
 }
 
 function answerValues(item, mode) {
-  if (mode === 'english') {
-    return [...new Set([item.english, ...splitEnglishMeaning(item.english)])];
-  }
-
-  const baseAnswers = [item.spanish, ...(item.spanish_alts || [])];
-  return [...new Set(baseAnswers.flatMap((answer) => [answer, removeArticle(answer)]))];
+  if (mode === 'english') return [...new Set([item.english, ...splitEnglishMeaning(item.english)])];
+  const answers = [item.spanish, ...(item.spanish_alts || [])];
+  return [...new Set(answers.flatMap((answer) => [answer, removeArticle(answer)]))];
 }
 
 function acceptedAnswers(section, item, questionMode, answerMode) {
-  const normalizedPrompt = normalizeByMode(
-    displayValue(item, questionMode),
-    questionMode
-  );
-
-  return [...new Set(
-    section.items
-      .filter((candidate) => (
-        normalizeByMode(displayValue(candidate, questionMode), questionMode)
-        === normalizedPrompt
-      ))
-      .flatMap((candidate) => answerValues(candidate, answerMode))
+  const normalizedPrompt = normalizeByMode(displayValue(item, questionMode), questionMode);
+  return [...new Set(section.items
+    .filter((candidate) => normalizeByMode(displayValue(candidate, questionMode), questionMode) === normalizedPrompt)
+    .flatMap((candidate) => answerValues(candidate, answerMode))
   )];
 }
 
 function isCorrect(section, item, questionMode, answerMode, userAnswer) {
-  const normalizedUserAnswer = normalizeByMode(userAnswer, answerMode);
-
+  const normalized = normalizeByMode(userAnswer, answerMode);
   return acceptedAnswers(section, item, questionMode, answerMode)
-    .some((answer) => (
-      normalizeByMode(answer, answerMode) === normalizedUserAnswer
-    ));
+    .some((answer) => normalizeByMode(answer, answerMode) === normalized);
 }
 
 function shuffle(array) {
   const copy = [...array];
-
   for (let index = copy.length - 1; index > 0; index -= 1) {
     const randomIndex = Math.floor(Math.random() * (index + 1));
     [copy[index], copy[randomIndex]] = [copy[randomIndex], copy[index]];
   }
-
   return copy;
 }
 
-function buildQuestionList(section) {
+function buildQuizQuestions(section, count) {
   const base = section.items.map((item, index) => ({
     ...item,
     questionId: `${section.id}-${index}`
   }));
-  const doubled = [...base, ...base];
 
-  for (let attempt = 0; attempt < 300; attempt += 1) {
-    const candidate = shuffle(doubled);
-    const valid = candidate.every((item, index) => (
-      index === 0 || item.questionId !== candidate[index - 1].questionId
-    ));
+  if (!base.length || count < 1) return [];
 
-    if (valid) {
-      return candidate;
+  const questions = [];
+  while (questions.length < count) {
+    const cycle = shuffle(base);
+    const previousId = questions.at(-1)?.questionId;
+
+    if (previousId && cycle.length > 1 && cycle[0].questionId === previousId) {
+      const swapIndex = cycle.findIndex((item) => item.questionId !== previousId);
+      [cycle[0], cycle[swapIndex]] = [cycle[swapIndex], cycle[0]];
+    }
+
+    for (const item of cycle) {
+      if (questions.length >= count) break;
+      if (questions.at(-1)?.questionId === item.questionId && cycle.length > 1) continue;
+      questions.push(item);
     }
   }
 
-  return doubled;
+  return questions;
 }
 
 function sectionById(sectionId) {
   return QUIZ_SECTIONS.find((section) => section.id === sectionId);
 }
 
+function formatTime(totalSeconds) {
+  const safe = Math.max(0, Math.ceil(totalSeconds));
+  return `${Math.floor(safe / 60)}:${String(safe % 60).padStart(2, '0')}`;
+}
+
+function modeLabel(mode) {
+  return MODES.find((item) => item.key === mode)?.label || mode;
+}
+
 // Page rendering ------------------------------------------------------------
 function renderTableOfContents() {
   const tocList = document.getElementById('tocList');
   const totalCount = document.getElementById('totalCount');
-
   tocList.innerHTML = `
-    <a href="#reference">
-      <span><span class="nav-number">01</span>Reference tables</span>
-      <span aria-hidden="true">→</span>
-    </a>
+    <a href="#reference"><span><span class="nav-number">01</span>Reference tables</span><span aria-hidden="true">→</span></a>
     ${QUIZ_SECTIONS.map((section, index) => `
       <a href="#quiz-${escapeHtml(section.id)}">
         <span><span class="nav-number">${String(index + 2).padStart(2, '0')}</span>${escapeHtml(section.title)}</span>
@@ -3243,72 +3318,32 @@ function renderTableOfContents() {
       </a>
     `).join('')}
   `;
-
   totalCount.textContent = `${ALL_WORDS_SECTION.items.length} entries`;
 }
 
 function renderReferenceTables() {
   const mount = document.getElementById('referenceTables');
-
   mount.innerHTML = SECTIONS.map((section) => `
-    <article
-      class="reference-section"
-      data-reference-section="${escapeHtml(section.id)}">
+    <article class="reference-section" data-reference-section="${escapeHtml(section.id)}">
       <div class="vocab-tools">
         <strong>${escapeHtml(section.title)} · ${section.items.length}</strong>
-        <button
-          class="blur-toggle"
-          type="button"
-          data-blur-field="spanish"
-          aria-pressed="false">Blur Spanish</button>
-        <button
-          class="blur-toggle"
-          type="button"
-          data-blur-field="english"
-          aria-pressed="false">Blur English</button>
-        <button
-          class="reference-collapse-btn"
-          type="button"
-          data-collapse="reference-table-${escapeHtml(section.id)}"
-          aria-expanded="true">Collapse</button>
+        <button class="blur-toggle" type="button" data-blur-field="spanish" aria-pressed="false">Blur Spanish</button>
+        <button class="blur-toggle" type="button" data-blur-field="english" aria-pressed="false">Blur English</button>
+        <button class="reference-collapse-btn" type="button" data-collapse="reference-table-${escapeHtml(section.id)}" aria-expanded="true">Collapse</button>
       </div>
-
-      <div
-        class="table-wrap collapsible-content"
-        id="reference-table-${escapeHtml(section.id)}">
+      <div class="table-wrap collapsible-content" id="reference-table-${escapeHtml(section.id)}">
         <table>
-          <thead>
-            <tr>
-              <th>Spanish</th>
-              <th>English</th>
-              <th>Familiarity</th>
-            </tr>
-          </thead>
+          <thead><tr><th>Spanish</th><th>English</th><th>Familiarity</th></tr></thead>
           <tbody>
             ${section.items.map((item, itemIndex) => {
               const key = `${section.id}:${itemIndex}:${item.spanish}`;
-              const alternateMarkup = item.spanish_alts?.length
-                ? `<div style="font-size: 0.76rem;">Also: ${escapeHtml(item.spanish_alts.join(', '))}</div>`
-                : '';
-
+              const alternate = item.spanish_alts?.length ? `<div style="font-size: 0.76rem;">Also: ${escapeHtml(item.spanish_alts.join(', '))}</div>` : '';
               return `
                 <tr>
-                  <td data-vocab-field="spanish" tabindex="0">
-                    <span class="blur-target">
-                      <b>${escapeHtml(item.spanish)}</b>
-                      ${alternateMarkup}
-                    </span>
-                  </td>
-                  <td data-vocab-field="english" tabindex="0">
-                    <span class="blur-target">${escapeHtml(item.english)}</span>
-                  </td>
+                  <td data-vocab-field="spanish" tabindex="0"><span class="blur-target"><b>${escapeHtml(item.spanish)}</b>${alternate}</span></td>
+                  <td data-vocab-field="english" tabindex="0"><span class="blur-target">${escapeHtml(item.english)}</span></td>
                   <td>
-                    <div
-                      class="familiarity-stars"
-                      data-word-key="${escapeHtml(key)}"
-                      data-level="0"
-                      role="group"
-                      aria-label="Familiarity rating for ${escapeHtml(item.spanish)}">
+                    <div class="familiarity-stars" data-word-key="${escapeHtml(key)}" data-level="0" role="group" aria-label="Familiarity rating for ${escapeHtml(item.spanish)}">
                       <button class="star" type="button" data-level="1" aria-label="1 star">★</button>
                       <button class="star" type="button" data-level="2" aria-label="2 stars">★</button>
                       <button class="star" type="button" data-level="3" aria-label="3 stars">★</button>
@@ -3325,169 +3360,124 @@ function renderReferenceTables() {
   `).join('');
 }
 
-function renderModeButtons(sectionId, type, activeMode) {
-  return MODES.map((mode) => `
-    <button
-      class="mode-btn ${mode.key === activeMode ? 'active' : ''}"
-      type="button"
-      data-section="${escapeHtml(sectionId)}"
-      data-mode-type="${type}"
-      data-mode="${mode.key}">
-      ${mode.label}
-    </button>
-  `).join('');
+function languageSelect(sectionId, role, selected) {
+  return `
+    <select class="menu-control" id="${role}-${escapeHtml(sectionId)}">
+      ${MODES.map((mode) => `<option value="${mode.key}" ${mode.key === selected ? 'selected' : ''}>${mode.label}</option>`).join('')}
+    </select>
+  `;
+}
+
+function quizMenu(section) {
+  return `
+    <div class="exercise-menu" id="menu-${escapeHtml(section.id)}">
+      <h4>Set up this quiz</h4>
+      <p>Choose the length, direction, and optional timer.</p>
+      <div class="menu-grid">
+        <div class="menu-field">
+          <label for="question-count-${escapeHtml(section.id)}">Number of questions</label>
+          <input class="menu-control" id="question-count-${escapeHtml(section.id)}" type="number" min="1" value="${section.items.length}" inputmode="numeric">
+          <span class="menu-help">Default: ${section.items.length}. Enter any positive whole number.</span>
+        </div>
+        <div class="menu-field">
+          <label for="timer-${escapeHtml(section.id)}">Time limit in minutes</label>
+          <input class="menu-control" id="timer-${escapeHtml(section.id)}" type="number" min="0" step="0.5" value="0" inputmode="decimal">
+          <span class="menu-help">Use 0 for untimed.</span>
+        </div>
+        <div class="menu-field">
+          <label for="question-language-${escapeHtml(section.id)}">Question language</label>
+          ${languageSelect(section.id, 'question-language', 'english')}
+        </div>
+        <div class="menu-field">
+          <label for="answer-language-${escapeHtml(section.id)}">Answer language</label>
+          ${languageSelect(section.id, 'answer-language', 'spanish')}
+        </div>
+      </div>
+      <p class="menu-error" id="menu-error-${escapeHtml(section.id)}" aria-live="polite"></p>
+      <button class="btn btn-primary" type="button" data-start-quiz="${escapeHtml(section.id)}">Start quiz</button>
+    </div>
+  `;
 }
 
 function renderQuizSections() {
   const mount = document.getElementById('quizSections');
-
-  mount.innerHTML = QUIZ_SECTIONS.map((section, index) => {
-    quizStates[section.id] = {
-      questionMode: 'english',
-      answerMode: 'spanish',
-      questions: buildQuestionList(section),
-      index: 0,
-      score: 0,
-      answered: false,
-      results: []
-    };
-
-    return `
-      <section class="section" id="quiz-${escapeHtml(section.id)}">
-        <div class="section-header">
-          <div>
-            <p class="section-kicker">Vocabulary quiz ${String(index + 1).padStart(2, '0')}</p>
+  mount.innerHTML = QUIZ_SECTIONS.map((section, index) => `
+    <section class="section" id="quiz-${escapeHtml(section.id)}">
+      <div class="section-header">
+        <div>
+            <p class="section-kicker">${section.items.length} items</p>
             <h2>${escapeHtml(section.title)}</h2>
-          </div>
-          <div class="section-actions">
-            <span class="section-count">${section.items.length * 2} questions</span>
-            <button
-              class="collapse-btn"
-              type="button"
-              data-collapse="quiz-body-${escapeHtml(section.id)}"
-              aria-expanded="true">Collapse</button>
-          </div>
         </div>
-
-        <div
-          class="section-body collapsible-content"
-          id="quiz-body-${escapeHtml(section.id)}">
-          <div class="mode-panel">
-            <div class="mode-card">
-              <div class="mode-label">Question shown as</div>
-              <div class="segmented">
-                ${renderModeButtons(section.id, 'question', 'english')}
-              </div>
-            </div>
-            <div class="mode-card">
-              <div class="mode-label">Answer typed as</div>
-              <div class="segmented">
-                ${renderModeButtons(section.id, 'answer', 'spanish')}
-              </div>
-            </div>
+        <div class="section-actions">
+          <button class="collapse-btn" type="button" data-collapse="quiz-body-${escapeHtml(section.id)}" aria-expanded="true">Collapse</button>
+        </div>
+      </div>
+      <div class="section-body collapsible-content" id="quiz-body-${escapeHtml(section.id)}">
+        <article class="exercise-card">
+          <div class="exercise-head">
+            <div class="exercise-head-copy"><h3>Translation Quiz</h3><p>Press Enter once to check and again to continue.</p></div>
+            <div class="score-box" id="score-${escapeHtml(section.id)}">Not started</div>
           </div>
-
-          <article class="exercise-card">
-            <div class="exercise-head">
-              <div class="exercise-head-copy">
-                <h3>Translation Quiz</h3>
-                <p>Every entry appears twice, without back-to-back repetition.</p>
-              </div>
-              <div class="score-box" id="score-${escapeHtml(section.id)}"></div>
-            </div>
-
-            <div class="exercise-body">
+          <div class="exercise-body">
+            ${quizMenu(section)}
+            <div class="exercise-stage" id="stage-${escapeHtml(section.id)}" hidden>
               <div class="status-row">
                 <span id="count-${escapeHtml(section.id)}"></span>
-                <button
-                  class="btn btn-muted"
-                  type="button"
-                  data-restart="${escapeHtml(section.id)}"
-                  style="min-height: 40px;">Restart</button>
+                <span class="timer-display" id="timer-display-${escapeHtml(section.id)}">Untimed</span>
+                <button class="btn btn-muted" type="button" data-restart="${escapeHtml(section.id)}" style="min-height: 40px;">Menu</button>
               </div>
-
-              <div class="progress-track">
-                <div class="progress-fill" id="progress-${escapeHtml(section.id)}"></div>
+              <div class="progress-track"><div class="progress-fill" id="progress-${escapeHtml(section.id)}"></div></div>
+              <div class="question-area" id="question-area-${escapeHtml(section.id)}">
+                <p class="question-meta" id="meta-${escapeHtml(section.id)}"></p>
+                <p class="question-text" id="prompt-${escapeHtml(section.id)}"></p>
+                <form class="answer-form" data-answer-form="${escapeHtml(section.id)}">
+                  <label class="sr-only" for="input-${escapeHtml(section.id)}">Type your answer</label>
+                  <input class="answer-input" id="input-${escapeHtml(section.id)}" autocomplete="off" spellcheck="false" enterkeyhint="done">
+                  <button class="btn btn-primary" type="submit">Check</button>
+                </form>
+                <div class="feedback" id="feedback-${escapeHtml(section.id)}" aria-live="polite"></div>
+                <div class="action-row">
+                  <button class="btn btn-next hidden" id="next-${escapeHtml(section.id)}" type="button" data-next="${escapeHtml(section.id)}">Next</button>
+                  <button class="btn btn-danger" type="button" data-end-quiz="${escapeHtml(section.id)}">End quiz early</button>
+                </div>
               </div>
-
-              <p class="question-meta" id="meta-${escapeHtml(section.id)}"></p>
-              <p class="question-text" id="prompt-${escapeHtml(section.id)}"></p>
-
-              <form class="answer-form" data-answer-form="${escapeHtml(section.id)}">
-                <label class="sr-only" for="input-${escapeHtml(section.id)}">Type your answer</label>
-                <input
-                  class="answer-input"
-                  id="input-${escapeHtml(section.id)}"
-                  autocomplete="off"
-                  spellcheck="false">
-                <button class="btn btn-primary" type="submit">Check</button>
-              </form>
-
-              <div
-                class="feedback"
-                id="feedback-${escapeHtml(section.id)}"
-                aria-live="polite"></div>
-
-              <div class="action-row">
-                <button
-                  class="btn btn-next hidden"
-                  id="next-${escapeHtml(section.id)}"
-                  type="button"
-                  data-next="${escapeHtml(section.id)}">Next</button>
-              </div>
-
               <div class="finish-panel" id="finish-${escapeHtml(section.id)}">
-                <h4>Quiz complete</h4>
+                <h4>Quiz summary</h4>
+                <p class="finish-reason" id="reason-${escapeHtml(section.id)}"></p>
                 <p id="final-${escapeHtml(section.id)}"></p>
                 <div class="review-list" id="review-${escapeHtml(section.id)}"></div>
               </div>
             </div>
-          </article>
-        </div>
-      </section>
-    `;
-  }).join('');
+          </div>
+        </article>
+      </div>
+    </section>
+  `).join('');
 }
-
 
 function initializeCollapsibles() {
   document.querySelectorAll('[data-collapse]').forEach((button) => {
     if (button.dataset.collapseReady === 'true') return;
-
     const target = document.getElementById(button.dataset.collapse);
     if (!target) return;
-
     button.dataset.collapseReady = 'true';
-
-    function setExpanded(expanded) {
+    const setExpanded = (expanded) => {
       target.hidden = !expanded;
       button.setAttribute('aria-expanded', String(expanded));
       button.textContent = expanded ? 'Collapse' : 'Expand';
-    }
-
+    };
     setExpanded(!target.hidden);
-
-    button.addEventListener('click', () => {
-      setExpanded(target.hidden);
-    });
+    button.addEventListener('click', () => setExpanded(target.hidden));
   });
 }
 
 // Familiarity and blur controls --------------------------------------------
 function readJsonStorage(key) {
-  try {
-    return JSON.parse(localStorage.getItem(key) || '{}');
-  } catch (_) {
-    return {};
-  }
+  try { return JSON.parse(localStorage.getItem(key) || '{}'); } catch (_) { return {}; }
 }
 
 function writeJsonStorage(key, value) {
-  try {
-    localStorage.setItem(key, JSON.stringify(value));
-  } catch (_) {
-    // Storage is optional.
-  }
+  try { localStorage.setItem(key, JSON.stringify(value)); } catch (_) {}
 }
 
 function initializeStudyTools() {
@@ -3495,176 +3485,183 @@ function initializeStudyTools() {
   const blurKey = 'spanishChapter1BlurV2';
   const familiarity = readJsonStorage(familiarityKey);
   const blurSettings = readJsonStorage(blurKey);
-  const labels = [
-    'Not rated',
-    '1 star · Learning',
-    '2 stars · Developing',
-    '3 stars · Familiar'
-  ];
+  const labels = ['Not rated', '1 star · Learning', '2 stars · Developing', '3 stars · Familiar'];
 
   document.querySelectorAll('.familiarity-stars').forEach((group) => {
     const wordKey = group.dataset.wordKey;
-
-    function paint(level) {
+    const paint = (level) => {
       const safeLevel = Math.max(0, Math.min(3, Number(level) || 0));
       group.dataset.level = String(safeLevel);
-
-      group.querySelectorAll('.star').forEach((button, index) => {
-        button.setAttribute('aria-pressed', String(index < safeLevel));
-      });
-
+      group.querySelectorAll('.star').forEach((button, index) => button.setAttribute('aria-pressed', String(index < safeLevel)));
       group.parentElement.querySelector('.familiarity-label').textContent = labels[safeLevel];
-    }
-
+    };
     paint(familiarity[wordKey] || 0);
-
     group.addEventListener('click', (event) => {
       const button = event.target.closest('.star');
       if (!button) return;
-
-      const selectedLevel = Number(button.dataset.level);
-      const currentLevel = Number(group.dataset.level || 0);
-      const nextLevel = currentLevel === selectedLevel ? 0 : selectedLevel;
-
-      if (nextLevel) {
-        familiarity[wordKey] = nextLevel;
-      } else {
-        delete familiarity[wordKey];
-      }
-
+      const selected = Number(button.dataset.level);
+      const next = Number(group.dataset.level || 0) === selected ? 0 : selected;
+      if (next) familiarity[wordKey] = next; else delete familiarity[wordKey];
       writeJsonStorage(familiarityKey, familiarity);
-      paint(nextLevel);
+      paint(next);
     });
   });
 
   document.querySelectorAll('[data-reference-section]').forEach((section) => {
     const sectionId = section.dataset.referenceSection;
-    const savedSettings = blurSettings[sectionId] || {};
-
-    function applyBlur(field, enabled) {
+    const saved = blurSettings[sectionId] || {};
+    const applyBlur = (field, enabled) => {
       section.classList.toggle(`blur-${field}`, enabled);
-
       const button = section.querySelector(`[data-blur-field="${field}"]`);
       const label = field === 'english' ? 'English' : 'Spanish';
       button.setAttribute('aria-pressed', String(enabled));
       button.textContent = enabled ? `Show ${label}` : `Blur ${label}`;
-    }
-
-    ['english', 'spanish'].forEach((field) => {
-      applyBlur(field, Boolean(savedSettings[field]));
-    });
-
+    };
+    ['english', 'spanish'].forEach((field) => applyBlur(field, Boolean(saved[field])));
     section.querySelectorAll('[data-blur-field]').forEach((button) => {
       button.addEventListener('click', () => {
         const field = button.dataset.blurField;
         const enabled = !section.classList.contains(`blur-${field}`);
-
-        blurSettings[sectionId] = blurSettings[sectionId] || {};
+        blurSettings[sectionId] ||= {};
         blurSettings[sectionId][field] = enabled;
         writeJsonStorage(blurKey, blurSettings);
-
-        section.querySelectorAll(`[data-vocab-field="${field}"]`)
-          .forEach((cell) => cell.classList.remove('peek'));
-
+        section.querySelectorAll(`[data-vocab-field="${field}"]`).forEach((cell) => cell.classList.remove('peek'));
         applyBlur(field, enabled);
       });
     });
-
     section.querySelectorAll('[data-vocab-field]').forEach((cell) => {
-      function togglePeek() {
+      const togglePeek = () => {
         const field = cell.dataset.vocabField;
-        if (section.classList.contains(`blur-${field}`)) {
-          cell.classList.toggle('peek');
-        }
-      }
-
+        if (section.classList.contains(`blur-${field}`)) cell.classList.toggle('peek');
+      };
       cell.addEventListener('click', togglePeek);
       cell.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          togglePeek();
-        }
+        if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); togglePeek(); }
       });
     });
   });
 }
 
-// Vocabulary quiz ----------------------------------------------------------
-function refreshModeButtons(sectionId) {
-  const state = quizStates[sectionId];
-
-  document.querySelectorAll(`[data-section="${sectionId}"]`).forEach((button) => {
-    const activeMode = button.dataset.modeType === 'question'
-      ? state.questionMode
-      : state.answerMode;
-
-    button.classList.toggle('active', button.dataset.mode === activeMode);
-  });
+// Vocabulary quiz engine ----------------------------------------------------
+function initializeQuizState(section) {
+  quizStates[section.id] = {
+    section,
+    questions: [],
+    index: 0,
+    score: 0,
+    answered: false,
+    results: [],
+    questionMode: 'english',
+    answerMode: 'spanish',
+    plannedCount: 0,
+    timerId: null,
+    endAt: null,
+    started: false
+  };
 }
 
-function resetQuiz(sectionId) {
-  const section = sectionById(sectionId);
-  const state = quizStates[sectionId];
+function clearQuizTimer(state) {
+  if (state?.timerId) clearInterval(state.timerId);
+  if (state) state.timerId = null;
+}
 
-  state.questions = buildQuestionList(section);
+function updateQuizTimer(sectionId) {
+  const state = quizStates[sectionId];
+  const display = document.getElementById(`timer-display-${sectionId}`);
+  if (!state.endAt) { display.textContent = 'Untimed'; return; }
+  const remaining = Math.max(0, (state.endAt - Date.now()) / 1000);
+  display.textContent = formatTime(remaining);
+  if (remaining <= 0) finishQuiz(sectionId, 'Time is up.');
+}
+
+function startQuizTimer(sectionId, minutes) {
+  const state = quizStates[sectionId];
+  clearQuizTimer(state);
+  state.endAt = minutes > 0 ? Date.now() + minutes * 60 * 1000 : null;
+  updateQuizTimer(sectionId);
+  if (state.endAt) state.timerId = setInterval(() => updateQuizTimer(sectionId), 250);
+}
+
+function validateQuizMenu(sectionId) {
+  const state = quizStates[sectionId];
+  const count = Math.floor(Number(document.getElementById(`question-count-${sectionId}`).value));
+  const minutes = Number(document.getElementById(`timer-${sectionId}`).value);
+  const questionMode = document.getElementById(`question-language-${sectionId}`).value;
+  const answerMode = document.getElementById(`answer-language-${sectionId}`).value;
+  const error = document.getElementById(`menu-error-${sectionId}`);
+
+  if (!Number.isFinite(count) || count < 1) {
+    error.textContent = 'Enter a positive whole number of questions.';
+    return null;
+  }
+  if (!Number.isFinite(minutes) || minutes < 0) {
+    error.textContent = 'The timer must be 0 or a positive number.';
+    return null;
+  }
+  if (questionMode === answerMode) {
+    error.textContent = 'Question and answer languages must be different.';
+    return null;
+  }
+  error.textContent = '';
+  return { count, minutes, questionMode, answerMode };
+}
+
+function startQuiz(sectionId) {
+  const state = quizStates[sectionId];
+  const config = validateQuizMenu(sectionId);
+  if (!config) return;
+
+  state.questions = buildQuizQuestions(state.section, config.count);
   state.index = 0;
   state.score = 0;
   state.answered = false;
   state.results = [];
+  state.questionMode = config.questionMode;
+  state.answerMode = config.answerMode;
+  state.plannedCount = config.count;
+  state.started = true;
 
+  document.getElementById(`menu-${sectionId}`).hidden = true;
+  document.getElementById(`stage-${sectionId}`).hidden = false;
+  document.getElementById(`question-area-${sectionId}`).hidden = false;
   document.getElementById(`finish-${sectionId}`).style.display = 'none';
+  document.getElementById(`score-${sectionId}`).textContent = 'Score 0 / 0';
+  startQuizTimer(sectionId, config.minutes);
   showQuestion(sectionId);
 }
 
 function showQuestion(sectionId) {
   const state = quizStates[sectionId];
   const item = state.questions[state.index];
-  const input = document.getElementById(`input-${sectionId}`);
-  const form = document.querySelector(`[data-answer-form="${sectionId}"]`);
-
+  if (!item) return finishQuiz(sectionId, 'No questions were available.');
   state.answered = false;
 
-  document.getElementById(`count-${sectionId}`).textContent =
-    `Question ${state.index + 1} / ${state.questions.length}`;
-  document.getElementById(`score-${sectionId}`).textContent =
-    `Score ${state.score} / ${state.index}`;
-  document.getElementById(`progress-${sectionId}`).style.width =
-    `${(state.index / state.questions.length) * 100}%`;
-  document.getElementById(`meta-${sectionId}`).textContent =
-    `${state.questionMode} → ${state.answerMode}`;
-  document.getElementById(`prompt-${sectionId}`).textContent =
-    displayValue(item, state.questionMode);
+  document.getElementById(`count-${sectionId}`).textContent = `Question ${state.index + 1} / ${state.questions.length}`;
+  document.getElementById(`score-${sectionId}`).textContent = `Score ${state.score} / ${state.results.length}`;
+  document.getElementById(`progress-${sectionId}`).style.width = `${(state.results.length / state.questions.length) * 100}%`;
+  document.getElementById(`meta-${sectionId}`).textContent = `${modeLabel(state.questionMode)} → ${modeLabel(state.answerMode)}`;
+  document.getElementById(`prompt-${sectionId}`).textContent = displayValue(item, state.questionMode);
 
+  const input = document.getElementById(`input-${sectionId}`);
+  const form = document.querySelector(`[data-answer-form="${sectionId}"]`);
   input.value = '';
-  input.disabled = false;
-  form.querySelector('button').disabled = false;
-
+  form.querySelector('button').textContent = 'Check';
   const feedback = document.getElementById(`feedback-${sectionId}`);
   feedback.className = 'feedback';
   feedback.innerHTML = '';
-
   document.getElementById(`next-${sectionId}`).classList.add('hidden');
+  requestAnimationFrame(() => input.focus());
 }
 
 function submitAnswer(sectionId, userAnswer) {
   const state = quizStates[sectionId];
-  const section = sectionById(sectionId);
   const item = state.questions[state.index];
-
   if (state.answered) return;
 
-  const correct = isCorrect(
-    section,
-    item,
-    state.questionMode,
-    state.answerMode,
-    userAnswer
-  );
-  const expected = answerValues(item, state.answerMode).join(' / ');
-
+  const correct = isCorrect(state.section, item, state.questionMode, state.answerMode, userAnswer);
+  const expected = acceptedAnswers(state.section, item, state.questionMode, state.answerMode).join(' / ');
   state.answered = true;
   if (correct) state.score += 1;
-
   state.results.push({
     prompt: displayValue(item, state.questionMode),
     userAnswer,
@@ -3674,91 +3671,94 @@ function submitAnswer(sectionId, userAnswer) {
 
   const feedback = document.getElementById(`feedback-${sectionId}`);
   feedback.className = `feedback ${correct ? 'good' : 'bad'}`;
-  feedback.innerHTML = `
-    <b>${correct ? '✓ Correct' : '✕ Incorrect'}</b>
-    <span class="model-answer">${escapeHtml(expected)}</span>
-  `;
-
-  document.getElementById(`score-${sectionId}`).textContent =
-    `Score ${state.score} / ${state.index + 1}`;
-
-  const input = document.getElementById(`input-${sectionId}`);
-  input.disabled = true;
-  document.querySelector(`[data-answer-form="${sectionId}"] button`).disabled = true;
-
-  const nextButton = document.getElementById(`next-${sectionId}`);
-  nextButton.textContent = state.index === state.questions.length - 1
-    ? 'Finish'
-    : 'Next';
-  nextButton.classList.remove('hidden');
+  feedback.innerHTML = `<b>${correct ? '✓ Correct' : '✕ Incorrect'}</b><span class="model-answer">${escapeHtml(expected)}</span>`;
+  document.getElementById(`score-${sectionId}`).textContent = `Score ${state.score} / ${state.results.length}`;
+  document.getElementById(`progress-${sectionId}`).style.width = `${(state.results.length / state.questions.length) * 100}%`;
+  const finishText = state.index === state.questions.length - 1 ? 'Finish' : 'Next';
+  document.querySelector(`[data-answer-form="${sectionId}"] button`).textContent = finishText;
+  const next = document.getElementById(`next-${sectionId}`);
+  next.textContent = finishText;
+  next.classList.remove('hidden');
+  document.getElementById(`input-${sectionId}`).focus();
 }
 
-function finishQuiz(sectionId) {
+function nextQuestion(sectionId) {
   const state = quizStates[sectionId];
-  const finishPanel = document.getElementById(`finish-${sectionId}`);
+  if (!state.answered) return;
+  if (state.index < state.questions.length - 1) {
+    state.index += 1;
+    showQuestion(sectionId);
+  } else {
+    finishQuiz(sectionId, 'Completed all selected questions.');
+  }
+}
 
-  document.getElementById(`progress-${sectionId}`).style.width = '100%';
-  finishPanel.style.display = 'block';
+function finishQuiz(sectionId, reason = 'Quiz ended early.') {
+  const state = quizStates[sectionId];
+  if (!state?.started) return;
+  clearQuizTimer(state);
+  state.started = false;
+  document.getElementById(`question-area-${sectionId}`).hidden = true;
+  document.getElementById(`finish-${sectionId}`).style.display = 'block';
 
+  const answered = state.results.length;
+  const percent = answered ? Math.round((state.score / answered) * 100) : 0;
+  document.getElementById(`reason-${sectionId}`).textContent = reason;
   document.getElementById(`final-${sectionId}`).innerHTML = `
-    Final score: <b>${state.score} / ${state.questions.length}</b>
-    (${Math.round((state.score / state.questions.length) * 100)}%)
+    Answered <b>${answered} / ${state.plannedCount}</b> selected questions.<br>
+    Score on answered questions: <b>${state.score} / ${answered}</b> (${percent}%).
   `;
+  document.getElementById(`score-${sectionId}`).textContent = `Score ${state.score} / ${answered}`;
+  document.getElementById(`progress-${sectionId}`).style.width = `${state.plannedCount ? (answered / state.plannedCount) * 100 : 0}%`;
+  document.getElementById(`review-${sectionId}`).innerHTML = answered
+    ? state.results.map((result, index) => `
+        <div class="review-row">
+          <p><b>${index + 1}. ${escapeHtml(result.prompt)}</b> ${result.correct ? '✓' : '✕'}</p>
+          <p>Your answer: ${escapeHtml(result.userAnswer || '(blank)')}</p>
+          <p>Model: <b>${escapeHtml(result.expected)}</b></p>
+        </div>
+      `).join('')
+    : '<div class="review-row"><p>No questions were answered.</p></div>';
+}
 
-  document.getElementById(`review-${sectionId}`).innerHTML = state.results
-    .map((result, index) => `
-      <div class="review-row">
-        <p><b>${index + 1}. ${escapeHtml(result.prompt)}</b> ${result.correct ? '✓' : '✕'}</p>
-        <p>Your answer: ${escapeHtml(result.userAnswer || '(blank)')}</p>
-        <p>Model: <b>${escapeHtml(result.expected)}</b></p>
-      </div>
-    `).join('');
+function returnToQuizMenu(sectionId) {
+  const state = quizStates[sectionId];
+  clearQuizTimer(state);
+  state.started = false;
+  document.getElementById(`stage-${sectionId}`).hidden = true;
+  document.getElementById(`menu-${sectionId}`).hidden = false;
+  document.getElementById(`question-area-${sectionId}`).hidden = false;
+  document.getElementById(`finish-${sectionId}`).style.display = 'none';
+  document.getElementById(`score-${sectionId}`).textContent = 'Not started';
 }
 
 function initializeQuizEvents() {
-  document.querySelectorAll('.mode-btn').forEach((button) => {
-    button.addEventListener('click', () => {
-      const sectionId = button.dataset.section;
-      const state = quizStates[sectionId];
-
-      if (button.dataset.modeType === 'question') {
-        state.questionMode = button.dataset.mode;
-        state.answerMode = state.questionMode === 'english' ? 'spanish' : 'english';
-      } else {
-        state.answerMode = button.dataset.mode;
-        state.questionMode = state.answerMode === 'english' ? 'spanish' : 'english';
-      }
-
-      refreshModeButtons(sectionId);
-      resetQuiz(sectionId);
-    });
+  document.querySelectorAll('[data-start-quiz]').forEach((button) => {
+    button.addEventListener('click', () => startQuiz(button.dataset.startQuiz));
   });
-
   document.querySelectorAll('[data-answer-form]').forEach((form) => {
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       const sectionId = form.dataset.answerForm;
-      submitAnswer(sectionId, document.getElementById(`input-${sectionId}`).value);
-    });
-  });
-
-  document.querySelectorAll('[data-next]').forEach((button) => {
-    button.addEventListener('click', () => {
-      const sectionId = button.dataset.next;
       const state = quizStates[sectionId];
-
-      if (state.index < state.questions.length - 1) {
-        state.index += 1;
-        showQuestion(sectionId);
-      } else {
-        button.classList.add('hidden');
-        finishQuiz(sectionId);
-      }
+      if (state.answered) nextQuestion(sectionId);
+      else submitAnswer(sectionId, document.getElementById(`input-${sectionId}`).value);
     });
   });
-
+  document.querySelectorAll('[data-next]').forEach((button) => {
+    button.addEventListener('click', () => nextQuestion(button.dataset.next));
+  });
+  document.querySelectorAll('[data-end-quiz]').forEach((button) => {
+    button.addEventListener('click', () => finishQuiz(button.dataset.endQuiz, 'Quiz ended early.'));
+  });
   document.querySelectorAll('[data-restart]').forEach((button) => {
-    button.addEventListener('click', () => resetQuiz(button.dataset.restart));
+    button.addEventListener('click', () => returnToQuizMenu(button.dataset.restart));
+  });
+  QUIZ_SECTIONS.forEach((section) => {
+    const q = document.getElementById(`question-language-${section.id}`);
+    const a = document.getElementById(`answer-language-${section.id}`);
+    q.addEventListener('change', () => { if (q.value === a.value) a.value = q.value === 'english' ? 'spanish' : 'english'; });
+    a.addEventListener('change', () => { if (a.value === q.value) q.value = a.value === 'english' ? 'spanish' : 'english'; });
   });
 }
 
@@ -3767,9 +3767,8 @@ renderReferenceTables();
 renderQuizSections();
 initializeCollapsibles();
 initializeStudyTools();
+QUIZ_SECTIONS.forEach(initializeQuizState);
 initializeQuizEvents();
-QUIZ_SECTIONS.forEach((section) => showQuestion(section.id));
-
 
 function initializeTheme() {
   const root = document.documentElement;
