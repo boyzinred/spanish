@@ -1201,6 +1201,110 @@ td {
   background: var(--accent);
 }
 
+
+/* Exercise setup menus, timers, and in-progress controls ------------------ */
+.exercise-menu {
+  padding: clamp(22px, 4vw, 36px);
+  color: var(--text);
+  background: var(--surface-deep);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+
+.exercise-menu h4 {
+  margin: 0 0 10px;
+  color: var(--foreground);
+  font-size: clamp(1.35rem, 3vw, 2rem);
+}
+
+.exercise-menu > p {
+  margin-bottom: 22px;
+  color: var(--text-muted);
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.menu-field {
+  display: grid;
+  gap: 7px;
+}
+
+.menu-field label {
+  color: var(--subtle);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.menu-control {
+  width: 100%;
+  min-height: 52px;
+  padding: 0 14px;
+  color: var(--text);
+  background: var(--surface-raised);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.menu-control:focus {
+  border-color: var(--secondary);
+}
+
+.menu-help {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
+.menu-error {
+  min-height: 1.4em;
+  margin: 14px 0 0;
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.exercise-stage[hidden],
+.exercise-menu[hidden],
+.question-area[hidden] {
+  display: none !important;
+}
+
+.timer-display {
+  min-width: 92px;
+  color: var(--subtle);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.btn-danger {
+  color: #FFFFFF;
+  background: var(--accent);
+}
+
+.btn-danger:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.finish-reason {
+  margin-bottom: 10px;
+  font-weight: 800;
+}
+
+@media (max-width: 680px) {
+  .menu-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .timer-display {
+    width: 100%;
+    text-align: left;
+  }
+}
+
 @media (max-width: 900px) {
   .hero {
     grid-template-columns: 1fr;
@@ -1338,7 +1442,7 @@ td {
   <section class="hero" id="toc">
     <div class="hero-copy">
       <p class="eyebrow">Present Tense</p>
-      <h1>Chapter 01 - Grammar</h1>
+      <h1>Chapter 1 Grammar</h1>
       <p>
       The present tense of
       regular verbs, irregular
@@ -2975,6 +3079,10 @@ const POINTS = [
   }
 ];
 const exerciseStates = {};
+const LANGUAGE_OPTIONS = [
+  { key: 'en', label: 'English' },
+  { key: 'es', label: 'Spanish' }
+];
 
 // General utilities ---------------------------------------------------------
 function escapeHtml(value) {
@@ -3013,59 +3121,133 @@ function normalizeSpanish(value) {
 }
 
 function normalizeByLanguage(value, language) {
-  return language === 'es'
-    ? normalizeSpanish(value)
-    : normalizeEnglish(value);
+  return language === 'es' ? normalizeSpanish(value) : normalizeEnglish(value);
 }
 
 function answerValues(question, language) {
   const primary = language === 'es' ? question.es : question.en;
-  const alternates = language === 'es'
-    ? question.accept_es
-    : question.accept_en;
-
+  const alternates = language === 'es' ? question.accept_es : question.accept_en;
   return [...new Set([primary, ...(alternates || [])])];
 }
 
 function isCorrect(question, language, userAnswer) {
-  const normalizedUserAnswer = normalizeByLanguage(userAnswer, language);
-
+  const normalized = normalizeByLanguage(userAnswer, language);
   return answerValues(question, language).some((answer) => (
-    normalizeByLanguage(answer, language) === normalizedUserAnswer
+    normalizeByLanguage(answer, language) === normalized
   ));
 }
 
 function shuffle(array) {
   const copy = [...array];
-
   for (let index = copy.length - 1; index > 0; index -= 1) {
     const randomIndex = Math.floor(Math.random() * (index + 1));
     [copy[index], copy[randomIndex]] = [copy[randomIndex], copy[index]];
   }
-
   return copy;
+}
+
+function buildQuestionSequence(source, count) {
+  if (!source.length || count < 1) return [];
+
+  const questions = [];
+  while (questions.length < count) {
+    const cycle = shuffle(source);
+    const previous = questions.at(-1);
+
+    if (previous && cycle.length > 1 && cycle[0] === previous) {
+      const swapIndex = cycle.findIndex((question) => question !== previous);
+      [cycle[0], cycle[swapIndex]] = [cycle[swapIndex], cycle[0]];
+    }
+
+    for (const question of cycle) {
+      if (questions.length >= count) break;
+      questions.push(question);
+    }
+  }
+
+  return questions;
+}
+
+function languageLabel(language) {
+  return LANGUAGE_OPTIONS.find((item) => item.key === language)?.label || language;
+}
+
+function questionText(question, language) {
+  return language === 'es' ? question.es : question.en;
 }
 
 function pointById(pointId) {
   return POINTS.find((point) => point.id === pointId);
 }
 
-function promptFor(question, direction) {
-  return direction === 'en-es' ? question.en : question.es;
+function formatTime(totalSeconds) {
+  const safe = Math.max(0, Math.ceil(totalSeconds));
+  const minutes = Math.floor(safe / 60);
+  const seconds = safe % 60;
+  return `${minutes}:${String(seconds).padStart(2, '0')}`;
 }
 
-function answerLanguage(direction) {
-  return direction === 'en-es' ? 'es' : 'en';
+function languageSelect(id, role, selected) {
+  return `
+    <select class="menu-control" id="${escapeHtml(role)}-${escapeHtml(id)}">
+      ${LANGUAGE_OPTIONS.map((language) => `
+        <option value="${language.key}" ${language.key === selected ? 'selected' : ''}>
+          ${language.label}
+        </option>
+      `).join('')}
+    </select>
+  `;
 }
 
-function directionLabel(direction) {
-  return direction === 'en-es' ? 'English → Spanish' : 'Spanish → English';
+function setupMenu(id, defaultCount, noun = 'questions') {
+  return `
+    <div class="exercise-menu" id="menu-${escapeHtml(id)}">
+      <h4>Set up this exercise</h4>
+      <p>Choose the length, translation direction, and an optional time limit.</p>
+      <div class="menu-grid">
+        <div class="menu-field">
+          <label for="question-count-${escapeHtml(id)}">Number of ${escapeHtml(noun)}</label>
+          <input
+            class="menu-control"
+            id="question-count-${escapeHtml(id)}"
+            type="number"
+            min="1"
+            value="${defaultCount}"
+            inputmode="numeric">
+          <span class="menu-help">Enter any positive whole number.</span>
+        </div>
+        <div class="menu-field">
+          <label for="timer-${escapeHtml(id)}">Time limit in minutes</label>
+          <input
+            class="menu-control"
+            id="timer-${escapeHtml(id)}"
+            type="number"
+            min="0"
+            step="0.5"
+            value="0"
+            inputmode="decimal">
+          <span class="menu-help">Use 0 for untimed.</span>
+        </div>
+        <div class="menu-field">
+          <label for="question-language-${escapeHtml(id)}">Question language</label>
+          ${languageSelect(id, 'question-language', 'en')}
+        </div>
+        <div class="menu-field">
+          <label for="answer-language-${escapeHtml(id)}">Answer language</label>
+          ${languageSelect(id, 'answer-language', 'es')}
+        </div>
+      </div>
+      <p class="menu-error" id="menu-error-${escapeHtml(id)}" aria-live="polite"></p>
+      <button class="btn btn-primary" type="button" data-start-exercise="${escapeHtml(id)}">
+        Start exercise
+      </button>
+    </div>
+  `;
 }
 
 // Page rendering ------------------------------------------------------------
 function renderTableOfContents() {
   const tocList = document.getElementById('tocList');
-
   tocList.innerHTML = `
     <a href="#grammar-bank">
       <span><span class="nav-number">01</span>Grammar bank</span>
@@ -3085,62 +3267,53 @@ function renderTableOfContents() {
 }
 
 function exerciseCard(point, type, title, description) {
-  const exerciseId = `${point.id}-${type}`;
-
+  const id = `${point.id}-${type}`;
   return `
-    <article class="exercise-card" id="${escapeHtml(exerciseId)}">
+    <article class="exercise-card" id="${escapeHtml(id)}">
       <div class="exercise-head">
         <div class="exercise-head-copy">
           <h3>${escapeHtml(title)}</h3>
           <p>${escapeHtml(description)}</p>
         </div>
-        <div class="score-box" id="score-${escapeHtml(exerciseId)}"></div>
+        <div class="score-box" id="score-${escapeHtml(id)}">Not started</div>
       </div>
-
       <div class="exercise-body">
-        <div class="status-row">
-          <span id="count-${escapeHtml(exerciseId)}"></span>
-          <button
-            class="btn btn-muted"
-            type="button"
-            data-restart="${escapeHtml(exerciseId)}"
-            style="min-height: 40px;">Restart</button>
-        </div>
-
-        <div class="progress-track">
-          <div class="progress-fill" id="progress-${escapeHtml(exerciseId)}"></div>
-        </div>
-
-        <p class="question-meta" id="meta-${escapeHtml(exerciseId)}"></p>
-        <p class="question-text" id="prompt-${escapeHtml(exerciseId)}"></p>
-        <div id="zone-${escapeHtml(exerciseId)}"></div>
-        <div class="feedback" id="feedback-${escapeHtml(exerciseId)}"></div>
-
-        <div class="action-row">
-          <button
-            class="btn btn-next hidden"
-            id="next-${escapeHtml(exerciseId)}"
-            type="button"
-            data-next="${escapeHtml(exerciseId)}">Next</button>
-        </div>
-
-        <div class="finish-panel" id="finish-${escapeHtml(exerciseId)}">
-          <h4>Exercise complete</h4>
-          <p id="final-${escapeHtml(exerciseId)}"></p>
-          <div class="review-list" id="review-${escapeHtml(exerciseId)}"></div>
+        ${setupMenu(id, 10)}
+        <div class="exercise-stage" id="stage-${escapeHtml(id)}" hidden>
+          <div class="status-row">
+            <span id="count-${escapeHtml(id)}"></span>
+            <span class="timer-display" id="timer-display-${escapeHtml(id)}">Untimed</span>
+            <button class="btn btn-muted" type="button" data-restart="${escapeHtml(id)}" style="min-height: 40px;">Menu</button>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="progress-${escapeHtml(id)}"></div>
+          </div>
+          <div class="question-area" id="question-area-${escapeHtml(id)}">
+            <p class="question-meta" id="meta-${escapeHtml(id)}"></p>
+            <p class="question-text" id="prompt-${escapeHtml(id)}"></p>
+            <div id="zone-${escapeHtml(id)}"></div>
+            <div class="feedback" id="feedback-${escapeHtml(id)}" aria-live="polite"></div>
+            <div class="action-row">
+              <button class="btn btn-next hidden" id="next-${escapeHtml(id)}" type="button" data-next="${escapeHtml(id)}">Next</button>
+              <button class="btn btn-danger" type="button" data-end-exercise="${escapeHtml(id)}">End exercise early</button>
+            </div>
+          </div>
+          <div class="finish-panel" id="finish-${escapeHtml(id)}">
+            <h4>Exercise summary</h4>
+            <p class="finish-reason" id="reason-${escapeHtml(id)}"></p>
+            <p id="final-${escapeHtml(id)}"></p>
+            <div class="review-list" id="review-${escapeHtml(id)}"></div>
+          </div>
         </div>
       </div>
     </article>
   `;
 }
 
-
 function renderGrammarBank() {
   const mount = document.getElementById('grammarBank');
-
   mount.innerHTML = POINTS.map((point, index) => {
     const bodyId = `grammar-bank-body-${point.id}`;
-
     return `
       <article class="grammar-bank-item">
         <div class="grammar-bank-header">
@@ -3148,35 +3321,17 @@ function renderGrammarBank() {
             <span>Point ${String(index + 1).padStart(2, '0')} · ${escapeHtml(point.kicker)}</span>
             <h3>${escapeHtml(point.title)}</h3>
           </div>
-          <button
-            class="reference-collapse-btn"
-            type="button"
-            data-collapse="${escapeHtml(bodyId)}"
-            aria-expanded="true">Collapse</button>
+          <button class="reference-collapse-btn" type="button" data-collapse="${escapeHtml(bodyId)}" aria-expanded="true">Collapse</button>
         </div>
-
         <div class="grammar-bank-body collapsible-content" id="${escapeHtml(bodyId)}">
           <div class="info-grid">
-            <div class="info-card">
-              <h3>Meaning and use</h3>
-              <p>${escapeHtml(point.summary)}</p>
-            </div>
-            <div class="info-card">
-              <h3>Form</h3>
-              <p>${escapeHtml(point.rule)}</p>
-            </div>
+            <div class="info-card"><h3>Meaning and use</h3><p>${escapeHtml(point.summary)}</p></div>
+            <div class="info-card"><h3>Form</h3><p>${escapeHtml(point.rule)}</p></div>
           </div>
-
-          <p class="grammar-bank-focus">
-            <b>Focus:</b> ${escapeHtml(point.focus)}
-          </p>
-
+          <p class="grammar-bank-focus"><b>Focus:</b> ${escapeHtml(point.focus)}</p>
           <div class="example-list">
             ${point.examples.map(([spanish, english]) => `
-              <div class="example-row">
-                <b>${escapeHtml(spanish)}</b>
-                ${escapeHtml(english)}
-              </div>
+              <div class="example-row"><b>${escapeHtml(spanish)}</b>${escapeHtml(english)}</div>
             `).join('')}
           </div>
         </div>
@@ -3187,336 +3342,45 @@ function renderGrammarBank() {
 
 function renderGrammarSections() {
   const mount = document.getElementById('grammarSections');
-
-  mount.innerHTML = POINTS.map((point, index) => `
+  mount.innerHTML = POINTS.map((point) => `
     <section class="section" id="${escapeHtml(point.id)}">
       <div class="section-header">
-        <div>
-          <p class="section-kicker">${escapeHtml(point.kicker)}</p>
-          <h2>${escapeHtml(point.title)}</h2>
-        </div>
+        <div><p class="section-kicker">${escapeHtml(point.kicker)}</p><h2>${escapeHtml(point.title)}</h2></div>
         <div class="section-actions">
-          <span class="section-count">20 questions</span>
-          <button
-            class="collapse-btn"
-            type="button"
-            data-collapse="section-body-${escapeHtml(point.id)}"
-            aria-expanded="true">Collapse</button>
+          <button class="collapse-btn" type="button" data-collapse="section-body-${escapeHtml(point.id)}" aria-expanded="true">Collapse</button>
         </div>
       </div>
-
-      <div
-        class="section-body collapsible-content"
-        id="section-body-${escapeHtml(point.id)}">
+      <div class="section-body collapsible-content" id="section-body-${escapeHtml(point.id)}">
         <div class="info-grid">
-          <div class="info-card">
-            <h3>Meaning and use</h3>
-            <p>${escapeHtml(point.summary)}</p>
-          </div>
-          <div class="info-card">
-            <h3>Form</h3>
-            <p>${escapeHtml(point.rule)}</p>
-          </div>
+          <div class="info-card"><h3>Meaning and use</h3><p>${escapeHtml(point.summary)}</p></div>
+          <div class="info-card"><h3>Form</h3><p>${escapeHtml(point.rule)}</p></div>
         </div>
-
         <div class="rule-card" style="margin-bottom: 28px;">
-          <h3>Focus</h3>
-          <p>${escapeHtml(point.focus)}</p>
+          <h3>Focus</h3><p>${escapeHtml(point.focus)}</p>
           <div class="example-list">
             ${point.examples.map(([spanish, english]) => `
-              <div class="example-row">
-                <b>${escapeHtml(spanish)}</b>
-                ${escapeHtml(english)}
-              </div>
+              <div class="example-row"><b>${escapeHtml(spanish)}</b>${escapeHtml(english)}</div>
             `).join('')}
           </div>
         </div>
-
         <div class="exercise-grid">
-          ${exerciseCard(
-            point,
-            'typed',
-            'Exercise 1: Typed translation',
-            'Translate ten complete sentences. Direction alternates each question.'
-          )}
-          ${exerciseCard(
-            point,
-            'mc',
-            'Exercise 2: Multiple choice',
-            'Choose the best complete translation for ten sentences.'
-          )}
+          ${exerciseCard(point, 'typed', 'Exercise 1: Typed translation', 'Type each translation. Press Enter once to check and again to continue.')}
+          ${exerciseCard(point, 'mc', 'Exercise 2: Multiple choice', 'Choose the best complete translation from four options.')}
         </div>
       </div>
     </section>
   `).join('');
 }
 
-
-function initializeCollapsibles() {
-  document.querySelectorAll('[data-collapse]').forEach((button) => {
-    if (button.dataset.collapseReady === 'true') return;
-
-    const target = document.getElementById(button.dataset.collapse);
-    if (!target) return;
-
-    button.dataset.collapseReady = 'true';
-
-    function setExpanded(expanded) {
-      target.hidden = !expanded;
-      button.setAttribute('aria-expanded', String(expanded));
-      button.textContent = expanded ? 'Collapse' : 'Expand';
-    }
-
-    setExpanded(!target.hidden);
-
-    button.addEventListener('click', () => {
-      setExpanded(target.hidden);
-    });
-  });
-}
-
-// Per-point exercises -------------------------------------------------------
-function initializeExercise(point, type) {
-  const exerciseId = `${point.id}-${type}`;
-  const sourceQuestions = type === 'typed'
-    ? point.questions.slice(0, 10)
-    : point.questions.slice(10, 20);
-
-  exerciseStates[exerciseId] = {
-    id: exerciseId,
-    point,
-    type,
-    pool: shuffle(sourceQuestions),
-    index: 0,
-    score: 0,
-    answered: false,
-    results: [],
-    direction: 'en-es'
-  };
-
-  showExerciseQuestion(exerciseId);
-}
-
-function buildChoiceOptions(state, question, language) {
-  const correctAnswer = answerValues(question, language)[0];
-  const options = [correctAnswer];
-  const candidates = shuffle(state.point.questions);
-
-  for (const candidate of candidates) {
-    const candidateAnswer = answerValues(candidate, language)[0];
-    const alreadyUsed = options.some((option) => (
-      normalizeByLanguage(option, language)
-      === normalizeByLanguage(candidateAnswer, language)
-    ));
-
-    if (!alreadyUsed) {
-      options.push(candidateAnswer);
-    }
-
-    if (options.length === 4) break;
-  }
-
-  return shuffle(options);
-}
-
-function showExerciseQuestion(exerciseId) {
-  const state = exerciseStates[exerciseId];
-  const question = state.pool[state.index];
-  const language = state.index % 2 === 0 ? 'es' : 'en';
-  const direction = language === 'es' ? 'en-es' : 'es-en';
-  const zone = document.getElementById(`zone-${exerciseId}`);
-
-  state.direction = direction;
-  state.answered = false;
-
-  document.getElementById(`count-${exerciseId}`).textContent =
-    `Question ${state.index + 1} / ${state.pool.length}`;
-  document.getElementById(`score-${exerciseId}`).textContent =
-    `Score ${state.score} / ${state.index}`;
-  document.getElementById(`progress-${exerciseId}`).style.width =
-    `${(state.index / state.pool.length) * 100}%`;
-  document.getElementById(`meta-${exerciseId}`).textContent =
-    `${state.type === 'typed' ? 'Typed translation' : 'Multiple choice'} · ${directionLabel(direction)}`;
-  document.getElementById(`prompt-${exerciseId}`).textContent =
-    promptFor(question, direction);
-
-  const feedback = document.getElementById(`feedback-${exerciseId}`);
-  feedback.className = 'feedback';
-  feedback.innerHTML = '';
-
-  document.getElementById(`next-${exerciseId}`).classList.add('hidden');
-  document.getElementById(`finish-${exerciseId}`).style.display = 'none';
-
-  if (state.type === 'typed') {
-    zone.innerHTML = `
-      <form class="answer-form" data-typed-form="${escapeHtml(exerciseId)}">
-        <label class="sr-only" for="input-${escapeHtml(exerciseId)}">Type the translation</label>
-        <input
-          class="answer-input"
-          id="input-${escapeHtml(exerciseId)}"
-          autocomplete="off"
-          spellcheck="false">
-        <button class="btn btn-primary" type="submit">Check</button>
-      </form>
-    `;
-
-    zone.querySelector('form').addEventListener('submit', (event) => {
-      event.preventDefault();
-      submitExerciseAnswer(
-        exerciseId,
-        document.getElementById(`input-${exerciseId}`).value
-      );
-    });
-  } else {
-    const options = buildChoiceOptions(state, question, language);
-
-    zone.innerHTML = `
-      <div class="option-list">
-        ${options.map((option) => `
-          <button
-            class="option-btn"
-            type="button"
-            data-option-value="${escapeHtml(option)}">
-            ${escapeHtml(option)}
-          </button>
-        `).join('')}
-      </div>
-    `;
-
-    zone.querySelectorAll('.option-btn').forEach((button) => {
-      button.addEventListener('click', () => {
-        submitExerciseAnswer(exerciseId, button.dataset.optionValue, button);
-      });
-    });
-  }
-}
-
-function submitExerciseAnswer(exerciseId, userAnswer, clickedButton = null) {
-  const state = exerciseStates[exerciseId];
-  const question = state.pool[state.index];
-  const language = answerLanguage(state.direction);
-
-  if (state.answered) return;
-
-  const correct = isCorrect(question, language, userAnswer);
-  const expected = answerValues(question, language)[0];
-
-  state.answered = true;
-  if (correct) state.score += 1;
-
-  state.results.push({
-    prompt: promptFor(question, state.direction),
-    userAnswer,
-    expected,
-    correct,
-    source: question.source
-  });
-
-  if (state.type === 'mc') {
-    document.querySelectorAll(`#zone-${exerciseId} .option-btn`).forEach((button) => {
-      button.disabled = true;
-      if (isCorrect(question, language, button.dataset.optionValue)) {
-        button.classList.add('correct');
-      }
-    });
-
-    if (!correct && clickedButton) {
-      clickedButton.classList.add('wrong');
-    }
-  } else {
-    document.getElementById(`input-${exerciseId}`).disabled = true;
-    document.querySelector(`[data-typed-form="${exerciseId}"] button`).disabled = true;
-  }
-
-  const feedback = document.getElementById(`feedback-${exerciseId}`);
-  feedback.className = `feedback ${correct ? 'good' : 'bad'}`;
-  feedback.innerHTML = `
-    <b>${correct ? '✓ Correct' : '✕ Incorrect'}</b>
-    <span class="model-answer">${escapeHtml(expected)}</span>
-    <p>${escapeHtml(state.point.focus)}</p>
-    ${question.source ? '<span class="source-chip">Chapter sentence</span>' : ''}
-  `;
-
-  document.getElementById(`score-${exerciseId}`).textContent =
-    `Score ${state.score} / ${state.index + 1}`;
-
-  const nextButton = document.getElementById(`next-${exerciseId}`);
-  nextButton.textContent = state.index === state.pool.length - 1 ? 'Finish' : 'Next';
-  nextButton.classList.remove('hidden');
-}
-
-function nextExerciseQuestion(exerciseId) {
-  const state = exerciseStates[exerciseId];
-
-  if (state.index < state.pool.length - 1) {
-    state.index += 1;
-    showExerciseQuestion(exerciseId);
-  } else {
-    document.getElementById(`next-${exerciseId}`).classList.add('hidden');
-    finishExercise(exerciseId);
-  }
-}
-
-function finishExercise(exerciseId) {
-  const state = exerciseStates[exerciseId];
-  const panel = document.getElementById(`finish-${exerciseId}`);
-
-  document.getElementById(`progress-${exerciseId}`).style.width = '100%';
-  panel.style.display = 'block';
-
-  document.getElementById(`final-${exerciseId}`).innerHTML = `
-    Final score: <b>${state.score} / ${state.pool.length}</b>
-    (${Math.round((state.score / state.pool.length) * 100)}%)
-  `;
-
-  document.getElementById(`review-${exerciseId}`).innerHTML = state.results
-    .map((result, index) => `
-      <div class="review-row">
-        <p><b>${index + 1}. ${escapeHtml(result.prompt)}</b> ${result.correct ? '✓' : '✕'}</p>
-        <p>Your answer: ${escapeHtml(result.userAnswer || '(blank)')}</p>
-        <p>Model: <b>${escapeHtml(result.expected)}</b></p>
-      </div>
-    `).join('');
-}
-
-function restartExercise(exerciseId) {
-  const state = exerciseStates[exerciseId];
-
-  state.pool = shuffle(state.pool);
-  state.index = 0;
-  state.score = 0;
-  state.answered = false;
-  state.results = [];
-
-  showExerciseQuestion(exerciseId);
-}
-
-function initializeExerciseEvents() {
-  document.querySelectorAll('[data-next]').forEach((button) => {
-    button.addEventListener('click', () => nextExerciseQuestion(button.dataset.next));
-  });
-
-  document.querySelectorAll('[data-restart]').forEach((button) => {
-    button.addEventListener('click', () => restartExercise(button.dataset.restart));
-  });
-}
-
-// Comprehensive test -------------------------------------------------------
-function buildComprehensivePool() {
+function buildComprehensiveSource() {
   const pool = [];
-
   POINTS.forEach((point) => {
-    const typedQuestions = shuffle(point.questions.slice(0, 10))
-      .slice(0, 5)
-      .map((question) => ({ ...question, kind: 'typed', point }));
-    const multipleChoiceQuestions = shuffle(point.questions.slice(10, 20))
-      .slice(0, 5)
-      .map((question) => ({ ...question, kind: 'mc', point }));
-
-    pool.push(...typedQuestions, ...multipleChoiceQuestions);
+    pool.push(
+      ...shuffle(point.questions.slice(0, 10)).slice(0, 5).map((question) => ({ ...question, kind: 'typed', point })),
+      ...shuffle(point.questions.slice(10, 20)).slice(0, 5).map((question) => ({ ...question, kind: 'mc', point }))
+    );
   });
-
-  return shuffle(pool);
+  return pool;
 }
 
 function renderComprehensiveTest() {
@@ -3525,41 +3389,32 @@ function renderComprehensiveTest() {
       <div class="exercise-head">
         <div class="exercise-head-copy">
           <h3>Chapter 1 Comprehensive Test</h3>
-          <p>Ten questions per grammar point, mixed across the full chapter.</p>
+          <p>Mix typed and multiple-choice questions from all nine grammar points.</p>
         </div>
         <div class="score-box" id="score-comprehensive">Not started</div>
       </div>
-
       <div class="exercise-body">
-        <div id="comprehensiveIntro">
-          <p>
-            This assessment contains 90 questions. A point-by-point score
-            breakdown and full answer review appear when you finish.
-          </p>
-          <button class="btn btn-primary" id="startComprehensive" type="button">Start test</button>
-        </div>
-
-        <div class="hidden" id="comprehensiveStage">
+        ${setupMenu('comprehensive', 10)}
+        <div class="exercise-stage" id="stage-comprehensive" hidden>
           <div class="status-row">
             <span id="count-comprehensive"></span>
-            <button class="btn btn-muted" id="restartComprehensive" type="button" style="min-height: 40px;">Restart</button>
+            <span class="timer-display" id="timer-display-comprehensive">Untimed</span>
+            <button class="btn btn-muted" type="button" data-restart="comprehensive" style="min-height: 40px;">Menu</button>
           </div>
-
-          <div class="progress-track">
-            <div class="progress-fill" id="progress-comprehensive"></div>
+          <div class="progress-track"><div class="progress-fill" id="progress-comprehensive"></div></div>
+          <div class="question-area" id="question-area-comprehensive">
+            <p class="question-meta" id="meta-comprehensive"></p>
+            <p class="question-text" id="prompt-comprehensive"></p>
+            <div id="zone-comprehensive"></div>
+            <div class="feedback" id="feedback-comprehensive" aria-live="polite"></div>
+            <div class="action-row">
+              <button class="btn btn-next hidden" id="next-comprehensive" type="button" data-next="comprehensive">Next</button>
+              <button class="btn btn-danger" type="button" data-end-exercise="comprehensive">End test early</button>
+            </div>
           </div>
-
-          <p class="question-meta" id="meta-comprehensive"></p>
-          <p class="question-text" id="prompt-comprehensive"></p>
-          <div id="zone-comprehensive"></div>
-          <div class="feedback" id="feedback-comprehensive"></div>
-
-          <div class="action-row">
-            <button class="btn btn-next hidden" id="next-comprehensive" type="button">Next</button>
-          </div>
-
           <div class="finish-panel" id="finish-comprehensive">
-            <h4>Comprehensive test complete</h4>
+            <h4>Test summary</h4>
+            <p class="finish-reason" id="reason-comprehensive"></p>
             <p id="final-comprehensive"></p>
             <div class="breakdown" id="breakdown"></div>
             <div class="review-list" id="review-comprehensive"></div>
@@ -3568,127 +3423,198 @@ function renderComprehensiveTest() {
       </div>
     </article>
   `;
-
-  document.getElementById('startComprehensive')
-    .addEventListener('click', startComprehensiveTest);
 }
 
-function startComprehensiveTest() {
-  exerciseStates.comprehensive = {
-    pool: buildComprehensivePool(),
+function initializeCollapsibles() {
+  document.querySelectorAll('[data-collapse]').forEach((button) => {
+    if (button.dataset.collapseReady === 'true') return;
+    const target = document.getElementById(button.dataset.collapse);
+    if (!target) return;
+    button.dataset.collapseReady = 'true';
+    const setExpanded = (expanded) => {
+      target.hidden = !expanded;
+      button.setAttribute('aria-expanded', String(expanded));
+      button.textContent = expanded ? 'Collapse' : 'Expand';
+    };
+    setExpanded(!target.hidden);
+    button.addEventListener('click', () => setExpanded(target.hidden));
+  });
+}
+
+// Exercise engine -----------------------------------------------------------
+function registerExercise(id, point, type, source) {
+  exerciseStates[id] = {
+    id,
+    point,
+    type,
+    source,
+    pool: [],
     index: 0,
     score: 0,
     answered: false,
     results: [],
-    direction: 'en-es',
-    breakdown: Object.fromEntries(POINTS.map((point) => [
-      point.id,
-      { correct: 0, total: 0, title: point.title }
-    ]))
+    questionLanguage: 'en',
+    answerLanguage: 'es',
+    timerId: null,
+    endAt: null,
+    plannedCount: 0,
+    started: false
   };
-
-  document.getElementById('comprehensiveIntro').classList.add('hidden');
-  document.getElementById('comprehensiveStage').classList.remove('hidden');
-  document.getElementById('restartComprehensive')
-    .addEventListener('click', startComprehensiveTest, { once: true });
-  document.getElementById('next-comprehensive').onclick = nextComprehensiveQuestion;
-
-  showComprehensiveQuestion();
 }
 
-function showComprehensiveQuestion() {
-  const state = exerciseStates.comprehensive;
-  const question = state.pool[state.index];
-  const direction = state.index % 2 === 0 ? 'en-es' : 'es-en';
-  const language = answerLanguage(direction);
-  const zone = document.getElementById('zone-comprehensive');
+function clearExerciseTimer(state) {
+  if (state?.timerId) clearInterval(state.timerId);
+  if (state) state.timerId = null;
+}
 
-  state.direction = direction;
+function updateTimer(id) {
+  const state = exerciseStates[id];
+  const display = document.getElementById(`timer-display-${id}`);
+  if (!display || !state) return;
+  if (!state.endAt) {
+    display.textContent = 'Untimed';
+    return;
+  }
+  const remaining = Math.max(0, (state.endAt - Date.now()) / 1000);
+  display.textContent = formatTime(remaining);
+  if (remaining <= 0) finishExercise(id, 'Time is up.');
+}
+
+function startExerciseTimer(id, minutes) {
+  const state = exerciseStates[id];
+  clearExerciseTimer(state);
+  state.endAt = minutes > 0 ? Date.now() + (minutes * 60 * 1000) : null;
+  updateTimer(id);
+  if (state.endAt) state.timerId = setInterval(() => updateTimer(id), 250);
+}
+
+function validateMenu(id) {
+  const state = exerciseStates[id];
+  const countInput = document.getElementById(`question-count-${id}`);
+  const timerInput = document.getElementById(`timer-${id}`);
+  const questionLanguage = document.getElementById(`question-language-${id}`).value;
+  const answerLanguage = document.getElementById(`answer-language-${id}`).value;
+  const error = document.getElementById(`menu-error-${id}`);
+  const count = Math.floor(Number(countInput.value));
+  const minutes = Number(timerInput.value);
+
+  if (!Number.isFinite(count) || count < 1) {
+    error.textContent = 'Enter a positive whole number of questions.';
+    return null;
+  }
+  if (!Number.isFinite(minutes) || minutes < 0) {
+    error.textContent = 'The timer must be 0 or a positive number.';
+    return null;
+  }
+  if (questionLanguage === answerLanguage) {
+    error.textContent = 'Question and answer languages must be different.';
+    return null;
+  }
+  error.textContent = '';
+  return { count, minutes, questionLanguage, answerLanguage };
+}
+
+function startExercise(id) {
+  const state = exerciseStates[id];
+  const config = validateMenu(id);
+  if (!config) return;
+
+  state.pool = buildQuestionSequence(state.source, config.count);
+  state.index = 0;
+  state.score = 0;
   state.answered = false;
+  state.results = [];
+  state.questionLanguage = config.questionLanguage;
+  state.answerLanguage = config.answerLanguage;
+  state.plannedCount = config.count;
+  state.started = true;
 
-  document.getElementById('count-comprehensive').textContent =
-    `Question ${state.index + 1} / ${state.pool.length}`;
-  document.getElementById('score-comprehensive').textContent =
-    `Score ${state.score} / ${state.index}`;
-  document.getElementById('progress-comprehensive').style.width =
-    `${(state.index / state.pool.length) * 100}%`;
-  document.getElementById('meta-comprehensive').textContent =
-    `${question.point.title} · ${question.kind === 'typed' ? 'Typed' : 'Multiple choice'} · ${directionLabel(direction)}`;
-  document.getElementById('prompt-comprehensive').textContent =
-    promptFor(question, direction);
+  document.getElementById(`menu-${id}`).hidden = true;
+  document.getElementById(`stage-${id}`).hidden = false;
+  document.getElementById(`question-area-${id}`).hidden = false;
+  document.getElementById(`finish-${id}`).style.display = 'none';
+  document.getElementById(`score-${id}`).textContent = 'Score 0 / 0';
 
-  const feedback = document.getElementById('feedback-comprehensive');
+  startExerciseTimer(id, config.minutes);
+  showExerciseQuestion(id);
+}
+
+function buildChoiceOptions(state, question) {
+  const language = state.answerLanguage;
+  const correct = answerValues(question, language)[0];
+  const options = [correct];
+  const candidates = shuffle(question.point?.questions || state.point?.questions || state.source);
+  for (const candidate of candidates) {
+    const value = answerValues(candidate, language)[0];
+    if (!options.some((option) => normalizeByLanguage(option, language) === normalizeByLanguage(value, language))) {
+      options.push(value);
+    }
+    if (options.length === 4) break;
+  }
+  return shuffle(options);
+}
+
+function showExerciseQuestion(id) {
+  const state = exerciseStates[id];
+  const question = state.pool[state.index];
+  if (!question) return finishExercise(id, 'No questions were available.');
+
+  state.answered = false;
+  document.getElementById(`count-${id}`).textContent = `Question ${state.index + 1} / ${state.pool.length}`;
+  document.getElementById(`score-${id}`).textContent = `Score ${state.score} / ${state.results.length}`;
+  document.getElementById(`progress-${id}`).style.width = `${(state.results.length / state.pool.length) * 100}%`;
+  document.getElementById(`meta-${id}`).textContent = `${question.kind === 'typed' ? 'Typed translation' : 'Multiple choice'} · ${languageLabel(state.questionLanguage)} → ${languageLabel(state.answerLanguage)}${question.point ? ` · ${question.point.title}` : ''}`;
+  document.getElementById(`prompt-${id}`).textContent = questionText(question, state.questionLanguage);
+  document.getElementById(`next-${id}`).classList.add('hidden');
+
+  const feedback = document.getElementById(`feedback-${id}`);
   feedback.className = 'feedback';
   feedback.innerHTML = '';
-
-  document.getElementById('next-comprehensive').classList.add('hidden');
-  document.getElementById('finish-comprehensive').style.display = 'none';
+  const zone = document.getElementById(`zone-${id}`);
 
   if (question.kind === 'typed') {
     zone.innerHTML = `
-      <form class="answer-form" id="comprehensiveForm">
-        <label class="sr-only" for="comprehensiveInput">Type the translation</label>
-        <input
-          class="answer-input"
-          id="comprehensiveInput"
-          autocomplete="off"
-          spellcheck="false">
+      <form class="answer-form" data-typed-form="${escapeHtml(id)}">
+        <label class="sr-only" for="input-${escapeHtml(id)}">Type the translation</label>
+        <input class="answer-input" id="input-${escapeHtml(id)}" autocomplete="off" spellcheck="false" enterkeyhint="done">
         <button class="btn btn-primary" type="submit">Check</button>
       </form>
     `;
-
-    document.getElementById('comprehensiveForm').addEventListener('submit', (event) => {
+    const form = zone.querySelector('form');
+    form.addEventListener('submit', (event) => {
       event.preventDefault();
-      submitComprehensiveAnswer(document.getElementById('comprehensiveInput').value);
+      if (state.answered) {
+        nextExerciseQuestion(id);
+      } else {
+        submitExerciseAnswer(id, document.getElementById(`input-${id}`).value);
+      }
     });
+    requestAnimationFrame(() => document.getElementById(`input-${id}`)?.focus());
   } else {
-    const options = buildChoiceOptions(
-      { point: question.point },
-      question,
-      language
-    );
-
+    const options = buildChoiceOptions(state, question);
     zone.innerHTML = `
       <div class="option-list">
-        ${options.map((option) => `
-          <button
-            class="option-btn"
-            type="button"
-            data-option-value="${escapeHtml(option)}">
-            ${escapeHtml(option)}
-          </button>
-        `).join('')}
+        ${options.map((option) => `<button class="option-btn" type="button" data-option-value="${escapeHtml(option)}">${escapeHtml(option)}</button>`).join('')}
       </div>
     `;
-
     zone.querySelectorAll('.option-btn').forEach((button) => {
-      button.addEventListener('click', () => {
-        submitComprehensiveAnswer(button.dataset.optionValue, button);
-      });
+      button.addEventListener('click', () => submitExerciseAnswer(id, button.dataset.optionValue, button));
     });
   }
 }
 
-function submitComprehensiveAnswer(userAnswer, clickedButton = null) {
-  const state = exerciseStates.comprehensive;
+function submitExerciseAnswer(id, userAnswer, clickedButton = null) {
+  const state = exerciseStates[id];
   const question = state.pool[state.index];
-  const language = answerLanguage(state.direction);
-
   if (state.answered) return;
 
-  const correct = isCorrect(question, language, userAnswer);
-  const expected = answerValues(question, language)[0];
-  const pointBreakdown = state.breakdown[question.point.id];
-
+  const correct = isCorrect(question, state.answerLanguage, userAnswer);
+  const expected = answerValues(question, state.answerLanguage)[0];
   state.answered = true;
   if (correct) state.score += 1;
-
-  pointBreakdown.total += 1;
-  if (correct) pointBreakdown.correct += 1;
-
   state.results.push({
-    point: question.point.title,
-    prompt: promptFor(question, state.direction),
+    point: question.point?.title || state.point?.title || '',
+    prompt: questionText(question, state.questionLanguage),
     userAnswer,
     expected,
     correct,
@@ -3696,79 +3622,121 @@ function submitComprehensiveAnswer(userAnswer, clickedButton = null) {
   });
 
   if (question.kind === 'mc') {
-    document.querySelectorAll('#zone-comprehensive .option-btn').forEach((button) => {
+    document.querySelectorAll(`#zone-${id} .option-btn`).forEach((button) => {
       button.disabled = true;
-      if (isCorrect(question, language, button.dataset.optionValue)) {
-        button.classList.add('correct');
-      }
+      if (isCorrect(question, state.answerLanguage, button.dataset.optionValue)) button.classList.add('correct');
     });
-
-    if (!correct && clickedButton) {
-      clickedButton.classList.add('wrong');
-    }
+    if (!correct && clickedButton) clickedButton.classList.add('wrong');
   } else {
-    document.getElementById('comprehensiveInput').disabled = true;
-    document.querySelector('#comprehensiveForm button').disabled = true;
+    const formButton = document.querySelector(`[data-typed-form="${id}"] button`);
+    if (formButton) formButton.textContent = state.index === state.pool.length - 1 ? 'Finish' : 'Next';
   }
 
-  const feedback = document.getElementById('feedback-comprehensive');
+  const feedback = document.getElementById(`feedback-${id}`);
   feedback.className = `feedback ${correct ? 'good' : 'bad'}`;
   feedback.innerHTML = `
     <b>${correct ? '✓ Correct' : '✕ Incorrect'}</b>
     <span class="model-answer">${escapeHtml(expected)}</span>
-    <p>${escapeHtml(question.point.focus)}</p>
+    ${question.point?.focus || state.point?.focus ? `<p>${escapeHtml(question.point?.focus || state.point.focus)}</p>` : ''}
     ${question.source ? '<span class="source-chip">Chapter sentence</span>' : ''}
   `;
 
-  document.getElementById('score-comprehensive').textContent =
-    `Score ${state.score} / ${state.index + 1}`;
-
-  const nextButton = document.getElementById('next-comprehensive');
-  nextButton.textContent = state.index === state.pool.length - 1 ? 'Finish' : 'Next';
-  nextButton.classList.remove('hidden');
+  document.getElementById(`score-${id}`).textContent = `Score ${state.score} / ${state.results.length}`;
+  document.getElementById(`progress-${id}`).style.width = `${(state.results.length / state.pool.length) * 100}%`;
+  const next = document.getElementById(`next-${id}`);
+  next.textContent = state.index === state.pool.length - 1 ? 'Finish' : 'Next';
+  next.classList.remove('hidden');
+  if (question.kind === 'typed') document.getElementById(`input-${id}`)?.focus();
 }
 
-function nextComprehensiveQuestion() {
-  const state = exerciseStates.comprehensive;
-
+function nextExerciseQuestion(id) {
+  const state = exerciseStates[id];
+  if (!state.answered) return;
   if (state.index < state.pool.length - 1) {
     state.index += 1;
-    showComprehensiveQuestion();
+    showExerciseQuestion(id);
   } else {
-    document.getElementById('next-comprehensive').classList.add('hidden');
-    finishComprehensiveTest();
+    finishExercise(id, 'Completed all selected questions.');
   }
 }
 
-function finishComprehensiveTest() {
-  const state = exerciseStates.comprehensive;
-  const finishPanel = document.getElementById('finish-comprehensive');
+function finishExercise(id, reason = 'Exercise ended early.') {
+  const state = exerciseStates[id];
+  if (!state?.started) return;
+  clearExerciseTimer(state);
+  state.started = false;
+  document.getElementById(`question-area-${id}`).hidden = true;
+  const panel = document.getElementById(`finish-${id}`);
+  panel.style.display = 'block';
 
-  document.getElementById('progress-comprehensive').style.width = '100%';
-  finishPanel.style.display = 'block';
-
-  document.getElementById('final-comprehensive').innerHTML = `
-    Final score: <b>${state.score} / ${state.pool.length}</b>
-    (${Math.round((state.score / state.pool.length) * 100)}%)
+  const answered = state.results.length;
+  const percent = answered ? Math.round((state.score / answered) * 100) : 0;
+  document.getElementById(`reason-${id}`).textContent = reason;
+  document.getElementById(`final-${id}`).innerHTML = `
+    Answered <b>${answered} / ${state.plannedCount}</b> selected questions.<br>
+    Score on answered questions: <b>${state.score} / ${answered}</b> (${percent}%).
   `;
+  document.getElementById(`progress-${id}`).style.width = `${state.plannedCount ? (answered / state.plannedCount) * 100 : 0}%`;
+  document.getElementById(`score-${id}`).textContent = `Score ${state.score} / ${answered}`;
+  document.getElementById(`review-${id}`).innerHTML = answered
+    ? state.results.map((result, index) => `
+        <div class="review-row">
+          <p><b>${index + 1}. ${escapeHtml(result.point)}</b> · ${result.correct ? '✓' : '✕'}</p>
+          <p>${escapeHtml(result.prompt)}</p>
+          <p>Your answer: ${escapeHtml(result.userAnswer || '(blank)')}</p>
+          <p>Model: <b>${escapeHtml(result.expected)}</b></p>
+        </div>
+      `).join('')
+    : '<div class="review-row"><p>No questions were answered.</p></div>';
 
-  document.getElementById('breakdown').innerHTML = Object.values(state.breakdown)
-    .map((item) => `
-      <div>
-        <b>${escapeHtml(item.title)}</b><br>
-        ${item.correct} / ${item.total}
-      </div>
+  const breakdown = document.getElementById('breakdown');
+  if (id === 'comprehensive' && breakdown) {
+    const summary = {};
+    state.results.forEach((result) => {
+      summary[result.point] ||= { correct: 0, total: 0 };
+      summary[result.point].total += 1;
+      if (result.correct) summary[result.point].correct += 1;
+    });
+    breakdown.innerHTML = Object.entries(summary).map(([title, item]) => `
+      <div><b>${escapeHtml(title)}</b><br>${item.correct} / ${item.total}</div>
     `).join('');
+  }
+}
 
-  document.getElementById('review-comprehensive').innerHTML = state.results
-    .map((result, index) => `
-      <div class="review-row">
-        <p><b>${index + 1}. ${escapeHtml(result.point)}</b> · ${result.correct ? '✓' : '✕'}</p>
-        <p>${escapeHtml(result.prompt)}</p>
-        <p>Your answer: ${escapeHtml(result.userAnswer || '(blank)')}</p>
-        <p>Model: <b>${escapeHtml(result.expected)}</b></p>
-      </div>
-    `).join('');
+function returnToMenu(id) {
+  const state = exerciseStates[id];
+  clearExerciseTimer(state);
+  state.started = false;
+  document.getElementById(`stage-${id}`).hidden = true;
+  document.getElementById(`menu-${id}`).hidden = false;
+  document.getElementById(`question-area-${id}`).hidden = false;
+  document.getElementById(`finish-${id}`).style.display = 'none';
+  document.getElementById(`score-${id}`).textContent = 'Not started';
+}
+
+function initializeExerciseEvents() {
+  document.querySelectorAll('[data-start-exercise]').forEach((button) => {
+    button.addEventListener('click', () => startExercise(button.dataset.startExercise));
+  });
+  document.querySelectorAll('[data-next]').forEach((button) => {
+    button.addEventListener('click', () => nextExerciseQuestion(button.dataset.next));
+  });
+  document.querySelectorAll('[data-end-exercise]').forEach((button) => {
+    button.addEventListener('click', () => finishExercise(button.dataset.endExercise, 'Exercise ended early.'));
+  });
+  document.querySelectorAll('[data-restart]').forEach((button) => {
+    button.addEventListener('click', () => returnToMenu(button.dataset.restart));
+  });
+  Object.keys(exerciseStates).forEach((id) => {
+    const q = document.getElementById(`question-language-${id}`);
+    const a = document.getElementById(`answer-language-${id}`);
+    q?.addEventListener('change', () => {
+      if (q.value === a.value) a.value = q.value === 'en' ? 'es' : 'en';
+    });
+    a?.addEventListener('change', () => {
+      if (a.value === q.value) q.value = a.value === 'en' ? 'es' : 'en';
+    });
+  });
 }
 
 renderTableOfContents();
@@ -3778,11 +3746,21 @@ renderComprehensiveTest();
 initializeCollapsibles();
 
 POINTS.forEach((point) => {
-  initializeExercise(point, 'typed');
-  initializeExercise(point, 'mc');
+  registerExercise(
+    `${point.id}-typed`,
+    point,
+    'typed',
+    point.questions.slice(0, 10).map((question) => ({ ...question, kind: 'typed', point }))
+  );
+  registerExercise(
+    `${point.id}-mc`,
+    point,
+    'mc',
+    point.questions.slice(10, 20).map((question) => ({ ...question, kind: 'mc', point }))
+  );
 });
+registerExercise('comprehensive', null, 'mixed', buildComprehensiveSource());
 initializeExerciseEvents();
-
 
 function initializeTheme() {
   const root = document.documentElement;
